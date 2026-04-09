@@ -1,0 +1,516 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════
+   STEP 2: CSS CUSTOM PROPERTIES (Design System)
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  /* Primary Colors */
+  --color-primary-blue:    #3B82F6;
+  --color-accent-orange:   #F59E0B;
+  --color-success-green:   #10B981;
+  --color-warning-purple:  #8B5CF6;
+  --color-danger-pink:     #EC4899;
+
+  /* Text Colors */
+  --color-text-dark:       #1F2937;
+  --color-text-gray:       #6B7280;
+  --color-text-light-gray: #9CA3AF;
+
+  /* Background Colors */
+  --color-bg-white:        #FFFFFF;
+  --color-bg-light:        #F9FAFB;
+  --color-bg-gray:         #F3F4F6;
+  --color-bg-dark:         #1F2937;
+
+  /* Border Colors */
+  --color-border:          #E5E7EB;
+  --color-border-dark:     #D1D5DB;
+
+  /* Spacing */
+  --spacing-xs:   4px;
+  --spacing-sm:   8px;
+  --spacing-md:   12px;
+  --spacing-lg:   16px;
+  --spacing-xl:   20px;
+  --spacing-2xl:  24px;
+  --spacing-3xl:  32px;
+  --spacing-4xl:  40px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* Shadows */
+  --shadow-sm:    0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-md:    0 2px 8px 0 rgba(0,0,0,0.1);
+  --shadow-lg:    0 8px 16px 0 rgba(0,0,0,0.15);
+  --shadow-hover: 0 10px 24px 0 rgba(0,0,0,0.15);
+
+  /* Transitions */
+  --transition-fast:   0.2s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow:   0.5s ease-in-out;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STEP 3: BASE STYLES
+   ═══════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STEP 5: MAIN CONTAINER & LAYOUT
+   ═══════════════════════════════════════════════════════════════════ */
+.mj-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-2xl);
+  align-items: start;
+}
+
+@media (max-width: 1023px) {
+  .mj-main {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-2xl) var(--spacing-lg);
+  }
+}
+
+@media (max-width: 767px) {
+  .mj-main {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STEP 6: FILTERS SIDEBAR
+   ═══════════════════════════════════════════════════════════════════ */
+aside.mj-filters {
+  background-color: var(--color-bg-gray);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+@media (max-width: 1023px) {
+  aside.mj-filters { display: none; }
+}
+
+.filter-section {
+  padding-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.filter-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.filter-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-md);
+}
+
+.filter-select {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--spacing-md) var(--spacing-3xl) var(--spacing-md) var(--spacing-lg);
+  font-size: 16px;
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-md);
+  color: var(--color-text-dark);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-lg) center;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--color-primary-blue);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.filter-select:hover { background-color: var(--color-bg-light); }
+
+.radio-group { display: flex; flex-direction: column; gap: var(--spacing-sm); }
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.radio-item:hover { background-color: #e9eaec; }
+
+.radio-item input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.radio-item span {
+  font-size: 14px;
+  color: var(--color-text-dark);
+  text-transform: capitalize;
+}
+
+.salary-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.salary-input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 14px;
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-md);
+  color: var(--color-text-dark);
+  transition: all var(--transition-fast);
+}
+
+.salary-input:focus {
+  outline: none;
+  border-color: var(--color-primary-blue);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STEP 7: JOBS CONTAINER
+   ═══════════════════════════════════════════════════════════════════ */
+.jobs-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.jobs-header {
+  font-size: 14px;
+  color: var(--color-text-gray);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STEP 8: JOB CARD
+   ═══════════════════════════════════════════════════════════════════ */
+.job-card {
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--spacing-xl);
+  align-items: start;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+}
+
+.job-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--color-primary-blue);
+}
+
+.job-card--featured {
+  border-color: #FCD34D;
+  background-color: #FFFBEB;
+}
+
+.job-card--featured:hover {
+  border-color: #F59E0B;
+}
+
+.job-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  min-width: 0;
+}
+
+.job-header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+}
+
+.job-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  background-color: #EFF6FF;
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-primary-blue);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.job-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.job-title-wrap { flex: 1; min-width: 0; }
+
+.job-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  line-height: 1.4;
+  margin: 0 0 2px;
+  transition: color var(--transition-fast);
+}
+
+.job-card:hover .job-title { color: var(--color-primary-blue); }
+
+.job-details-row {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 14px;
+}
+
+.job-company {
+  color: var(--color-primary-blue);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.job-company:hover { color: #2563EB; text-decoration: underline; }
+
+.job-location { color: var(--color-text-gray); }
+
+.job-badges {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  border-radius: 999px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge--remote    { background-color: var(--color-primary-blue); }
+.badge--hybrid    { background-color: var(--color-accent-orange); }
+.badge--full-time { background-color: var(--color-success-green); }
+.badge--contract  { background-color: var(--color-warning-purple); }
+.badge--part-time { background-color: var(--color-danger-pink); }
+.badge--category  { background-color: var(--color-bg-gray); color: var(--color-text-gray); }
+.badge--featured  { background-color: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
+
+.job-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-sm);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.job-salary {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.job-posted {
+  font-size: 14px;
+  color: var(--color-text-gray);
+}
+
+@media (max-width: 767px) {
+  .job-card {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+  }
+
+  .job-title { font-size: 16px; }
+
+  .job-meta {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .job-card:hover {
+    transform: none;
+    background-color: var(--color-bg-light);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STEP 11: MOBILE FILTERS MODAL
+   ═══════════════════════════════════════════════════════════════════ */
+.filters-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.filters-modal-content {
+  background-color: var(--color-bg-white);
+  width: 100%;
+  max-width: 100%;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp var(--transition-normal) both;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.filters-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-lg);
+}
+
+.filters-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.filters-modal-close {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--color-text-gray);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+}
+
+.filters-modal-close:hover {
+  color: var(--color-text-dark);
+  background-color: var(--color-bg-gray);
+}
+
+.filters-modal-apply {
+  width: 100%;
+  height: 44px;
+  background-color: var(--color-primary-blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-xl);
+}
+
+.filters-modal-apply:hover { background-color: #2563EB; }
+
+/* Hamburger button (mobile only) */
+.mj-hamburger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background-color: var(--color-primary-blue);
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.mj-hamburger:hover { background-color: #2563EB; box-shadow: var(--shadow-md); }
+
+@media (max-width: 1023px) {
+  .mj-hamburger { display: flex; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STEP 9: PAGINATION  (overrides Tailwind's default pagination)
+   ═══════════════════════════════════════════════════════════════════ */
+.mj-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-3xl);
+  padding-top: var(--spacing-2xl);
+  border-top: 1px solid var(--color-border);
+}

@@ -1,0 +1,1 @@
+<livewire:layout.navigation />
