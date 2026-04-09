@@ -31,6 +31,8 @@ class Vacancy extends Model
         'published_at',
         'is_featured',
         'featured_until',
+        'languages',
+        'suitability',
     ];
 
     protected function casts(): array
@@ -43,6 +45,8 @@ class Vacancy extends Model
             'featured_until'  => 'datetime',
             'salary_from'     => 'integer',
             'salary_to'       => 'integer',
+            'languages'       => 'array',
+            'suitability'     => 'array',
         ];
     }
 

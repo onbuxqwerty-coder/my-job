@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Enums\EmploymentType;
+use App\Enums\Language;
+use App\Enums\Suitability;
 use App\Models\Category;
 use App\Models\Vacancy;
 use Illuminate\Support\Str;
@@ -24,6 +26,12 @@ new #[Layout('layouts.app')] class extends Component
     public bool   $isActive       = true;
     public bool   $saved          = false;
 
+    /** @var array<string> */
+    public array $languages   = [];
+
+    /** @var array<string> */
+    public array $suitability = [];
+
     public function mount(int $vacancyId = null): void
     {
         $this->vacancyId = $vacancyId;
@@ -40,6 +48,8 @@ new #[Layout('layouts.app')] class extends Component
             $this->salaryTo       = (string) ($vacancy->salary_to ?? '');
             $this->currency       = $vacancy->currency;
             $this->isActive       = $vacancy->is_active;
+            $this->languages      = $vacancy->languages ?? [];
+            $this->suitability    = $vacancy->suitability ?? [];
         }
     }
 
@@ -53,6 +63,10 @@ new #[Layout('layouts.app')] class extends Component
             'salaryFrom'     => 'nullable|integer|min:0',
             'salaryTo'       => 'nullable|integer|gte:salaryFrom',
             'currency'       => 'required|string|max:10',
+            'languages'      => 'array',
+            'languages.*'    => 'in:' . implode(',', array_column(Language::cases(), 'value')),
+            'suitability'    => 'array',
+            'suitability.*'  => 'in:' . implode(',', array_column(Suitability::cases(), 'value')),
         ]);
 
         $company = auth()->user()->company;
@@ -69,6 +83,8 @@ new #[Layout('layouts.app')] class extends Component
             'currency'        => $this->currency,
             'is_active'       => $this->isActive,
             'published_at'    => $this->isActive ? now() : null,
+            'languages'       => $this->languages ?: null,
+            'suitability'     => $this->suitability ?: null,
         ];
 
         if ($this->vacancyId) {
@@ -87,26 +103,31 @@ new #[Layout('layouts.app')] class extends Component
     }
 
     #[Computed]
-    public function employmentTypes(): array
-    {
-        return EmploymentType::cases();
-    }
+    public function employmentTypes(): array { return EmploymentType::cases(); }
+
+    #[Computed]
+    public function languageOptions(): array { return Language::cases(); }
+
+    #[Computed]
+    public function suitabilityOptions(): array { return Suitability::cases(); }
 }; ?>
 
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-50">
+    <x-employer-tabs />
 
-        <div class="mb-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="max-w-2xl mb-6">
             <a href="{{ route('employer.dashboard') }}" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 mb-4">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
-                Назад
+                Вакансії
             </a>
-            <h1 class="text-2xl font-bold text-gray-900">{{ $vacancyId ? 'Редагувати вакансію' : 'Нова вакансія' }}</h1>
+            <h2 class="text-lg font-semibold text-gray-900">{{ $vacancyId ? 'Редагувати вакансію' : 'Нова вакансія' }}</h2>
         </div>
 
-        <div class="bg-white rounded-2xl border border-gray-200 p-8">
+        <div class="max-w-2xl bg-white rounded-2xl border border-gray-200 p-8">
             @if($saved)
                 <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
                     Вакансію {{ $vacancyId ? 'оновлено' : 'опубліковано' }}.
@@ -139,14 +160,14 @@ new #[Layout('layouts.app')] class extends Component
                         <select wire:model="employmentType" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">Оберіть...</option>
                             @foreach($this->employmentTypes as $type)
-                                <option value="{{ $type->value }}">{{ ucwords(str_replace('-', ' ', $type->value)) }}</option>
+                                <option value="{{ $type->value }}">{{ $type->label() }}</option>
                             @endforeach
                         </select>
                         @error('employmentType') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-4">
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Зарплата від</label>
                         <input type="number" wire:model="salaryFrom" min="0"
@@ -175,6 +196,34 @@ new #[Layout('layouts.app')] class extends Component
                     @error('description') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                    <div>
+                        <p class="block text-sm font-medium text-gray-700 mb-2">Знання мов</p>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            @foreach($this->languageOptions as $lang)
+                                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:#374151;">
+                                    <input type="checkbox" wire:model="languages" value="{{ $lang->value }}"
+                                           style="width:16px; height:16px; accent-color:#2563eb; cursor:pointer;"/>
+                                    {{ $lang->label() }}
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="block text-sm font-medium text-gray-700 mb-2">Підходить</p>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            @foreach($this->suitabilityOptions as $item)
+                                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:#374151;">
+                                    <input type="checkbox" wire:model="suitability" value="{{ $item->value }}"
+                                           style="width:16px; height:16px; accent-color:#2563eb; cursor:pointer;"/>
+                                    {{ $item->label() }}
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex items-center gap-3">
                     <input type="checkbox" wire:model="isActive" id="isActive" class="w-4 h-4 text-blue-600 rounded"/>
                     <label for="isActive" class="text-sm text-gray-700">Опублікувати одразу (активна)</label>
@@ -182,8 +231,8 @@ new #[Layout('layouts.app')] class extends Component
 
                 <button type="submit"
                         wire:loading.attr="disabled"
-                        class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-2.5 px-4 rounded-xl transition-colors">
-                    <span wire:loading.remove wire:target="save">{{ $vacancyId ? 'Оновити вакансію' : 'Опублікувати вакансію' }}</span>
+                        style="width:100%; background:#2563eb; color:#fff; font-weight:700; font-size:0.9rem; padding:10px 16px; border:none; border-radius:12px; cursor:pointer; margin-top:8px; display:block;">
+                    <span wire:loading.remove wire:target="save">Зберегти вакансію</span>
                     <span wire:loading wire:target="save">Збереження...</span>
                 </button>
 

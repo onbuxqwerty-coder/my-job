@@ -30,6 +30,16 @@ final class VacancyService
             ->when($dto->employmentType, fn(Builder $q, $type): Builder => $q->where('employment_type', $type))
             ->when($dto->salaryMin, fn(Builder $q, int $min): Builder => $q->where('salary_from', '>=', $min))
             ->when($dto->salaryMax, fn(Builder $q, int $max): Builder => $q->where('salary_to', '<=', $max))
+            ->when($dto->languages, function (Builder $q, array $languages): void {
+                foreach ($languages as $lang) {
+                    $q->whereJsonContains('languages', $lang);
+                }
+            })
+            ->when($dto->suitability, function (Builder $q, array $suitability): void {
+                foreach ($suitability as $item) {
+                    $q->whereJsonContains('suitability', $item);
+                }
+            })
             ->orderByDesc('is_featured')
             ->orderByDesc('published_at')
             ->paginate($dto->perPage);

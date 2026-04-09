@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\DTOs\VacancySearchDTO;
 use App\Enums\EmploymentType;
+use App\Enums\Language;
+use App\Enums\Suitability;
 use App\Models\Category;
 use App\Services\VacancyService;
 use Livewire\Attributes\Computed;
@@ -31,15 +33,25 @@ new #[Layout('layouts.app')] class extends Component
     #[Url(history: true)]
     public string $salaryMax = '';
 
+    /** @var array<string> */
+    #[Url(history: true)]
+    public array $languages = [];
+
+    /** @var array<string> */
+    #[Url(history: true)]
+    public array $suitability = [];
+
     public function updatingSearch(): void         { $this->resetPage(); }
     public function updatingCategoryId(): void     { $this->resetPage(); }
     public function updatingEmploymentType(): void { $this->resetPage(); }
     public function updatingSalaryMin(): void      { $this->resetPage(); }
     public function updatingSalaryMax(): void      { $this->resetPage(); }
+    public function updatingLanguages(): void      { $this->resetPage(); }
+    public function updatingSuitability(): void    { $this->resetPage(); }
 
     public function clearFilters(): void
     {
-        $this->reset(['search', 'categoryId', 'employmentType', 'salaryMin', 'salaryMax']);
+        $this->reset(['search', 'categoryId', 'employmentType', 'salaryMin', 'salaryMax', 'languages', 'suitability']);
         $this->resetPage();
     }
 
@@ -52,6 +64,8 @@ new #[Layout('layouts.app')] class extends Component
             employmentType: $this->employmentType ? EmploymentType::from($this->employmentType) : null,
             salaryMin:      $this->salaryMin ? (int) $this->salaryMin : null,
             salaryMax:      $this->salaryMax ? (int) $this->salaryMax : null,
+            languages:      $this->languages,
+            suitability:    $this->suitability,
         ));
     }
 
@@ -62,9 +76,23 @@ new #[Layout('layouts.app')] class extends Component
     }
 
     #[Computed]
-    public function employmentTypes(): array
+    public function employmentTypes(): array { return EmploymentType::cases(); }
+
+    #[Computed]
+    public function languageOptions(): array { return Language::cases(); }
+
+    #[Computed]
+    public function suitabilityOptions(): array { return Suitability::cases(); }
+
+    public function hasActiveFilters(): bool
     {
-        return EmploymentType::cases();
+        return $this->search !== ''
+            || $this->categoryId !== ''
+            || $this->employmentType !== ''
+            || $this->salaryMin !== ''
+            || $this->salaryMax !== ''
+            || !empty($this->languages)
+            || !empty($this->suitability);
     }
 }; ?>
 
@@ -108,7 +136,7 @@ new #[Layout('layouts.app')] class extends Component
 
         {{-- Filters sidebar (desktop) --}}
         <aside class="mj-filters">
-            @if($search || $categoryId || $employmentType || $salaryMin || $salaryMax)
+            @if($this->hasActiveFilters())
                 <div class="filter-section">
                     <button wire:click="clearFilters"
                             style="font-size: 13px; font-weight: 700; color: var(--color-primary-blue);
@@ -134,7 +162,7 @@ new #[Layout('layouts.app')] class extends Component
                     @foreach($this->employmentTypes as $type)
                         <label class="radio-item">
                             <input type="radio" wire:model.live="employmentType" value="{{ $type->value }}"/>
-                            <span>{{ str_replace('-', ' ', $type->value) }}</span>
+                            <span>{{ $type->label() }}</span>
                         </label>
                     @endforeach
                     @if($employmentType)
@@ -143,6 +171,32 @@ new #[Layout('layouts.app')] class extends Component
                             Скинути
                         </button>
                     @endif
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <p class="filter-label">Знання мов</p>
+                <div class="radio-group">
+                    @foreach($this->languageOptions as $lang)
+                        <label class="radio-item">
+                            <input type="checkbox" wire:model.live="languages" value="{{ $lang->value }}"
+                                   style="width:16px; height:16px; accent-color: var(--color-primary-blue); cursor:pointer; flex-shrink:0;"/>
+                            <span>{{ $lang->label() }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <p class="filter-label">Підходить</p>
+                <div class="radio-group">
+                    @foreach($this->suitabilityOptions as $item)
+                        <label class="radio-item">
+                            <input type="checkbox" wire:model.live="suitability" value="{{ $item->value }}"
+                                   style="width:16px; height:16px; accent-color: var(--color-primary-blue); cursor:pointer; flex-shrink:0;"/>
+                            <span>{{ $item->label() }}</span>
+                        </label>
+                    @endforeach
                 </div>
             </div>
 
@@ -171,19 +225,10 @@ new #[Layout('layouts.app')] class extends Component
                 <span>
                     Знайдено <strong style="color: var(--color-text-dark);">{{ $this->vacancies->total() }}</strong> вакансій
                 </span>
-                <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                    <div wire:loading style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--color-primary-blue);">
-                        <svg style="width: 14px; height: 14px; animation: spin 1s linear infinite;" fill="none" viewBox="0 0 24 24">
-                            <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                            <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-                        </svg>
-                        Завантаження...
-                    </div>
-                    {{-- Hamburger (mobile only) --}}
-                    <button class="mj-hamburger" @click="filtersOpen = true" aria-label="Відкрити фільтри">
-                        ☰
-                    </button>
-                </div>
+                {{-- Hamburger (mobile only) --}}
+                <button class="mj-hamburger" @click="filtersOpen = true" aria-label="Відкрити фільтри">
+                    ☰
+                </button>
             </div>
 
             {{-- Vacancy cards --}}
@@ -199,7 +244,7 @@ new #[Layout('layouts.app')] class extends Component
                     };
                 @endphp
 
-                <div class="job-card {{ $vacancy->is_featured ? 'job-card--featured' : '' }}">
+                <a href="{{ route('jobs.show', $vacancy->slug) }}" class="job-card {{ $vacancy->is_featured ? 'job-card--featured' : '' }}" style="text-decoration:none; display:block; color:inherit;">
 
                     <div class="job-info">
                         <div class="job-header-row">
@@ -225,11 +270,11 @@ new #[Layout('layouts.app')] class extends Component
 
                         <div class="job-badges">
                             <span class="badge {{ $badgeClass }}">
-                                {{ str_replace('-', ' ', $vacancy->employment_type->value) }}
+                                {{ $vacancy->employment_type->label() }}
                             </span>
                             <span class="badge badge--category">{{ $vacancy->category->name }}</span>
                             @if($vacancy->is_featured)
-                                <span class="badge badge--featured">Featured</span>
+                                <span class="badge badge--featured">Топ</span>
                             @endif
                         </div>
                     </div>
@@ -249,7 +294,7 @@ new #[Layout('layouts.app')] class extends Component
                         @endif
                     </div>
 
-                </div>
+                </a>
             @empty
                 <div style="background: var(--color-bg-white); border: 1px solid var(--color-border);
                             border-radius: var(--radius-lg); padding: 64px var(--spacing-xl); text-align: center;">

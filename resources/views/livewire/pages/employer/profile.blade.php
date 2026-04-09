@@ -65,17 +65,13 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-50">
+    <x-employer-tabs />
 
-        <div class="mb-6">
-            <a href="{{ route('employer.dashboard') }}" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 mb-4">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-                Назад
-            </a>
-            <h1 class="text-2xl font-bold text-gray-900">Профіль компанії</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="max-w-2xl mb-6">
+            <h2 class="text-lg font-semibold text-gray-900">Профіль компанії</h2>
         </div>
 
         <div class="bg-white rounded-2xl border border-gray-200 p-8">

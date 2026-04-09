@@ -80,7 +80,7 @@ new #[Layout('layouts.app')] class extends Component
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
-            Back to all jobs
+            Всі вакансії
         </a>
 
         <div class="flex flex-col lg:flex-row gap-8">
@@ -107,8 +107,8 @@ new #[Layout('layouts.app')] class extends Component
 
                 {{-- Tags --}}
                 <div class="flex flex-wrap gap-2 mb-8">
-                    <span class="px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 capitalize">
-                        {{ str_replace('-', ' ', $vacancy->employment_type->value) }}
+                    <span class="px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700">
+                        {{ $vacancy->employment_type->label() }}
                     </span>
                     <span class="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600">
                         {{ $vacancy->category->name }}
@@ -139,7 +139,7 @@ new #[Layout('layouts.app')] class extends Component
 
                 {{-- Company Card --}}
                 <div class="bg-white rounded-2xl border border-gray-200 p-6">
-                    <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">About Company</h3>
+                    <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">Про компанію</h3>
                     <p class="text-sm text-gray-600 mb-3">{{ Str::limit($vacancy->company->description, 120) }}</p>
                     @if($vacancy->company->website)
                         <a href="{{ $vacancy->company->website }}" target="_blank" rel="noopener noreferrer"
@@ -147,7 +147,7 @@ new #[Layout('layouts.app')] class extends Component
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                             </svg>
-                            Website
+                            Вебсайт
                         </a>
                     @endif
                 </div>
@@ -163,40 +163,35 @@ new #[Layout('layouts.app')] class extends Component
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
                             </div>
-                            <h3 class="font-semibold text-gray-900 mb-1">Application Sent!</h3>
-                            <p class="text-sm text-gray-500">The employer will review your application and get back to you.</p>
+                            <h3 class="font-semibold text-gray-900 mb-1">Відгук надіслано!</h3>
+                            <p class="text-sm text-gray-500">Роботодавець розгляне вашу заявку і зв'яжеться з вами.</p>
                         </div>
 
                     @elseif($alreadyApplied)
-                        {{-- Already applied --}}
                         <div class="text-center py-4">
-                            <p class="text-sm text-blue-600 font-medium">✅ You have already applied to this vacancy.</p>
+                            <p class="text-sm text-blue-600 font-medium">✅ Ви вже відгукнулись на цю вакансію.</p>
                         </div>
 
                     @elseif(auth()->check() && auth()->user()->role === \App\Enums\UserRole::Employer)
-                        {{-- Employers cannot apply --}}
                         <div class="text-center py-4">
-                            <p class="text-sm text-gray-400">Employers cannot apply for vacancies.</p>
+                            <p class="text-sm text-gray-400">Роботодавці не можуть подавати заявки на вакансії.</p>
                         </div>
 
                     @elseif(!auth()->check())
-                        {{-- Not logged in --}}
-                        <p class="text-sm text-gray-600 mb-4 text-center">Sign in to apply for this position.</p>
+                        <p class="text-sm text-gray-600 mb-4 text-center">Увійдіть, щоб відгукнутись на вакансію.</p>
                         <a href="{{ route('login') }}"
                            class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl transition-colors">
-                            Sign In to Apply
+                            Увійти та відгукнутись
                         </a>
 
                     @else
-                        {{-- Apply Form --}}
-                        <h3 class="text-base font-semibold text-gray-900 mb-4">Apply for this Position</h3>
+                        <h3 class="text-base font-semibold text-gray-900 mb-4">Відгукнутись на вакансію</h3>
 
                         <form wire:submit="apply" class="space-y-4">
 
-                            {{-- Resume --}}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">
-                                    Resume <span class="text-red-500">*</span>
+                                    Резюме <span class="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="file"
@@ -204,20 +199,18 @@ new #[Layout('layouts.app')] class extends Component
                                     accept=".pdf,.doc,.docx"
                                     class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                                 />
-                                <p class="text-xs text-gray-400 mt-1">PDF, DOC, DOCX — max 5 MB</p>
+                                <p class="text-xs text-gray-400 mt-1">PDF, DOC, DOCX — макс. 5 МБ</p>
                                 @error('resume')
                                     <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                                 @enderror
-                                <div wire:loading wire:target="resume" class="text-xs text-blue-500 mt-1">Uploading...</div>
                             </div>
 
-                            {{-- Cover Letter --}}
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Cover Letter</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Супровідний лист</label>
                                 <textarea
                                     wire:model="coverLetter"
                                     rows="4"
-                                    placeholder="Tell the employer why you are a great fit..."
+                                    placeholder="Розкажіть роботодавцю чому ви підходите на цю посаду..."
                                     class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                                 ></textarea>
                                 @error('coverLetter')
@@ -230,8 +223,8 @@ new #[Layout('layouts.app')] class extends Component
                                 wire:loading.attr="disabled"
                                 class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-2.5 px-4 rounded-xl transition-colors"
                             >
-                                <span wire:loading.remove wire:target="apply">Submit Application</span>
-                                <span wire:loading wire:target="apply">Submitting...</span>
+                                <span wire:loading.remove wire:target="apply">Надіслати відгук</span>
+                                <span wire:loading wire:target="apply">Надсилання...</span>
                             </button>
 
                         </form>
@@ -241,14 +234,14 @@ new #[Layout('layouts.app')] class extends Component
 
                 {{-- Telegram deep link --}}
                 <div class="bg-blue-50 rounded-2xl border border-blue-100 p-4 text-center">
-                    <p class="text-xs text-blue-600 font-medium">Share via Telegram</p>
+                    <p class="text-xs text-blue-600 font-medium">Поділитись у Telegram</p>
                     <a href="https://t.me/share/url?url={{ urlencode(url()->current()) }}&text={{ urlencode($vacancy->title) }}"
                        target="_blank" rel="noopener noreferrer"
                        class="mt-2 inline-flex items-center gap-1.5 text-sm text-blue-700 hover:underline font-medium">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
                         </svg>
-                        Share on Telegram
+                        Поділитись
                     </a>
                 </div>
 

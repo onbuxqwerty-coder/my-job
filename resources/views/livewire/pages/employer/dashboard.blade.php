@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Application;
 use App\Models\Vacancy;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -59,40 +60,11 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-50">
+    <x-employer-tabs />
 
-        {{-- Header --}}
-        <div class="flex items-center justify-between mb-8">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900">Кабінет роботодавця</h1>
-                @if($this->company)
-                    <p class="text-gray-500 text-sm mt-1">{{ $this->company->name }}</p>
-                @endif
-            </div>
-            <div class="flex gap-3">
-                <a href="{{ route('employer.candidates') }}"
-                   class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50">
-                    Кандидати
-                </a>
-                <a href="{{ route('employer.message.templates') }}"
-                   class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50">
-                    Шаблони
-                </a>
-                <a href="{{ route('employer.analytics') }}"
-                   class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50">
-                    Аналітика
-                </a>
-                <a href="{{ route('employer.profile') }}"
-                   class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50">
-                    Профіль
-                </a>
-                <a href="{{ route('employer.vacancies.create') }}"
-                   class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700">
-                    + Додати вакансію
-                </a>
-            </div>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
 
         @if(!$this->company)
             <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
@@ -102,22 +74,6 @@ new #[Layout('layouts.app')] class extends Component
                 </a>
             </div>
         @else
-
-            {{-- Stats --}}
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                <div class="bg-white rounded-2xl border border-gray-200 p-5">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Всього вакансій</p>
-                    <p class="text-3xl font-bold text-gray-900">{{ $this->totalVacancies }}</p>
-                </div>
-                <div class="bg-white rounded-2xl border border-gray-200 p-5">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Активних</p>
-                    <p class="text-3xl font-bold text-green-600">{{ $this->activeVacancies }}</p>
-                </div>
-                <div class="bg-white rounded-2xl border border-gray-200 p-5">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Відгуків</p>
-                    <p class="text-3xl font-bold text-blue-600">{{ $this->totalApplications }}</p>
-                </div>
-            </div>
 
             {{-- Vacancies table --}}
             <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
@@ -137,15 +93,15 @@ new #[Layout('layouts.app')] class extends Component
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Статус</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Відгуки</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Опубліковано</th>
-                                <th class="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Дії</th>
+                                <th class="text-right px-6 py-3 w-8"></th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            @foreach($this->vacancies as $vacancy)
-                                <tr class="hover:bg-gray-50 transition-colors">
+                        @foreach($this->vacancies as $vacancy)
+                                <tbody x-data="{ open: false }" class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition-colors cursor-pointer" @click="open = !open">
                                     <td class="px-6 py-4">
                                         <p class="font-medium text-gray-900">{{ $vacancy->title }}</p>
-                                        <p class="text-xs text-gray-400 capitalize">{{ str_replace('-', ' ', $vacancy->employment_type->value) }}</p>
+                                        <p class="text-xs text-gray-400">{{ $vacancy->employment_type->label() }}</p>
                                     </td>
                                     <td class="px-6 py-4">
                                         @if($vacancy->is_active)
@@ -154,7 +110,7 @@ new #[Layout('layouts.app')] class extends Component
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Чернетка</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4" @click.stop>
                                         <a href="{{ route('employer.applicants', $vacancy->id) }}"
                                            class="inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800">
                                             {{ $vacancy->applications_count }}
@@ -166,37 +122,64 @@ new #[Layout('layouts.app')] class extends Component
                                     <td class="px-6 py-4 text-gray-400">
                                         {{ $vacancy->created_at->format('d.m.Y') }}
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center justify-end gap-2">
-                                            <a href="{{ route('employer.vacancies.edit', $vacancy->id) }}"
-                                               class="text-xs text-gray-600 hover:text-blue-600 font-medium">Редагувати</a>
-
-                                            <button wire:click="toggleActive({{ $vacancy->id }})"
-                                                    class="text-xs {{ $vacancy->is_active ? 'text-yellow-600 hover:text-yellow-800' : 'text-green-600 hover:text-green-800' }} font-medium">
-                                                {{ $vacancy->is_active ? 'Деактивувати' : 'Активувати' }}
-                                            </button>
-
-                                            @if(!$vacancy->is_featured)
-                                                <a href="{{ route('employer.vacancies.promote', $vacancy->id) }}"
-                                                   class="text-xs text-amber-600 hover:text-amber-800 font-medium">
-                                                    Просувати
+                                    <td class="px-6 py-4 text-right">
+                                        <svg class="w-4 h-4 text-gray-400 inline transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                                {{-- Expanded row --}}
+                                <tr x-show="open" x-transition style="display:none;">
+                                    <td colspan="5" class="px-6 pb-5 pt-0 bg-gray-50">
+                                        <div style="border-top:1px solid #e5e7eb; padding-top:16px; display:flex; gap:24px; align-items:flex-start;">
+                                            {{-- Description preview --}}
+                                            <div style="flex:1; font-size:13px; color:#6b7280; line-height:1.6;">
+                                                {{ Str::limit($vacancy->description, 300) }}
+                                                @if($vacancy->salary_from)
+                                                    <span style="display:inline-block; margin-top:8px; padding:2px 10px; background:#f0fdf4; color:#16a34a; border-radius:999px; font-size:12px; font-weight:600;">
+                                                        {{ number_format($vacancy->salary_from) }}@if($vacancy->salary_to)–{{ number_format($vacancy->salary_to) }}@endif {{ $vacancy->currency }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                            {{-- Actions --}}
+                                            <div style="display:flex; flex-direction:column; gap:8px; flex-shrink:0; align-items:flex-end;">
+                                                <a href="{{ route('employer.vacancies.edit', $vacancy->id) }}"
+                                                   style="font-size:13px; font-weight:600; color:#2563eb; text-decoration:none; padding:6px 14px; border:1px solid #2563eb; border-radius:8px; white-space:nowrap;"
+                                                   @click.stop>
+                                                    Редагувати
                                                 </a>
-                                            @else
-                                                <span class="text-xs text-amber-500 font-medium" title="В топі до {{ $vacancy->featured_until?->format('d.m.Y') }}">
-                                                    В топі
-                                                </span>
-                                            @endif
 
-                                            <button wire:click="delete({{ $vacancy->id }})"
-                                                    wire:confirm="Ви впевнені, що хочете видалити цю вакансію?"
-                                                    class="text-xs text-red-500 hover:text-red-700 font-medium">
-                                                Видалити
-                                            </button>
+                                                <button wire:click="toggleActive({{ $vacancy->id }})"
+                                                        style="font-size:13px; font-weight:600; padding:6px 14px; border-radius:8px; border:1px solid; cursor:pointer; background:transparent; white-space:nowrap;
+                                                               {{ $vacancy->is_active ? 'color:#ca8a04; border-color:#ca8a04;' : 'color:#16a34a; border-color:#16a34a;' }}"
+                                                        @click.stop>
+                                                    {{ $vacancy->is_active ? 'Деактивувати' : 'Активувати' }}
+                                                </button>
+
+                                                @if(!$vacancy->is_featured)
+                                                    <a href="{{ route('employer.vacancies.promote', $vacancy->id) }}"
+                                                       style="font-size:13px; font-weight:600; color:#d97706; text-decoration:none; padding:6px 14px; border:1px solid #d97706; border-radius:8px; white-space:nowrap;"
+                                                       @click.stop>
+                                                        Просувати
+                                                    </a>
+                                                @else
+                                                    <span style="font-size:13px; font-weight:600; color:#d97706; padding:6px 14px; border:1px solid #fde68a; border-radius:8px; background:#fffbeb;">
+                                                        В топі до {{ $vacancy->featured_until?->format('d.m.Y') }}
+                                                    </span>
+                                                @endif
+
+                                                <button wire:click="delete({{ $vacancy->id }})"
+                                                        wire:confirm="Ви впевнені, що хочете видалити цю вакансію?"
+                                                        style="font-size:13px; font-weight:600; color:#dc2626; padding:6px 14px; border:1px solid #dc2626; border-radius:8px; background:transparent; cursor:pointer; white-space:nowrap;"
+                                                        @click.stop>
+                                                    Видалити
+                                                </button>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
+                                </tbody>
                             @endforeach
-                        </tbody>
                     </table>
                 @endif
             </div>

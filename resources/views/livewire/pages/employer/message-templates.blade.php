@@ -118,20 +118,14 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-50">
+    <x-employer-tabs />
 
-        {{-- Header --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        {{-- Sub-header --}}
         <div class="flex items-center justify-between mb-8">
-            <div>
-                <a href="{{ route('employer.dashboard') }}" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 mb-2">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                    Кабінет
-                </a>
-                <h1 class="text-2xl font-bold text-gray-900">Шаблони повідомлень</h1>
-            </div>
+            <h2 class="text-lg font-semibold text-gray-900">Шаблони повідомлень</h2>
             <button wire:click="openCreate"
                     class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700">
                 + Новий шаблон
