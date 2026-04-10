@@ -231,6 +231,9 @@ aside.mj-filters {
    STEP 8: JOB CARD
    ═══════════════════════════════════════════════════════════════════ */
 .job-card {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
   background-color: var(--color-bg-white);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -239,10 +242,8 @@ aside.mj-filters {
   grid-template-columns: 1fr auto;
   gap: var(--spacing-xl);
   align-items: start;
-  cursor: pointer;
   transition: all var(--transition-normal);
   box-shadow: var(--shadow-sm);
-  text-decoration: none;
 }
 
 .job-card:hover {

@@ -253,7 +253,7 @@ new #[Layout('layouts.app')] class extends Component
                     };
                 @endphp
 
-                <div class="job-card {{ $vacancy->is_featured ? 'job-card--featured' : '' }}">
+                <a href="{{ route('jobs.show', $vacancy) }}" wire:navigate class="job-card {{ $vacancy->is_featured ? 'job-card--featured' : '' }}">
 
                     <div class="job-info">
                         <div class="job-header-row">
@@ -303,7 +303,7 @@ new #[Layout('layouts.app')] class extends Component
                         @endif
                     </div>
 
-                </div>
+                </a>
             @empty
                 <div style="background: var(--color-bg-white); border: 1px solid var(--color-border);
                             border-radius: var(--radius-lg); padding: 64px var(--spacing-xl); text-align: center;">

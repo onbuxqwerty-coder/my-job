@@ -130,22 +130,26 @@
 </nav>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    function initHeaderScroll() {
         const header = document.querySelector('.site-header');
+        if (!header) return;
+
         let lastScrollY = window.pageYOffset;
         const THRESHOLD = 80;
 
         function onScroll() {
-            if (!header) return;
             const scrollY = window.pageYOffset;
-
             header.classList.toggle('is-solid', scrollY > THRESHOLD);
             header.classList.toggle('is-hidden', scrollY > lastScrollY && scrollY > THRESHOLD);
-
             lastScrollY = scrollY <= 0 ? 0 : scrollY;
         }
 
+        window.removeEventListener('scroll', window._headerScrollHandler);
+        window._headerScrollHandler = onScroll;
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
-    });
+    }
+
+    document.addEventListener('DOMContentLoaded', initHeaderScroll);
+    document.addEventListener('livewire:navigated', initHeaderScroll);
 </script>
