@@ -90,27 +90,38 @@ new #[Layout('layouts.app')] class extends Component
                         <thead class="bg-gray-50 border-b border-gray-100">
                             <tr>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Назва</th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Статус</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Зарплата</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Відгуки</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Опубліковано</th>
                                 <th class="text-right px-6 py-3 w-8"></th>
                             </tr>
                         </thead>
                         @foreach($this->vacancies as $vacancy)
-                                <tbody x-data="{ open: false }" class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition-colors cursor-pointer" @click="open = !open">
+                                <tbody class="divide-y divide-gray-100">
+                                <tr style="transition: background .2s, box-shadow .2s, transform .2s;"
+                                    onmouseover="this.style.background='#f0f7ff'; this.style.boxShadow='0 4px 16px rgba(37,99,235,.12), inset 0 0 0 2px #2563eb'; this.style.transform='translateY(-2px)'; this.querySelector('.vacancy-title').style.color='#2563eb'"
+                                    onmouseout="this.style.background=''; this.style.boxShadow=''; this.style.transform=''; this.querySelector('.vacancy-title').style.color=''">
                                     <td class="px-6 py-4">
-                                        <p class="font-medium text-gray-900">{{ $vacancy->title }}</p>
+                                        <p class="vacancy-title font-medium text-gray-900" style="transition: color .2s;">{{ $vacancy->title }}</p>
                                         <p class="text-xs text-gray-400">{{ $vacancy->employment_type->label() }}</p>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        @if($vacancy->is_active)
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Активна</span>
+                                    <td class="px-6 py-4 text-gray-700">
+                                        @if($vacancy->salary_from || $vacancy->salary_to)
+                                            <span class="font-medium">
+                                                @if($vacancy->salary_from && $vacancy->salary_to)
+                                                    {{ number_format($vacancy->salary_from, 0, '.', ' ') }} – {{ number_format($vacancy->salary_to, 0, '.', ' ') }}
+                                                @elseif($vacancy->salary_from)
+                                                    від {{ number_format($vacancy->salary_from, 0, '.', ' ') }}
+                                                @else
+                                                    до {{ number_format($vacancy->salary_to, 0, '.', ' ') }}
+                                                @endif
+                                            </span>
+                                            <span class="text-xs text-gray-400">{{ $vacancy->currency }}</span>
                                         @else
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Чернетка</span>
+                                            <span class="text-gray-400">—</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4" @click.stop>
+                                    <td class="px-6 py-4">
                                         <a href="{{ route('employer.applicants', $vacancy->id) }}"
                                            class="inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800">
                                             {{ $vacancy->applications_count }}
@@ -123,58 +134,48 @@ new #[Layout('layouts.app')] class extends Component
                                         {{ $vacancy->created_at->format('d.m.Y') }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <svg class="w-4 h-4 text-gray-400 inline transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </td>
-                                </tr>
-                                {{-- Expanded row --}}
-                                <tr x-show="open" x-transition style="display:none;">
-                                    <td colspan="5" class="px-6 pb-5 pt-0 bg-gray-50">
-                                        <div style="border-top:1px solid #e5e7eb; padding-top:16px; display:flex; gap:24px; align-items:flex-start;">
-                                            {{-- Description preview --}}
-                                            <div style="flex:1; font-size:13px; color:#6b7280; line-height:1.6;">
-                                                {{ Str::limit($vacancy->description, 300) }}
-                                                @if($vacancy->salary_from)
-                                                    <span style="display:inline-block; margin-top:8px; padding:2px 10px; background:#f0fdf4; color:#16a34a; border-radius:999px; font-size:12px; font-weight:600;">
-                                                        {{ number_format($vacancy->salary_from) }}@if($vacancy->salary_to)–{{ number_format($vacancy->salary_to) }}@endif {{ $vacancy->currency }}
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            {{-- Actions --}}
-                                            <div style="display:flex; flex-direction:column; gap:8px; flex-shrink:0; align-items:flex-end;">
-                                                <a href="{{ route('employer.vacancies.edit', $vacancy->id) }}"
-                                                   style="font-size:13px; font-weight:600; color:#2563eb; text-decoration:none; padding:6px 14px; border:1px solid #2563eb; border-radius:8px; white-space:nowrap;"
-                                                   @click.stop>
-                                                    Редагувати
+                                        <div style="display:flex; gap:12px; justify-content:flex-end; align-items:center;">
+                                            {{-- Toggle активності --}}
+                                            <button wire:click="toggleActive({{ $vacancy->id }})"
+                                                    title="{{ $vacancy->is_active ? 'Деактивувати' : 'Активувати' }}"
+                                                    style="position:relative; display:inline-flex; align-items:center; width:44px; height:24px; border-radius:999px; border:none; cursor:pointer; transition:background .25s; background:{{ $vacancy->is_active ? '#16a34a' : '#d1d5db' }}; flex-shrink:0;">
+                                                <span style="position:absolute; left:{{ $vacancy->is_active ? '22px' : '2px' }}; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.2); transition:left .25s;"></span>
+                                            </button>
+
+                                            {{-- Редагувати --}}
+                                            <a href="{{ route('employer.vacancies.edit', $vacancy->id) }}"
+                                               title="Редагувати"
+                                               style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; transition:opacity .15s;"
+                                               onmouseover="this.style.opacity='.7'"
+                                               onmouseout="this.style.opacity='1'">
+                                                <img src="{{ asset('img/edit.webp') }}" alt="Редагувати" style="width:24px; height:24px; object-fit:contain;">
+                                            </a>
+
+                                            {{-- Просувати / В топі --}}
+                                            @if(!$vacancy->is_featured)
+                                                <a href="{{ route('employer.vacancies.promote', $vacancy->id) }}"
+                                                   title="Просувати"
+                                                   style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; transition:opacity .15s;"
+                                                   onmouseover="this.style.opacity='.7'"
+                                                   onmouseout="this.style.opacity='1'">
+                                                    <img src="{{ asset('img/seo.webp') }}" alt="Просувати" style="width:24px; height:24px; object-fit:contain;">
                                                 </a>
+                                            @else
+                                                <span title="В топі до {{ $vacancy->featured_until?->format('d.m.Y') }}"
+                                                      style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; opacity:.4; cursor:default;">
+                                                    <img src="{{ asset('img/seo.webp') }}" alt="В топі" style="width:24px; height:24px; object-fit:contain;">
+                                                </span>
+                                            @endif
 
-                                                <button wire:click="toggleActive({{ $vacancy->id }})"
-                                                        style="font-size:13px; font-weight:600; padding:6px 14px; border-radius:8px; border:1px solid; cursor:pointer; background:transparent; white-space:nowrap;
-                                                               {{ $vacancy->is_active ? 'color:#ca8a04; border-color:#ca8a04;' : 'color:#16a34a; border-color:#16a34a;' }}"
-                                                        @click.stop>
-                                                    {{ $vacancy->is_active ? 'Деактивувати' : 'Активувати' }}
-                                                </button>
-
-                                                @if(!$vacancy->is_featured)
-                                                    <a href="{{ route('employer.vacancies.promote', $vacancy->id) }}"
-                                                       style="font-size:13px; font-weight:600; color:#d97706; text-decoration:none; padding:6px 14px; border:1px solid #d97706; border-radius:8px; white-space:nowrap;"
-                                                       @click.stop>
-                                                        Просувати
-                                                    </a>
-                                                @else
-                                                    <span style="font-size:13px; font-weight:600; color:#d97706; padding:6px 14px; border:1px solid #fde68a; border-radius:8px; background:#fffbeb;">
-                                                        В топі до {{ $vacancy->featured_until?->format('d.m.Y') }}
-                                                    </span>
-                                                @endif
-
-                                                <button wire:click="delete({{ $vacancy->id }})"
-                                                        wire:confirm="Ви впевнені, що хочете видалити цю вакансію?"
-                                                        style="font-size:13px; font-weight:600; color:#dc2626; padding:6px 14px; border:1px solid #dc2626; border-radius:8px; background:transparent; cursor:pointer; white-space:nowrap;"
-                                                        @click.stop>
-                                                    Видалити
-                                                </button>
-                                            </div>
+                                            {{-- Видалити --}}
+                                            <button wire:click="delete({{ $vacancy->id }})"
+                                                    wire:confirm="Ви впевнені, що хочете видалити цю вакансію?"
+                                                    title="Видалити"
+                                                    style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; border:none; background:transparent; cursor:pointer; transition:opacity .15s;"
+                                                    onmouseover="this.style.opacity='.7'"
+                                                    onmouseout="this.style.opacity='1'">
+                                                <img src="{{ asset('img/delete.webp') }}" alt="Видалити" style="width:24px; height:24px; object-fit:contain;">
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
