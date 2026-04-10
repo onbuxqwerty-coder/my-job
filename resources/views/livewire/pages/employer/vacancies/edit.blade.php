@@ -6,6 +6,7 @@ use App\Enums\EmploymentType;
 use App\Enums\Language;
 use App\Enums\Suitability;
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Vacancy;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
@@ -20,6 +21,7 @@ new #[Layout('layouts.app')] class extends Component
     public string $description    = '';
     public string $employmentType = '';
     public string $categoryId     = '';
+    public string $cityId         = '';
     public string $salaryFrom     = '';
     public string $salaryTo       = '';
     public string $currency       = 'UAH';
@@ -44,6 +46,7 @@ new #[Layout('layouts.app')] class extends Component
             $this->description    = $vacancy->description;
             $this->employmentType = $vacancy->employment_type->value;
             $this->categoryId     = (string) $vacancy->category_id;
+            $this->cityId         = (string) ($vacancy->city_id ?? '');
             $this->salaryFrom     = (string) ($vacancy->salary_from ?? '');
             $this->salaryTo       = (string) ($vacancy->salary_to ?? '');
             $this->currency       = $vacancy->currency;
@@ -60,6 +63,7 @@ new #[Layout('layouts.app')] class extends Component
             'description'    => 'required|string|min:50',
             'employmentType' => 'required|in:' . implode(',', array_column(EmploymentType::cases(), 'value')),
             'categoryId'     => 'required|exists:categories,id',
+            'cityId'         => 'nullable|exists:cities,id',
             'salaryFrom'     => 'nullable|integer|min:0',
             'salaryTo'       => 'nullable|integer|gte:salaryFrom',
             'currency'       => 'required|string|max:10',
@@ -74,6 +78,7 @@ new #[Layout('layouts.app')] class extends Component
         $data = [
             'company_id'      => $company->id,
             'category_id'     => (int) $this->categoryId,
+            'city_id'         => $this->cityId ? (int) $this->cityId : null,
             'title'           => $this->title,
             'slug'            => Str::slug($this->title) . '-' . ($this->vacancyId ?? uniqid()),
             'description'     => $this->description,
@@ -100,6 +105,12 @@ new #[Layout('layouts.app')] class extends Component
     public function categories(): \Illuminate\Database\Eloquent\Collection
     {
         return Category::orderBy('position')->orderBy('name')->get();
+    }
+
+    #[Computed]
+    public function cities(): \Illuminate\Database\Eloquent\Collection
+    {
+        return City::orderByRaw('is_region_center DESC')->orderBy('name')->get();
     }
 
     #[Computed]
@@ -165,6 +176,17 @@ new #[Layout('layouts.app')] class extends Component
                         </select>
                         @error('employmentType') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Місто</label>
+                    <select wire:model="cityId" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Не вказано</option>
+                        @foreach($this->cities as $city)
+                            <option value="{{ $city->id }}">{{ $city->name }}{{ $city->is_region_center ? ' ★' : '' }}</option>
+                        @endforeach
+                    </select>
+                    @error('cityId') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">

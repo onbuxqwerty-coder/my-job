@@ -20,6 +20,7 @@ class Vacancy extends Model
     protected $fillable = [
         'company_id',
         'category_id',
+        'city_id',
         'title',
         'slug',
         'description',
@@ -58,6 +59,11 @@ class Vacancy extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 
     public function applications(): HasMany

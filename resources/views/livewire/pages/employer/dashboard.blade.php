@@ -30,6 +30,7 @@ new #[Layout('layouts.app')] class extends Component
     public function vacancies(): \Illuminate\Database\Eloquent\Collection
     {
         return Vacancy::withCount('applications')
+            ->with('city')
             ->where('company_id', auth()->user()->company?->id)
             ->latest()
             ->get();
@@ -91,6 +92,7 @@ new #[Layout('layouts.app')] class extends Component
                             <tr>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Назва</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Зарплата</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Місто</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Відгуки</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Опубліковано</th>
                                 <th class="text-right px-6 py-3 w-8"></th>
@@ -120,6 +122,9 @@ new #[Layout('layouts.app')] class extends Component
                                         @else
                                             <span class="text-gray-400">—</span>
                                         @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-700">
+                                        {{ $vacancy->city?->name ?? '—' }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <a href="{{ route('employer.applicants', $vacancy->id) }}"

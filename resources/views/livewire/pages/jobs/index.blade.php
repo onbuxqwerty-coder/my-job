@@ -7,6 +7,7 @@ use App\Enums\EmploymentType;
 use App\Enums\Language;
 use App\Enums\Suitability;
 use App\Models\Category;
+use App\Models\City;
 use App\Services\VacancyService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -28,6 +29,9 @@ new #[Layout('layouts.app')] class extends Component
     public string $employmentType = '';
 
     #[Url(history: true)]
+    public string $cityId = '';
+
+    #[Url(history: true)]
     public string $salaryMin = '';
 
     #[Url(history: true)]
@@ -42,6 +46,7 @@ new #[Layout('layouts.app')] class extends Component
     public array $suitability = [];
 
     public function updatingSearch(): void         { $this->resetPage(); }
+    public function updatingCityId(): void         { $this->resetPage(); }
     public function updatingCategoryId(): void     { $this->resetPage(); }
     public function updatingEmploymentType(): void { $this->resetPage(); }
     public function updatingSalaryMin(): void      { $this->resetPage(); }
@@ -51,7 +56,7 @@ new #[Layout('layouts.app')] class extends Component
 
     public function clearFilters(): void
     {
-        $this->reset(['search', 'categoryId', 'employmentType', 'salaryMin', 'salaryMax', 'languages', 'suitability']);
+        $this->reset(['search', 'cityId', 'categoryId', 'employmentType', 'salaryMin', 'salaryMax', 'languages', 'suitability']);
         $this->resetPage();
     }
 
@@ -66,6 +71,7 @@ new #[Layout('layouts.app')] class extends Component
             salaryMax:      $this->salaryMax ? (int) $this->salaryMax : null,
             languages:      $this->languages,
             suitability:    $this->suitability,
+            cityId:         $this->cityId ? (int) $this->cityId : null,
         ));
     }
 
@@ -73,6 +79,12 @@ new #[Layout('layouts.app')] class extends Component
     public function categories(): \Illuminate\Database\Eloquent\Collection
     {
         return Category::orderBy('position')->orderBy('name')->get();
+    }
+
+    #[Computed]
+    public function cities(): \Illuminate\Database\Eloquent\Collection
+    {
+        return City::orderByRaw('is_region_center DESC')->orderBy('name')->get();
     }
 
     #[Computed]
@@ -87,6 +99,7 @@ new #[Layout('layouts.app')] class extends Component
     public function hasActiveFilters(): bool
     {
         return $this->search !== ''
+            || $this->cityId !== ''
             || $this->categoryId !== ''
             || $this->employmentType !== ''
             || $this->salaryMin !== ''
@@ -107,7 +120,7 @@ new #[Layout('layouts.app')] class extends Component
             <p style="font-size: 14px; color: var(--color-text-gray); margin-bottom: var(--spacing-xl);">
                 Тисячі вакансій по всій Україні
             </p>
-            <div style="display: flex; gap: 8px; max-width: 700px; margin: 0 auto;">
+            <div style="display: flex; gap: 8px; max-width: 780px; margin: 0 auto;">
                 <input
                     type="text"
                     wire:model.live.debounce.400ms="search"
@@ -119,6 +132,16 @@ new #[Layout('layouts.app')] class extends Component
                     onfocus="this.style.borderColor='#000000'; this.style.boxShadow='0 0 0 3px rgba(0,0,0,0.1)'"
                     onblur="this.style.borderColor='#000000'; this.style.boxShadow='none'"
                 />
+                <select wire:model.live="cityId"
+                        style="height: 48px; padding: 0 12px; font-size: 15px;
+                               border: 1px solid #000000; border-radius: var(--radius-lg);
+                               color: var(--color-text-dark); background: var(--color-bg-white);
+                               outline: none; cursor: pointer; min-width: 160px;">
+                    <option value="">Усі міста</option>
+                    @foreach($this->cities as $city)
+                        <option value="{{ $city->id }}">{{ $city->name }}</option>
+                    @endforeach
+                </select>
                 <button type="button"
                         style="height: 48px; padding: 0 32px; font-size: 16px; font-weight: 700;
                                background-color: #2d323b; color: #ffffff; border: none;
@@ -244,7 +267,7 @@ new #[Layout('layouts.app')] class extends Component
                     };
                 @endphp
 
-                <a href="{{ route('jobs.show', $vacancy->slug) }}" class="job-card {{ $vacancy->is_featured ? 'job-card--featured' : '' }}" style="text-decoration:none; display:block; color:inherit;">
+                <div class="job-card {{ $vacancy->is_featured ? 'job-card--featured' : '' }}">
 
                     <div class="job-info">
                         <div class="job-header-row">
@@ -294,7 +317,7 @@ new #[Layout('layouts.app')] class extends Component
                         @endif
                     </div>
 
-                </a>
+                </div>
             @empty
                 <div style="background: var(--color-bg-white); border: 1px solid var(--color-border);
                             border-radius: var(--radius-lg); padding: 64px var(--spacing-xl); text-align: center;">

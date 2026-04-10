@@ -16,6 +16,7 @@ final class VacancySearchDTO
         public readonly ?int            $salaryMax = null,
         public readonly array           $languages = [],
         public readonly array           $suitability = [],
+        public readonly ?int            $cityId = null,
         public readonly int             $perPage = 10,
     ) {}
 }

@@ -18,7 +18,7 @@ final class VacancyService
     public function search(VacancySearchDTO $dto): LengthAwarePaginator
     {
         return Vacancy::query()
-            ->with(['company', 'category'])
+            ->with(['company', 'category', 'city'])
             ->where('is_active', true)
             ->when($dto->search, function (Builder $query, string $search): void {
                 $query->where(function (Builder $q) use ($search): void {
@@ -40,6 +40,7 @@ final class VacancyService
                     $q->whereJsonContains('suitability', $item);
                 }
             })
+            ->when($dto->cityId, fn(Builder $q, int $id): Builder => $q->where('city_id', $id))
             ->orderByDesc('is_featured')
             ->orderByDesc('published_at')
             ->paginate($dto->perPage);
