@@ -16,6 +16,7 @@ new #[Layout('layouts.app')] class extends Component
     public string $description = '';
     public string $website = '';
     public string $location = '';
+    public string $cityId = '';
     public $logo = null;
     public bool $saved = false;
 
@@ -28,6 +29,7 @@ new #[Layout('layouts.app')] class extends Component
             $this->description = $company->description;
             $this->website     = $company->website ?? '';
             $this->location    = $company->location;
+            $this->cityId      = (string) ($company->city_id ?? '');
         }
     }
 
@@ -37,7 +39,8 @@ new #[Layout('layouts.app')] class extends Component
             'name'        => 'required|string|max:255',
             'description' => 'required|string|max:5000',
             'website'     => 'nullable|url|max:255',
-            'location'    => 'required|string|max:255',
+            'location'    => 'nullable|string|max:255',
+            'cityId'      => 'nullable|exists:cities,id',
             'logo'        => 'nullable|image|max:2048',
         ]);
 
@@ -46,7 +49,8 @@ new #[Layout('layouts.app')] class extends Component
             'slug'        => Str::slug($this->name),
             'description' => $this->description,
             'website'     => $this->website ?: null,
-            'location'    => $this->location,
+            'location'    => $this->location ?: null,
+            'city_id'     => $this->cityId ? (int) $this->cityId : null,
         ];
 
         if ($this->logo) {
@@ -91,8 +95,14 @@ new #[Layout('layouts.app')] class extends Component
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Місто / Локація <span class="text-red-500">*</span></label>
-                    <input type="text" wire:model="location"
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Місто</label>
+                    <livewire:city-search wire:model.live="cityId" :key="'company-city'" />
+                    @error('cityId') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Адреса офісу</label>
+                    <input type="text" wire:model="location" placeholder="вул. Хрещатик, 1"
                            class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     @error('location') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>

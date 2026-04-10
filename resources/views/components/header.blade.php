@@ -32,6 +32,7 @@
         align-items: center;
         gap: 24px;
         flex: 1;
+        justify-content: center;
     }
     .site-header__nav a {
         color: #ffffff;

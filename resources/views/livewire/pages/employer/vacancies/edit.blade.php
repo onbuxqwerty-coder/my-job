@@ -6,7 +6,6 @@ use App\Enums\EmploymentType;
 use App\Enums\Language;
 use App\Enums\Suitability;
 use App\Models\Category;
-use App\Models\City;
 use App\Models\Vacancy;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
@@ -108,12 +107,6 @@ new #[Layout('layouts.app')] class extends Component
     }
 
     #[Computed]
-    public function cities(): \Illuminate\Database\Eloquent\Collection
-    {
-        return City::orderByRaw('is_region_center DESC')->orderBy('name')->get();
-    }
-
-    #[Computed]
     public function employmentTypes(): array { return EmploymentType::cases(); }
 
     #[Computed]
@@ -180,12 +173,7 @@ new #[Layout('layouts.app')] class extends Component
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Місто</label>
-                    <select wire:model="cityId" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Не вказано</option>
-                        @foreach($this->cities as $city)
-                            <option value="{{ $city->id }}">{{ $city->name }}{{ $city->is_region_center ? ' ★' : '' }}</option>
-                        @endforeach
-                    </select>
+                    <livewire:city-search wire:model.live="cityId" :key="'vacancy-city-' . ($vacancyId ?? 'new')" />
                     @error('cityId') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 

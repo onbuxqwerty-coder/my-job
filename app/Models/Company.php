@@ -24,6 +24,7 @@ class Company extends Model
         'description',
         'website',
         'location',
+        'city_id',
         'is_verified',
     ];
 
@@ -37,6 +38,11 @@ class Company extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 
     public function vacancies(): HasMany
