@@ -7,7 +7,6 @@ use App\Enums\EmploymentType;
 use App\Enums\Language;
 use App\Enums\Suitability;
 use App\Models\Category;
-use App\Models\City;
 use App\Services\VacancyService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -82,12 +81,6 @@ new #[Layout('layouts.app')] class extends Component
     }
 
     #[Computed]
-    public function cities(): \Illuminate\Database\Eloquent\Collection
-    {
-        return City::orderByRaw('is_region_center DESC')->orderBy('name')->get();
-    }
-
-    #[Computed]
     public function employmentTypes(): array { return EmploymentType::cases(); }
 
     #[Computed]
@@ -120,7 +113,7 @@ new #[Layout('layouts.app')] class extends Component
             <p style="font-size: 14px; color: var(--color-text-gray); margin-bottom: var(--spacing-xl);">
                 Тисячі вакансій по всій Україні
             </p>
-            <div style="display: flex; gap: 8px; max-width: 780px; margin: 0 auto;">
+            <div style="display: flex; gap: 8px; max-width: 860px; margin: 0 auto; align-items: flex-start;">
                 <input
                     type="text"
                     wire:model.live.debounce.400ms="search"
@@ -132,16 +125,9 @@ new #[Layout('layouts.app')] class extends Component
                     onfocus="this.style.borderColor='#000000'; this.style.boxShadow='0 0 0 3px rgba(0,0,0,0.1)'"
                     onblur="this.style.borderColor='#000000'; this.style.boxShadow='none'"
                 />
-                <select wire:model.live="cityId"
-                        style="height: 48px; padding: 0 12px; font-size: 15px;
-                               border: 1px solid #000000; border-radius: var(--radius-lg);
-                               color: var(--color-text-dark); background: var(--color-bg-white);
-                               outline: none; cursor: pointer; min-width: 160px;">
-                    <option value="">Усі міста</option>
-                    @foreach($this->cities as $city)
-                        <option value="{{ $city->id }}">{{ $city->name }}</option>
-                    @endforeach
-                </select>
+                <div style="min-width: 220px;">
+                    <livewire:city-search wire:model.live="cityId" :key="'city-search'" />
+                </div>
                 <button type="button"
                         style="height: 48px; padding: 0 32px; font-size: 16px; font-weight: 700;
                                background-color: #2d323b; color: #ffffff; border: none;
