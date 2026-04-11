@@ -93,6 +93,8 @@ new #[Layout('layouts.app')] class extends Component
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Назва</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Зарплата</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Місто</th>
+                                <th class="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">HOT</th>
+                                <th class="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">TOP</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Відгуки</th>
                                 <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Опубліковано</th>
                                 <th class="text-right px-6 py-3 w-8"></th>
@@ -125,6 +127,16 @@ new #[Layout('layouts.app')] class extends Component
                                     </td>
                                     <td class="px-6 py-4 text-gray-700">
                                         {{ $vacancy->city?->name ?? '—' }}
+                                    </td>
+                                    <td class="px-4 py-4 text-center">
+                                        @if($vacancy->is_featured)
+                                            <span title="Гаряча вакансія" style="font-size:18px; line-height:1;">🔥</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-4 text-center">
+                                        @if($vacancy->is_top)
+                                            <span title="Топ вакансія" style="font-size:18px; line-height:1;">⭐</span>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4">
                                         <a href="{{ route('employer.applicants', $vacancy->id) }}"

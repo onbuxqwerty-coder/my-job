@@ -16,16 +16,19 @@ final class CitySearch extends Component
     #[Modelable]
     public string $value = '';
 
+    public string $cityName     = '';
     public string $query        = '';
     public string $displayName  = '';
     public bool   $isOpen       = false;
     public int    $highlighted  = -1;
 
-    public function mount(string $value = ''): void
+    public function mount(): void
     {
-        $this->value = $value;
-        if ($value) {
-            $city = City::find((int) $value, ['id', 'name']);
+        if ($this->cityName) {
+            $this->displayName = $this->cityName;
+            $this->query       = $this->cityName;
+        } elseif ($this->value) {
+            $city = City::find((int) $this->value, ['id', 'name']);
             $this->displayName = $city?->name ?? '';
             $this->query       = $this->displayName;
         }
