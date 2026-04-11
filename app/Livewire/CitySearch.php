@@ -27,6 +27,7 @@ final class CitySearch extends Component
         if ($value) {
             $city = City::find((int) $value, ['id', 'name']);
             $this->displayName = $city?->name ?? '';
+            $this->query       = $this->displayName;
         }
     }
 

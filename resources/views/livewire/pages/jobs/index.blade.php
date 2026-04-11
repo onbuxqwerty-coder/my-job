@@ -257,6 +257,30 @@ new #[Layout('layouts.app')] class extends Component
 
                     <div class="job-info">
                         <div class="job-header-row">
+                            <div class="job-title-wrap">
+                                @if($vacancy->is_featured)
+                                    <div class="job-hot-label">🔥 Гаряча вакансія</div>
+                                @endif
+                                <h2 class="job-title">{{ $vacancy->title }}</h2>
+                                @if($vacancy->salary_from)
+                                    <div class="job-salary">
+                                        {{ number_format($vacancy->salary_from, 0, '.', ' ') }}
+                                        @if($vacancy->salary_to)
+                                            – {{ number_format($vacancy->salary_to, 0, '.', ' ') }}
+                                        @endif
+                                        {{ $vacancy->currency }}
+                                    </div>
+                                @endif
+                                <div class="job-details-row">
+                                    <span class="job-company">{{ $vacancy->company->name }}</span>
+                                    @if($vacancy->city)
+                                        <span class="job-location">{{ $vacancy->city->name }}</span>
+                                    @elseif($vacancy->company->location)
+                                        <span class="job-location">{{ $vacancy->company->location }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
                             {{-- Logo --}}
                             <div class="job-logo">
                                 @if($vacancy->company->logo)
@@ -264,16 +288,6 @@ new #[Layout('layouts.app')] class extends Component
                                 @else
                                     {{ strtoupper(substr($vacancy->company->name, 0, 1)) }}
                                 @endif
-                            </div>
-
-                            <div class="job-title-wrap">
-                                <h2 class="job-title">{{ $vacancy->title }}</h2>
-                                <div class="job-details-row">
-                                    <span class="job-company">{{ $vacancy->company->name }}</span>
-                                    @if($vacancy->company->location)
-                                        <span class="job-location">{{ $vacancy->company->location }}</span>
-                                    @endif
-                                </div>
                             </div>
                         </div>
 
@@ -286,21 +300,6 @@ new #[Layout('layouts.app')] class extends Component
                                 <span class="badge badge--featured">Топ</span>
                             @endif
                         </div>
-                    </div>
-
-                    <div class="job-meta">
-                        @if($vacancy->salary_from)
-                            <div class="job-salary">
-                                {{ number_format($vacancy->salary_from, 0, '.', ' ') }}
-                                @if($vacancy->salary_to)
-                                    – {{ number_format($vacancy->salary_to, 0, '.', ' ') }}
-                                @endif
-                                {{ $vacancy->currency }}
-                            </div>
-                        @endif
-                        @if($vacancy->published_at)
-                            <div class="job-posted">{{ $vacancy->published_at->diffForHumans() }}</div>
-                        @endif
                     </div>
 
                 </a>

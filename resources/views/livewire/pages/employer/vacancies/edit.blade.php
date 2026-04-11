@@ -25,6 +25,7 @@ new #[Layout('layouts.app')] class extends Component
     public string $salaryTo       = '';
     public string $currency       = 'UAH';
     public bool   $isActive       = true;
+    public bool   $isFeatured     = false;
     public bool   $saved          = false;
 
     /** @var array<string> */
@@ -50,6 +51,7 @@ new #[Layout('layouts.app')] class extends Component
             $this->salaryTo       = (string) ($vacancy->salary_to ?? '');
             $this->currency       = $vacancy->currency;
             $this->isActive       = $vacancy->is_active;
+            $this->isFeatured     = $vacancy->is_featured;
             $this->languages      = $vacancy->languages ?? [];
             $this->suitability    = $vacancy->suitability ?? [];
         }
@@ -86,6 +88,7 @@ new #[Layout('layouts.app')] class extends Component
             'salary_to'       => $this->salaryTo ?: null,
             'currency'        => $this->currency,
             'is_active'       => $this->isActive,
+            'is_featured'     => $this->isFeatured,
             'published_at'    => $this->isActive ? now() : null,
             'languages'       => $this->languages ?: null,
             'suitability'     => $this->suitability ?: null,
@@ -146,6 +149,11 @@ new #[Layout('layouts.app')] class extends Component
                     <input type="text" wire:model="title"
                            class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     @error('title') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" wire:model="isFeatured" id="isFeatured" class="w-4 h-4 rounded" style="accent-color:#e85d04;"/>
+                    <label for="isFeatured" class="text-sm text-gray-700">🔥 Гаряча вакансія</label>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">

@@ -121,18 +121,6 @@ new #[Layout('layouts.app')] class extends Component
 
                 {{-- Job Header --}}
                 <div class="mj-job-header">
-                    <div class="mj-job-logo-wrap">
-                        @if($vacancy->company->logo)
-                            <img src="{{ $vacancy->company->logo }}"
-                                 alt="{{ $vacancy->company->name }}"
-                                 class="mj-job-logo-img"/>
-                        @else
-                            <div class="mj-job-logo-placeholder">
-                                {{ strtoupper(substr($vacancy->company->name, 0, 2)) }}
-                            </div>
-                        @endif
-                    </div>
-
                     <div class="mj-job-header-info">
                         <h1 class="mj-job-title">{{ $vacancy->title }}</h1>
                         <div class="mj-job-company-row">
@@ -148,6 +136,18 @@ new #[Layout('layouts.app')] class extends Component
                         </div>
                         @if($vacancy->published_at)
                             <div class="mj-job-date">{{ $vacancy->published_at->diffForHumans() }}</div>
+                        @endif
+                    </div>
+
+                    <div class="mj-job-logo-wrap">
+                        @if($vacancy->company->logo)
+                            <img src="{{ $vacancy->company->logo }}"
+                                 alt="{{ $vacancy->company->name }}"
+                                 class="mj-job-logo-img"/>
+                        @else
+                            <div class="mj-job-logo-placeholder">
+                                {{ strtoupper(substr($vacancy->company->name, 0, 2)) }}
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -546,7 +546,7 @@ new #[Layout('layouts.app')] class extends Component
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 16px;
     color: var(--color-text-gray);
     margin-bottom: 20px;
     flex-wrap: wrap;
@@ -614,21 +614,21 @@ new #[Layout('layouts.app')] class extends Component
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--color-text-gray);
     letter-spacing: -1px;
 }
 .mj-job-header-info { flex: 1; min-width: 0; }
 .mj-job-title {
-    font-size: 22px;
+    font-size: 33px;
     font-weight: 800;
     color: var(--color-text-dark);
     line-height: 1.3;
     margin: 0 0 6px;
 }
 @media (max-width: 767px) {
-    .mj-job-title { font-size: 18px; }
+    .mj-job-title { font-size: 27px; }
 }
 .mj-job-company-row {
     display: flex;
@@ -638,7 +638,7 @@ new #[Layout('layouts.app')] class extends Component
     margin-bottom: 4px;
 }
 .mj-job-company-name {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--color-text-dark);
 }
@@ -646,7 +646,7 @@ new #[Layout('layouts.app')] class extends Component
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: #059669;
     background: #d1fae5;
@@ -654,7 +654,7 @@ new #[Layout('layouts.app')] class extends Component
     border-radius: 20px;
 }
 .mj-job-date {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--color-text-light-gray);
 }
 
@@ -676,7 +676,7 @@ new #[Layout('layouts.app')] class extends Component
     flex-shrink: 0;
 }
 .mj-salary-text {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 800;
     color: #16a34a;
     letter-spacing: -0.5px;
@@ -693,7 +693,7 @@ new #[Layout('layouts.app')] class extends Component
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     padding: 5px 12px;
     border-radius: 20px;
@@ -706,7 +706,7 @@ new #[Layout('layouts.app')] class extends Component
 .mj-tag--gray     { background: #f3f4f6; color: #4b5563; }
 .mj-tag--category { background: #e0f2fe; color: #0369a1; }
 .mj-tag--featured { background: #fef9c3; color: #854d0e; }
-.mj-tag--sm { font-size: 11px; padding: 3px 9px; }
+.mj-tag--sm { font-size: 13px; padding: 3px 9px; }
 
 /* Suitability */
 .mj-suit-row {
@@ -721,14 +721,14 @@ new #[Layout('layouts.app')] class extends Component
     border: 1px solid var(--color-border);
 }
 .mj-suit-label {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--color-text-gray);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 .mj-suit-tag {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: #6d28d9;
     background: #ede9fe;
@@ -736,7 +736,7 @@ new #[Layout('layouts.app')] class extends Component
     border-radius: 20px;
 }
 .mj-lang-tag {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: #0369a1;
     background: #e0f2fe;
@@ -753,13 +753,13 @@ new #[Layout('layouts.app')] class extends Component
 
 /* Description */
 .mj-section-title {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--color-text-dark);
     margin: 0 0 16px;
 }
 .mj-desc-body {
-    font-size: 15px;
+    font-size: 18px;
     line-height: 1.8;
     color: #374151;
 }
@@ -787,7 +787,7 @@ new #[Layout('layouts.app')] class extends Component
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--color-text-gray);
 }
@@ -799,7 +799,7 @@ new #[Layout('layouts.app')] class extends Component
     margin-bottom: 4px;
 }
 .mj-company-block-name {
-    font-size: 16px;
+    font-size: 19px;
     font-weight: 700;
     color: var(--color-text-dark);
     margin: 0;
@@ -808,19 +808,19 @@ new #[Layout('layouts.app')] class extends Component
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 13px;
+    font-size: 16px;
     color: var(--color-text-gray);
     margin-bottom: 8px;
 }
 .mj-company-block-desc {
-    font-size: 13px;
+    font-size: 16px;
     color: var(--color-text-gray);
     line-height: 1.6;
     margin: 0 0 10px;
 }
 .mj-company-block-links { display: flex; flex-wrap: wrap; gap: 12px; }
 .mj-company-block-link {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--color-primary-blue);
     text-decoration: none;
@@ -859,7 +859,7 @@ new #[Layout('layouts.app')] class extends Component
     text-align: center;
     background: #16a34a;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 19px;
     font-weight: 700;
     padding: 14px 20px;
     border: none;
@@ -887,14 +887,14 @@ new #[Layout('layouts.app')] class extends Component
     margin: 0 auto 10px;
 }
 .mj-apply-success-icon svg { width: 24px; height: 24px; color: #16a34a; }
-.mj-apply-success h3 { font-size: 15px; font-weight: 700; color: var(--color-text-dark); margin: 0 0 4px; }
-.mj-apply-success p { font-size: 13px; color: var(--color-text-gray); margin: 0; }
+.mj-apply-success h3 { font-size: 18px; font-weight: 700; color: var(--color-text-dark); margin: 0 0 4px; }
+.mj-apply-success p { font-size: 16px; color: var(--color-text-gray); margin: 0; }
 
 .mj-apply-notice {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 16px;
     color: var(--color-text-gray);
     background: var(--color-bg-gray);
     padding: 10px 12px;
@@ -909,11 +909,11 @@ new #[Layout('layouts.app')] class extends Component
     justify-content: space-between;
     margin-bottom: 14px;
 }
-.mj-apply-form-header h3 { font-size: 15px; font-weight: 700; color: var(--color-text-dark); margin: 0; }
+.mj-apply-form-header h3 { font-size: 18px; font-weight: 700; color: var(--color-text-dark); margin: 0; }
 .mj-apply-form-close {
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 19px;
     color: var(--color-text-gray);
     cursor: pointer;
     line-height: 1;
@@ -924,16 +924,16 @@ new #[Layout('layouts.app')] class extends Component
 
 .mj-apply-form { display: flex; flex-direction: column; gap: 12px; }
 .mj-form-field { display: flex; flex-direction: column; gap: 4px; }
-.mj-form-label { font-size: 13px; font-weight: 600; color: var(--color-text-dark); }
+.mj-form-label { font-size: 16px; font-weight: 600; color: var(--color-text-dark); }
 .mj-required { color: #ef4444; }
-.mj-form-hint { font-size: 11px; color: var(--color-text-light-gray); margin: 0; }
-.mj-form-error { font-size: 12px; color: #ef4444; margin: 0; }
+.mj-form-hint { font-size: 13px; color: var(--color-text-light-gray); margin: 0; }
+.mj-form-error { font-size: 14px; color: #ef4444; margin: 0; }
 .mj-file-input {
-    font-size: 13px;
+    font-size: 16px;
     color: var(--color-text-gray);
 }
 .mj-file-input::file-selector-button {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--color-primary-blue);
     background: #dbeafe;
@@ -948,7 +948,7 @@ new #[Layout('layouts.app')] class extends Component
     border: 1px solid var(--color-border-dark);
     border-radius: 8px;
     padding: 8px 10px;
-    font-size: 13px;
+    font-size: 16px;
     color: var(--color-text-dark);
     resize: none;
     font-family: inherit;
@@ -963,7 +963,7 @@ new #[Layout('layouts.app')] class extends Component
     align-items: center;
     justify-content: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     color: #0088cc;
     text-decoration: none;
@@ -981,7 +981,7 @@ new #[Layout('layouts.app')] class extends Component
     padding: 20px;
 }
 .mj-stats-title {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--color-text-gray);
     text-transform: uppercase;
@@ -999,8 +999,8 @@ new #[Layout('layouts.app')] class extends Component
     gap: 10px;
 }
 .mj-stat-icon { width: 18px; height: 18px; color: var(--color-text-light-gray); flex-shrink: 0; }
-.mj-stat-value { font-size: 16px; font-weight: 700; color: var(--color-text-dark); line-height: 1; }
-.mj-stat-label { font-size: 12px; color: var(--color-text-gray); margin-top: 2px; }
+.mj-stat-value { font-size: 19px; font-weight: 700; color: var(--color-text-dark); line-height: 1; }
+.mj-stat-label { font-size: 14px; color: var(--color-text-gray); margin-top: 2px; }
 
 /* Sidebar Related */
 .mj-sidebar-related {
@@ -1034,14 +1034,14 @@ new #[Layout('layouts.app')] class extends Component
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--color-text-gray);
 }
 .mj-sidebar-related-logo img { width: 100%; height: 100%; object-fit: cover; }
 .mj-sidebar-related-info { flex: 1; min-width: 0; }
 .mj-sidebar-related-title {
-    font-size: 13px;
+    font-size: 20px;
     font-weight: 600;
     color: var(--color-text-dark);
     line-height: 1.4;
@@ -1050,8 +1050,8 @@ new #[Layout('layouts.app')] class extends Component
     white-space: nowrap;
 }
 .mj-sidebar-related-item:hover .mj-sidebar-related-title { color: var(--color-primary-blue); }
-.mj-sidebar-related-company { font-size: 12px; color: var(--color-text-gray); margin-top: 1px; }
-.mj-sidebar-related-salary { font-size: 12px; color: #16a34a; font-weight: 600; margin-top: 2px; }
+.mj-sidebar-related-company { font-size: 18px; color: var(--color-text-gray); margin-top: 1px; }
+.mj-sidebar-related-salary { font-size: 18px; color: #16a34a; font-weight: 600; margin-top: 2px; }
 
 /* ═══ RELATED BOTTOM SECTION ═══ */
 .mj-related-section {
@@ -1064,13 +1064,13 @@ new #[Layout('layouts.app')] class extends Component
     margin-bottom: 16px;
 }
 .mj-related-title {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 800;
     color: var(--color-text-dark);
     margin: 0;
 }
 .mj-related-all {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--color-primary-blue);
     text-decoration: none;
@@ -1116,14 +1116,14 @@ new #[Layout('layouts.app')] class extends Component
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--color-text-gray);
 }
 .mj-related-card-logo img { width: 100%; height: 100%; object-fit: cover; }
 .mj-related-card-info { flex: 1; min-width: 0; }
 .mj-related-card-title {
-    font-size: 14px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--color-text-dark);
     line-height: 1.4;
@@ -1134,7 +1134,7 @@ new #[Layout('layouts.app')] class extends Component
 }
 .mj-related-card:hover .mj-related-card-title { color: var(--color-primary-blue); }
 .mj-related-card-company {
-    font-size: 12px;
+    font-size: 18px;
     color: var(--color-text-gray);
     margin-top: 2px;
     overflow: hidden;
@@ -1149,7 +1149,7 @@ new #[Layout('layouts.app')] class extends Component
     gap: 6px;
 }
 .mj-related-card-salary {
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 700;
     color: #16a34a;
 }

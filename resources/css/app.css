@@ -298,8 +298,17 @@ aside.mj-filters {
 
 .job-title-wrap { flex: 1; min-width: 0; }
 
+.job-hot-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e85d04;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
 .job-title {
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--color-text-dark);
   line-height: 1.4;
