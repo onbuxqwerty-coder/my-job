@@ -27,24 +27,21 @@ services:
         condition: service_healthy
     networks:
       - backend
+      - aigent_backend
 
-  # ── Nginx ─────────────────────────────────────────────────────────────────
+  # ── Nginx (internal — port 8080, SSL terminated by aigent-nginx) ──────────
   nginx:
     image: nginx:1.25-alpine
     restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - storage:/var/www/html/storage:ro
       - public_assets:/var/www/html/public:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /var/www/certbot:/var/www/certbot:ro
     depends_on:
       - app
     networks:
       - backend
+      - aigent_backend
 
   # ── Queue Worker ──────────────────────────────────────────────────────────
   queue:
@@ -131,3 +128,5 @@ volumes:
 networks:
   backend:
     driver: bridge
+  aigent_backend:
+    external: true
