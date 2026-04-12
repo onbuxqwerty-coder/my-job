@@ -1,0 +1,70 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          command_timeout: 15m
+          script: |
+            set -e
+            cd ~/my-job
+
+            echo "==> Pulling latest code..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "==> Building Docker image..."
+            docker compose build --no-cache app
+
+            echo "==> Syncing public assets to nginx volume..."
+            docker run --rm --user root \
+              -v my-job_public_assets:/dest \
+              my-job-app \
+              sh -c "rm -rf /dest/* /dest/.[!.]* 2>/dev/null; cp -rT /var/www/html/public /dest && chmod -R a+r /dest && echo 'Assets synced'"
+
+            echo "==> Starting / updating services..."
+            docker compose up -d
+
+            echo "==> Reloading nginx..."
+            docker compose restart nginx
+
+            echo "==> Waiting for DB..."
+            sleep 10
+
+            echo "==> Running migrations..."
+            docker compose exec -T app php artisan migrate --force
+
+            echo "==> Creating storage symlink..."
+            docker compose exec -T app php artisan storage:link --force 2>/dev/null || true
+
+            echo "==> Caching config / routes / views..."
+            docker compose exec -T app php artisan config:cache
+            docker compose exec -T app php artisan route:cache
+            docker compose exec -T app php artisan view:cache
+
+            echo "==> Optimizing Filament..."
+            docker compose exec -T app php artisan filament:optimize-clear
+            docker compose exec -T app php artisan filament:optimize
+
+            echo "==> Removing dangling images..."
+            docker image prune -f
+
+            echo "=== Deploy complete ==="
