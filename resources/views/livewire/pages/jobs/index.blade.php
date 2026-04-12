@@ -149,6 +149,7 @@ new #[Layout('layouts.app')] class extends Component
         .hero-search-input {
             flex: 1;
             height: 48px;
+            line-height: 48px;
             padding: 0 var(--spacing-lg);
             font-size: 16px;
             border: 1px solid #000000;
@@ -158,6 +159,7 @@ new #[Layout('layouts.app')] class extends Component
             outline: none;
             background: var(--color-bg-white);
             min-width: 0;
+            box-sizing: border-box;
         }
         .hero-city-wrap {
             min-width: 220px;
