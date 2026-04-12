@@ -13,7 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
 {
-    private const ALLOWED_PROVIDERS = ['google', 'facebook', 'apple'];
+    private const ALLOWED_PROVIDERS = ['google'];
 
     /**
      * Redirect to OAuth provider.

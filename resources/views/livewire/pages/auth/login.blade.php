@@ -145,29 +145,6 @@ new #[Layout('layouts.guest')] class extends Component
                 Продовжити з Google
             </a>
 
-            {{-- Facebook --}}
-            <a href="{{ route('social.redirect', 'facebook') }}"
-               style="display:flex; align-items:center; justify-content:center; gap:12px;
-                      height:48px; border-radius:8px;
-                      font-size:15px; font-weight:600; color:#fff;
-                      background:#1877F2; text-decoration:none; transition:background-color 0.2s;"
-               onmouseover="this.style.backgroundColor='#166FE5'"
-               onmouseout="this.style.backgroundColor='#1877F2'">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                Продовжити з Facebook
-            </a>
-
-            {{-- Apple --}}
-            <a href="{{ route('social.redirect', 'apple') }}"
-               style="display:flex; align-items:center; justify-content:center; gap:12px;
-                      height:48px; border-radius:8px;
-                      font-size:15px; font-weight:600; color:#fff;
-                      background:#000; text-decoration:none; transition:background-color 0.2s;"
-               onmouseover="this.style.backgroundColor='#1a1a1a'"
-               onmouseout="this.style.backgroundColor='#000'">
-                <svg width="18" height="22" viewBox="0 0 814 1000" fill="white"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 135.3-317.1 269.3-317.1 71 0 130.3 46.4 174.5 46.4 42.8 0 109.7-49 192.5-49 31.1 0 108.2 2.6 168.6 71.7z"/><path d="M554.1 107.5c24.4-28.8 41.5-68.9 41.5-109 0-5.8-.6-11.6-1.9-16.1-39.5 1.3-86.8 26.3-114.9 57.8-21.9 25.1-42.2 65.2-42.2 106 0 6.4 1.3 12.8 1.9 14.8 2.6.6 6.5 1.3 10.4 1.3 35.6 0 80.4-23.8 105.2-54.8z"/></svg>
-                Продовжити з Apple
-            </a>
         </div>
 
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
