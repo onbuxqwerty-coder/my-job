@@ -261,6 +261,15 @@ aside.mj-filters {
   border-color: #F59E0B;
 }
 
+.job-card--hot-top {
+  background-color: #cecece;
+  border-color: #e8962e;
+}
+
+.job-card--hot-top:hover {
+  border-color: #d4841c;
+}
+
 .job-info {
   display: flex;
   flex-direction: column;

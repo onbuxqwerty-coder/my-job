@@ -41,6 +41,7 @@ final class VacancyService
                 }
             })
             ->when($dto->cityId, fn(Builder $q, int $id): Builder => $q->where('city_id', $id))
+            ->orderByDesc('is_top')
             ->orderByDesc('is_featured')
             ->orderByDesc('published_at')
             ->paginate($dto->perPage);

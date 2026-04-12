@@ -253,7 +253,7 @@ new #[Layout('layouts.app')] class extends Component
                     };
                 @endphp
 
-                <a href="{{ route('jobs.show', $vacancy) }}" wire:navigate class="job-card {{ $vacancy->is_featured ? 'job-card--featured' : '' }}">
+                <a href="{{ route('jobs.show', $vacancy) }}" wire:navigate class="job-card {{ $vacancy->is_featured && $vacancy->is_top ? 'job-card--hot-top' : ($vacancy->is_featured ? 'job-card--featured' : '') }}">
 
                     <div class="job-info">
                         <div class="job-header-row">
@@ -296,8 +296,8 @@ new #[Layout('layouts.app')] class extends Component
                                 {{ $vacancy->employment_type->label() }}
                             </span>
                             <span class="badge badge--category">{{ $vacancy->category->name }}</span>
-                            @if($vacancy->is_featured)
-                                <span class="badge badge--featured">Топ</span>
+                            @if($vacancy->is_top)
+                                <span class="badge badge--featured">⭐ Топ</span>
                             @endif
                         </div>
                     </div>
