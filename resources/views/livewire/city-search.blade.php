@@ -42,7 +42,7 @@
     @keydown.escape.window="$wire.closeDropdown()"
 >
     {{-- Input row --}}
-    <div style="position:relative; display:flex; align-items:center;">
+    <div style="position:relative; display:flex; align-items:center; height:100%;">
 
         {{-- Location icon --}}
         <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#9ca3af; pointer-events:none;">

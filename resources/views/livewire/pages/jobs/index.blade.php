@@ -179,6 +179,7 @@ new #[Layout('layouts.app')] class extends Component
             .hero-title { font-size: 22px; }
             .hero-search-row {
                 flex-direction: column;
+                align-items: stretch;
                 gap: 10px;
             }
             .hero-search-input,
@@ -186,9 +187,14 @@ new #[Layout('layouts.app')] class extends Component
             .hero-search-btn {
                 width: 100%;
                 min-width: unset;
+                height: 48px;
+                box-sizing: border-box;
+            }
+            .hero-city-wrap > div,
+            .hero-city-wrap > div > div {
+                height: 48px;
             }
             .hero-search-btn {
-                height: 48px;
                 padding: 0;
             }
         }
