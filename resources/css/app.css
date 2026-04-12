@@ -400,18 +400,32 @@ aside.mj-filters {
     padding: var(--spacing-lg);
   }
 
-  .job-title { font-size: 16px; }
+  .job-title { font-size: 20px; }
+
+  .job-salary { font-size: 16px; }
+
+  .job-logo { width: 44px; height: 44px; font-size: 16px; }
+
+  .job-details-row { font-size: 13px; gap: var(--spacing-md); }
+
+  .job-badges { gap: var(--spacing-sm); }
+
+  .badge { font-size: 11px; padding: 4px 10px; }
 
   .job-meta {
     align-items: flex-start;
     text-align: left;
   }
 
+  .jobs-header { flex-wrap: wrap; gap: var(--spacing-sm); }
+
   .job-card:hover {
     transform: none;
     background-color: var(--color-bg-light);
     box-shadow: var(--shadow-sm);
   }
+
+  .mj-pagination { gap: var(--spacing-sm); margin-top: var(--spacing-2xl); }
 }
 
 /* ═══════════════════════════════════════════════════════════════════

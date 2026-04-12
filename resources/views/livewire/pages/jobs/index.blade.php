@@ -107,31 +107,25 @@ new #[Layout('layouts.app')] class extends Component
     {{-- Hero / Search --}}
     <div style="background: var(--color-bg-white); border-bottom: 1px solid var(--color-border); padding: var(--spacing-3xl) var(--spacing-lg);">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
-            <h1 style="font-size: 28px; font-weight: 800; color: var(--color-text-dark); margin-bottom: 4px;">
+            <h1 class="hero-title">
                 Знайди свою роботу
             </h1>
             <p style="font-size: 14px; color: var(--color-text-gray); margin-bottom: var(--spacing-xl);">
                 Тисячі вакансій по всій Україні
             </p>
-            <div style="display: flex; gap: 8px; max-width: 860px; margin: 0 auto; align-items: flex-start;">
+            <div class="hero-search-row">
                 <input
                     type="text"
                     wire:model.live.debounce.400ms="search"
                     placeholder="Посада, компанія, ключове слово..."
-                    style="flex: 1; height: 48px; padding: 0 var(--spacing-lg); font-size: 16px;
-                           border: 1px solid #000000; border-radius: var(--radius-lg);
-                           color: var(--color-text-dark); transition: all var(--transition-fast);
-                           outline: none; background: var(--color-bg-white);"
+                    class="hero-search-input"
                     onfocus="this.style.borderColor='#000000'; this.style.boxShadow='0 0 0 3px rgba(0,0,0,0.1)'"
                     onblur="this.style.borderColor='#000000'; this.style.boxShadow='none'"
                 />
-                <div style="min-width: 220px;">
+                <div class="hero-city-wrap">
                     <livewire:city-search wire:model.live="cityId" :key="'city-search'" />
                 </div>
-                <button type="button"
-                        style="height: 48px; padding: 0 32px; font-size: 16px; font-weight: 700;
-                               background-color: #2d323b; color: #ffffff; border: none;
-                               border-radius: var(--radius-lg); cursor: pointer; transition: background-color 0.2s; white-space: nowrap;"
+                <button type="button" class="hero-search-btn"
                         onmouseover="this.style.backgroundColor='#3d434e'"
                         onmouseout="this.style.backgroundColor='#2d323b'">
                     ЗНАЙТИ
@@ -139,6 +133,66 @@ new #[Layout('layouts.app')] class extends Component
             </div>
         </div>
     </div>
+
+    <style>
+        .hero-title {
+            font-size: 28px; font-weight: 800;
+            color: var(--color-text-dark); margin-bottom: 4px;
+        }
+        .hero-search-row {
+            display: flex;
+            gap: 8px;
+            max-width: 860px;
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        .hero-search-input {
+            flex: 1;
+            height: 48px;
+            padding: 0 var(--spacing-lg);
+            font-size: 16px;
+            border: 1px solid #000000;
+            border-radius: var(--radius-lg);
+            color: var(--color-text-dark);
+            transition: all var(--transition-fast);
+            outline: none;
+            background: var(--color-bg-white);
+            min-width: 0;
+        }
+        .hero-city-wrap {
+            min-width: 220px;
+        }
+        .hero-search-btn {
+            height: 48px;
+            padding: 0 32px;
+            font-size: 16px;
+            font-weight: 700;
+            background-color: #2d323b;
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+        @media (max-width: 767px) {
+            .hero-title { font-size: 22px; }
+            .hero-search-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .hero-search-input,
+            .hero-city-wrap,
+            .hero-search-btn {
+                width: 100%;
+                min-width: unset;
+            }
+            .hero-search-btn {
+                height: 48px;
+                padding: 0;
+            }
+        }
+    </style>
 
     {{-- Main layout --}}
     <div class="mj-main">

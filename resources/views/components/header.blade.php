@@ -69,13 +69,34 @@
     .site-header__btn-login:hover {
         background-color: rgba(255,255,255,0.1);
     }
+
+    @media (max-width: 767px) {
+        .site-header {
+            height: 64px;
+            font-size: 1rem;
+        }
+        .site-header__inner {
+            padding: 0 16px;
+            gap: 12px;
+        }
+        .site-header__nav {
+            display: none;
+        }
+        .site-header__logo img {
+            height: 48px !important;
+        }
+        .site-header__btn-login {
+            padding: 6px 14px;
+            font-size: 0.95rem;
+        }
+    }
 </style>
 
 <nav class="site-header">
     <div class="site-header__inner">
 
         {{-- Logo --}}
-        <a href="{{ route('home') }}" style="flex-shrink:0; display:flex; align-items:center;">
+        <a href="{{ route('home') }}" class="site-header__logo" style="flex-shrink:0; display:flex; align-items:center;">
             <img src="{{ asset('img/logo/mj-logo-100x100-dark-theme.webp') }}"
                  alt="My Job"
                  style="height:100px; width:auto; display:block;">

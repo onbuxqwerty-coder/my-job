@@ -13,12 +13,17 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('img/logo/favicon.ico') }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            @media (max-width: 767px) {
+                #main-content { padding-top: 64px !important; }
+            }
+        </style>
     </head>
     <body class="font-sans antialiased bg-slate-50 text-slate-900">
 
         <x-header />
 
-        <main class="min-h-screen" style="padding-top: 120px;">
+        <main class="min-h-screen" style="padding-top: 120px;" id="main-content">
             {{ $slot }}
         </main>
 
