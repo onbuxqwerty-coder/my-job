@@ -102,7 +102,8 @@
     {{-- Dropdown --}}
     @if($isOpen)
     <div
-        style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0;
+        class="city-dropdown"
+        style="position:absolute; z-index:9999; top:calc(100% + 4px); left:0; right:0;
                background:#fff; border:1px solid #d1d5db; border-radius:8px;
                box-shadow:0 10px 25px rgba(0,0,0,.12); max-height:400px; overflow-y:auto;"
         wire:loading.class="opacity-50"

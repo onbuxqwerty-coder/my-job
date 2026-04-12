@@ -192,9 +192,17 @@ new #[Layout('layouts.app')] class extends Component
                 height: 48px;
                 box-sizing: border-box;
             }
-            .hero-city-wrap > div,
-            .hero-city-wrap > div > div {
+            .hero-city-wrap {
+                overflow: visible;
+                position: relative;
+            }
+            .hero-city-wrap > div {
                 height: 48px;
+                overflow: visible;
+            }
+            .hero-city-wrap .city-dropdown {
+                max-height: 280px; /* ~7 рядків по 40px */
+                min-height: 280px;
             }
             .hero-search-btn {
                 padding: 0;
