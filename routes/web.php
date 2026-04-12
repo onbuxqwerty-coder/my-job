@@ -50,6 +50,12 @@ Route::get('/sitemap.xml', function () {
     return response($xml)->header('Content-Type', 'application/xml');
 })->name('sitemap');
 
+// ── Social Auth ─────────────────────────────────────────────────────────────
+Route::get('/auth/{provider}/redirect', [\App\Http\Controllers\SocialAuthController::class, 'redirect'])
+    ->name('social.redirect');
+Route::get('/auth/{provider}/callback', [\App\Http\Controllers\SocialAuthController::class, 'callback'])
+    ->name('social.callback');
+
 // ── Auth ────────────────────────────────────────────────────────────────────
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

@@ -24,6 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\EnsureUserRole::class,
         ]);
     })
+    ->withProviders([
+        \SocialiteProviders\Manager\ServiceProvider::class,
+    ])
     ->withExceptions(function (Exceptions $exceptions): void {
         // Send critical 500 errors to Telegram (production only)
         $exceptions->report(function (\Throwable $e): void {

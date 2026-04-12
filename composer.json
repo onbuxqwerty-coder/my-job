@@ -9,10 +9,12 @@
         "php": "^8.3",
         "filament/filament": "^4.0",
         "laravel/framework": "^13.0",
+        "laravel/socialite": "^5.26",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^3.6.4",
         "livewire/volt": "^1.7.0",
         "nutgram/nutgram": "^4.45",
+        "socialiteproviders/apple": "^5.9",
         "stripe/stripe-php": "^20.0"
     },
     "require-dev": {
