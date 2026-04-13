@@ -124,7 +124,7 @@
         </div>
 
         {{-- Dark mode toggle --}}
-        <button class="dark-toggle" id="darkToggle" aria-label="Перемкнути тему" title="Перемкнути тему">
+        <button class="dark-toggle" onclick="window.toggleDarkMode()" aria-label="Перемкнути тему" title="Перемкнути тему">
             <span id="darkToggleIcon">🌙</span>
         </button>
 
@@ -179,28 +179,22 @@
     document.addEventListener('DOMContentLoaded', initHeaderScroll);
     document.addEventListener('livewire:navigated', initHeaderScroll);
 
-    function initDarkToggle() {
-        const btn  = document.getElementById('darkToggle');
+    // Глобальна функція — викликається через inline onclick, без дублювання listeners
+    window.toggleDarkMode = function() {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', next);
+        document.documentElement.setAttribute('data-theme', next);
+        document.documentElement.classList.toggle('dark', next === 'dark');
         const icon = document.getElementById('darkToggleIcon');
-        if (!btn) return;
+        if (icon) icon.textContent = next === 'dark' ? '☀️' : '🌙';
+    };
 
-        function applyTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            document.documentElement.classList.toggle('dark', theme === 'dark');
-            icon.textContent = theme === 'dark' ? '☀️' : '🌙';
-        }
-
-        // Sync icon with current theme
-        applyTheme(localStorage.getItem('theme') || 'light');
-
-        btn.addEventListener('click', function() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const next    = current === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', next);
-            applyTheme(next);
-        });
+    function syncDarkIcon() {
+        const icon  = document.getElementById('darkToggleIcon');
+        const theme = document.documentElement.getAttribute('data-theme') || 'light';
+        if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
     }
 
-    document.addEventListener('DOMContentLoaded', initDarkToggle);
-    document.addEventListener('livewire:navigated', initDarkToggle);
+    document.addEventListener('DOMContentLoaded', syncDarkIcon);
+    document.addEventListener('livewire:navigated', syncDarkIcon);
 </script>
