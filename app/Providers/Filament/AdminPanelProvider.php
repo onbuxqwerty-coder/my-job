@@ -72,6 +72,8 @@ class AdminPanelProvider extends PanelProvider
                     .fi-body { overflow-x: hidden; }
                     [data-sidebar-collapsed] .fi-main-ctn,
                     [data-sidebar-collapsed] .fi-main { max-width: 100% !important; }
+                    html.dark body,
+                    html.dark .fi-body { background-color: #111827 !important; }
                 </style>
                 '),
             )
