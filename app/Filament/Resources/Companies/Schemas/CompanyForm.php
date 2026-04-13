@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Companies\Schemas;
 
+use App\Models\City;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -56,7 +57,11 @@ class CompanyForm
                     ->relationship('city', 'name')
                     ->searchable()
                     ->preload()
-                    ->required(),
+                    ->required()
+                    ->live()
+                    ->afterStateUpdated(fn (?string $state, callable $set) =>
+                        $set('location', $state ? (City::find($state)?->name ?? '') : '')
+                    ),
             ]);
     }
 }
