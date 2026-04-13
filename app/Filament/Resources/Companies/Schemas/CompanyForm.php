@@ -44,8 +44,11 @@ class CompanyForm
                 TextInput::make('website')
                     ->label('Вебсайт')
                     ->url(),
-                TextInput::make('location')
+                Select::make('city_id')
                     ->label('Місто')
+                    ->relationship('city', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required(),
             ]);
     }
