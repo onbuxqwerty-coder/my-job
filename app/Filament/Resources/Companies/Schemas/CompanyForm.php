@@ -22,8 +22,8 @@ class CompanyForm
                     ->label('Назва')
                     ->required()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $state, callable $set) =>
-                        $set('slug', \Illuminate\Support\Str::slug($state))
+                    ->afterStateUpdated(fn (?string $state, callable $set) =>
+                        $set('slug', \Illuminate\Support\Str::slug($state ?? ''))
                     ),
                 TextInput::make('slug')
                     ->label('Slug')
