@@ -54,9 +54,11 @@ new #[Layout('layouts.guest')] class extends Component
         Auth::login($user, remember: true);
         Session::regenerate();
 
-        $default = $user->role->value === 'employer'
-            ? route('employer.dashboard', absolute: false)
-            : route('home', absolute: false);
+        $default = match($user->role->value) {
+            'employer'  => route('employer.dashboard', absolute: false),
+            'candidate' => route('seeker.dashboard', absolute: false),
+            default     => route('home', absolute: false),
+        };
 
         $this->redirectIntended(default: $default, navigate: true);
     }
@@ -81,9 +83,11 @@ new #[Layout('layouts.guest')] class extends Component
         Session::regenerate();
 
         $user = Auth::user();
-        $default = $user->role->value === 'employer'
-            ? route('employer.dashboard', absolute: false)
-            : route('home', absolute: false);
+        $default = match($user->role->value) {
+            'employer'  => route('employer.dashboard', absolute: false),
+            'candidate' => route('seeker.dashboard', absolute: false),
+            default     => route('home', absolute: false),
+        };
 
         $this->redirectIntended(default: $default, navigate: true);
     }

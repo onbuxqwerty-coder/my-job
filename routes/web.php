@@ -86,6 +86,18 @@ Route::middleware(['auth', 'role:employer'])
         })->name('vacancies.promote');
     });
 
+// ── Seeker Dashboard ────────────────────────────────────────────────────────
+Route::middleware(['auth', 'role:candidate'])
+    ->prefix('dashboard/seeker')
+    ->name('seeker.')
+    ->group(function () {
+        Volt::route('/', 'pages.seeker.dashboard')->name('dashboard');
+        Volt::route('/applications', 'pages.seeker.applications')->name('applications');
+        Volt::route('/applications/{applicationId}', 'pages.seeker.application-detail')->name('application.detail');
+        Volt::route('/interviews', 'pages.seeker.interviews')->name('interviews');
+        Volt::route('/profile', 'pages.seeker.profile')->name('profile');
+    });
+
 // ── Payment callbacks ───────────────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
     Route::get('/payment/success', fn() => view('payment.success'))->name('payment.success');
