@@ -1,3 +1,36 @@
+<style>
+html[data-theme="dark"] .city-search-input {
+    background: #111827 !important;
+    color: #F1F5F9 !important;
+    border-color: #4B5563 !important;
+}
+html[data-theme="dark"] .city-dropdown {
+    background: #1F2937 !important;
+    border-color: #374151 !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,.5) !important;
+}
+html[data-theme="dark"] .city-dropdown-section {
+    background: #111827 !important;
+    border-color: #374151 !important;
+    color: #6B7280 !important;
+}
+html[data-theme="dark"] .city-dropdown-item {
+    color: #F1F5F9 !important;
+    border-color: #1F2937 !important;
+}
+html[data-theme="dark"] .city-dropdown-item:hover,
+html[data-theme="dark"] .city-dropdown-item-highlighted {
+    background: #1E3A5F !important;
+    color: #93C5FD !important;
+}
+html[data-theme="dark"] .city-dropdown-special {
+    border-color: #374151 !important;
+}
+html[data-theme="dark"] .city-dropdown-empty {
+    color: #6B7280 !important;
+}
+</style>
+
 <div
     class="relative"
     x-data="{
@@ -54,6 +87,7 @@
         </span>
 
         <input
+            class="city-search-input"
             type="text"
             wire:model.live.debounce.300ms="query"
             @focus="$wire.openDropdown()"
@@ -112,9 +146,10 @@
         @php $idx = 0; @endphp
 
         {{-- Спеціальні опції --}}
-        <div style="border-bottom:1px solid #f3f4f6;">
+        <div class="city-dropdown-special" style="border-bottom:1px solid #f3f4f6;">
             {{-- Вся Україна --}}
             <button wire:click="clearCity" type="button"
+                    class="city-dropdown-item {{ $highlighted === $idx ? 'city-dropdown-item-highlighted' : '' }}"
                     style="width:100%; text-align:left; padding:10px 16px; font-size:14px; border:none; cursor:pointer;
                            background:{{ $highlighted === $idx ? '#eff6ff' : 'transparent' }}; color:#111827;
                            display:flex; align-items:center; gap:8px;"
@@ -126,6 +161,7 @@
 
             {{-- Дистанційно --}}
             <button wire:click="selectRemote" type="button"
+                    class="city-dropdown-item {{ $highlighted === $idx ? 'city-dropdown-item-highlighted' : '' }}"
                     style="width:100%; text-align:left; padding:10px 16px; font-size:14px; border:none; cursor:pointer;
                            background:{{ $highlighted === $idx ? '#eff6ff' : 'transparent' }}; color:#111827;
                            display:flex; align-items:center; gap:8px;"
@@ -138,11 +174,12 @@
 
         {{-- Популярні міста (коли немає запиту) --}}
         @if($showPopular && $popular->isNotEmpty())
-            <div style="padding:6px 16px 4px; font-size:11px; font-weight:700; color:#6b7280; letter-spacing:.06em; text-transform:uppercase; background:#f9fafb;">
+            <div class="city-dropdown-section" style="padding:6px 16px 4px; font-size:11px; font-weight:700; color:#6b7280; letter-spacing:.06em; text-transform:uppercase; background:#f9fafb;">
                 Популярні міста
             </div>
             @foreach($popular as $city)
                 <button wire:click="selectCity('{{ $city->id }}', '{{ addslashes($city->name) }}')" type="button"
+                        class="city-dropdown-item {{ $highlighted === $idx ? 'city-dropdown-item-highlighted' : '' }}"
                         style="width:100%; text-align:left; padding:9px 16px; font-size:14px; border:none; cursor:pointer;
                                background:{{ $highlighted === $idx ? '#eff6ff' : 'transparent' }};
                                color:{{ $highlighted === $idx ? '#1e40af' : '#111827' }};
@@ -161,11 +198,12 @@
         {{-- Результати пошуку --}}
         @if(!$showPopular)
             @if($results->isNotEmpty())
-                <div style="padding:6px 16px 4px; font-size:11px; font-weight:700; color:#6b7280; letter-spacing:.06em; text-transform:uppercase; background:#f9fafb;">
+                <div class="city-dropdown-section" style="padding:6px 16px 4px; font-size:11px; font-weight:700; color:#6b7280; letter-spacing:.06em; text-transform:uppercase; background:#f9fafb;">
                     Результати пошуку
                 </div>
                 @foreach($results as $city)
                     <button wire:click="selectCity('{{ $city->id }}', '{{ addslashes($city->name) }}')" type="button"
+                            class="city-dropdown-item {{ $highlighted === $idx ? 'city-dropdown-item-highlighted' : '' }}"
                             style="width:100%; text-align:left; padding:9px 16px; font-size:14px; border:none; cursor:pointer;
                                    background:{{ $highlighted === $idx ? '#eff6ff' : 'transparent' }};
                                    color:{{ $highlighted === $idx ? '#1e40af' : '#111827' }};
@@ -180,7 +218,7 @@
                     @php $idx++; @endphp
                 @endforeach
             @else
-                <div style="padding:20px 16px; text-align:center; font-size:14px; color:#9ca3af;">
+                <div class="city-dropdown-empty" style="padding:20px 16px; text-align:center; font-size:14px; color:#9ca3af;">
                     Жодного міста не знайдено
                 </div>
             @endif
