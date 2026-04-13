@@ -117,6 +117,12 @@
                         Мої вакансії
                     </a>
                 @endif
+                @if(auth()->user()->role === \App\Enums\UserRole::Candidate)
+                    <a href="{{ route('seeker.dashboard') }}"
+                       {{ request()->routeIs('seeker.*') ? 'class=active' : '' }}>
+                        Мій кабінет
+                    </a>
+                @endif
                 @if(auth()->user()->role === \App\Enums\UserRole::Admin)
                     <a href="{{ route('filament.admin.pages.dashboard') }}">Адмін-панель</a>
                 @endif
