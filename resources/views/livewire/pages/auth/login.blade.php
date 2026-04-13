@@ -111,22 +111,30 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- Role switcher --}}
     @if($step === 'phone' || $step === 'email')
-        <div style="display: inline-flex; background: #e8eaed; border-radius: 10px; padding: 4px; margin-bottom: 20px;">
-            <button wire:click="setRole('candidate')"
-                    style="padding: 8px 20px; font-size: 14px; font-weight: 600; border: none; border-radius: 7px; cursor: pointer; transition: all 0.2s;
-                           background: {{ $role === 'candidate' ? '#fff' : 'transparent' }};
-                           color: {{ $role === 'candidate' ? '#1a1a1a' : '#666' }};
-                           box-shadow: {{ $role === 'candidate' ? '0 1px 4px rgba(0,0,0,0.12)' : 'none' }};">
-                Шукач
-            </button>
-            <button wire:click="setRole('employer')"
-                    style="padding: 8px 20px; font-size: 14px; font-weight: 600; border: none; border-radius: 7px; cursor: pointer; transition: all 0.2s;
-                           background: {{ $role === 'employer' ? '#fff' : 'transparent' }};
-                           color: {{ $role === 'employer' ? '#1a1a1a' : '#666' }};
-                           box-shadow: {{ $role === 'employer' ? '0 1px 4px rgba(0,0,0,0.12)' : 'none' }};">
-                Роботодавець
-            </button>
-        </div>
+        <div style="display: inline-flex; gap: 12px; width: 340px; background: #e8eaed; border-radius: 10px; padding: 4px; margin-bottom: 20px;">
+    
+    <!-- Кнопка Шукач -->
+    <button wire:click="setRole('candidate')"
+            style="flex: 1; padding: 10px; font-size: 16px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: all 0.3s ease;
+                   border: 1px solid {{ $role === 'candidate' ? '#2d323b' : 'transparent' }};
+                   background: {{ $role === 'candidate' ? '#2d323b' : 'transparent' }};
+                   color: {{ $role === 'candidate' ? '#ffffff' : '#5f6368' }};
+                   box-shadow: {{ $role === 'candidate' ? '0 4px 8px rgba(45, 50, 59, 0.2)' : 'none' }};">
+        Шукач
+    </button>
+
+    <!-- Кнопка Роботодавець -->
+    <button wire:click="setRole('employer')"
+            style="flex: 1; padding: 10px; font-size: 16px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: all 0.3s ease;
+                   border: 1px solid {{ $role === 'employer' ? '#2d323b' : 'transparent' }};
+                   background: {{ $role === 'employer' ? '#2d323b' : 'transparent' }};
+                   color: {{ $role === 'employer' ? '#ffffff' : '#5f6368' }};
+                   box-shadow: {{ $role === 'employer' ? '0 4px 8px rgba(45, 50, 59, 0.2)' : 'none' }};">
+        Роботодавець
+    </button>
+
+</div>
+
     @endif
 
     {{-- ======= SOCIAL AUTH ======= --}}
