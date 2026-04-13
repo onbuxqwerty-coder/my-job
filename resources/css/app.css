@@ -672,7 +672,7 @@ html[data-theme="dark"] .login-email-btn:hover {
 
 /* ── Dark theme: City Search ─────────────────────────────────────── */
 html[data-theme="dark"] .city-search-input {
-  background: #111827 !important;
+  background: #1f2937 !important;
   color: #F1F5F9 !important;
   border-color: #4B5563 !important;
 }
