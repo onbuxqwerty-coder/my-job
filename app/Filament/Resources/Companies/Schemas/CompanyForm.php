@@ -43,9 +43,14 @@ class CompanyForm
                     ->columnSpanFull(),
                 TextInput::make('website')
                     ->label('Вебсайт')
-                    ->url()
                     ->prefix('https://')
-                    ->placeholder('example.com'),
+                    ->placeholder('example.com')
+                    ->formatStateUsing(fn (?string $state): string =>
+                        $state ? preg_replace('#^https?://#', '', $state) : ''
+                    )
+                    ->dehydrateStateUsing(fn (?string $state): ?string =>
+                        $state ? 'https://' . ltrim(preg_replace('#^https?://#', '', $state), '/') : null
+                    ),
                 Select::make('city_id')
                     ->label('Місто')
                     ->relationship('city', 'name')
