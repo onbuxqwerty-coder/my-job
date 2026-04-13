@@ -5,9 +5,11 @@ namespace App\Filament\Resources\Users\Schemas;
 use App\Enums\UserRole;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class UserForm
@@ -53,8 +55,12 @@ class UserForm
                     ->placeholder('+380XXXXXXXXX'),
                 TextInput::make('telegram_id')
                     ->label('Telegram ID')
-                    ->tel()
-                    ->numeric(),
+                    ->numeric()
+                    ->helperText(new HtmlString(
+                        'Як дізнатися свій Telegram ID:<br>' .
+                        'Найпростіший спосіб — написати боту <strong><a href="https://t.me/userinfobot" target="_blank">@userinfobot</a></strong> ' .
+                        'у Telegram, який миттєво надішле ваш числовий ID.'
+                    )),
             ]);
     }
 }
