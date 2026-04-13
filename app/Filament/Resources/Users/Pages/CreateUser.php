@@ -18,4 +18,9 @@ class CreateUser extends CreateRecord
     {
         return 'Користувача створено';
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
