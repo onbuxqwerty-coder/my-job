@@ -52,7 +52,14 @@ class UserForm
                 TextInput::make('phone')
                     ->label('Телефон')
                     ->tel()
-                    ->placeholder('+380XXXXXXXXX'),
+                    ->placeholder('+380XXXXXXXXX')
+                    ->dehydrateStateUsing(function (?string $state): ?string {
+                        if (!$state) return null;
+                        $digits = preg_replace('/\D/', '', $state);
+                        if (str_starts_with($digits, '380')) return '+' . $digits;
+                        if (str_starts_with($digits, '0'))   return '+38' . $digits;
+                        return '+38' . $digits;
+                    }),
                 TextInput::make('telegram_id')
                     ->label('Telegram ID')
                     ->numeric()
