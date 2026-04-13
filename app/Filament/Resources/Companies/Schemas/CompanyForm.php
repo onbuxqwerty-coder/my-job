@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Companies\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -23,8 +24,14 @@ class CompanyForm
                 TextInput::make('slug')
                     ->label('Slug')
                     ->required(),
-                TextInput::make('logo')
-                    ->label('Логотип'),
+                FileUpload::make('logo')
+                    ->label('Логотип')
+                    ->image()
+                    ->disk('public')
+                    ->directory('logos')
+                    ->imagePreviewHeight('80')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
+                    ->maxSize(2048),
                 Textarea::make('description')
                     ->label('Опис')
                     ->required()
