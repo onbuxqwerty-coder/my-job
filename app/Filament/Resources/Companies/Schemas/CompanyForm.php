@@ -20,10 +20,15 @@ class CompanyForm
                     ->required(),
                 TextInput::make('name')
                     ->label('Назва')
-                    ->required(),
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (string $state, callable $set) =>
+                        $set('slug', \Illuminate\Support\Str::slug($state))
+                    ),
                 TextInput::make('slug')
                     ->label('Slug')
-                    ->required(),
+                    ->required()
+                    ->unique(ignoreRecord: true),
                 FileUpload::make('logo')
                     ->label('Логотип')
                     ->image()
