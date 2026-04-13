@@ -123,6 +123,11 @@
             @endauth
         </div>
 
+        {{-- Dark mode toggle --}}
+        <button class="dark-toggle" id="darkToggle" aria-label="Перемкнути тему" title="Перемкнути тему">
+            <span id="darkToggleIcon">🌙</span>
+        </button>
+
         {{-- Auth --}}
         <div class="site-header__auth">
             @auth
@@ -173,4 +178,29 @@
 
     document.addEventListener('DOMContentLoaded', initHeaderScroll);
     document.addEventListener('livewire:navigated', initHeaderScroll);
+
+    function initDarkToggle() {
+        const btn  = document.getElementById('darkToggle');
+        const icon = document.getElementById('darkToggleIcon');
+        if (!btn) return;
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Sync icon with current theme
+        applyTheme(localStorage.getItem('theme') || 'light');
+
+        btn.addEventListener('click', function() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next    = current === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', next);
+            applyTheme(next);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', initDarkToggle);
+    document.addEventListener('livewire:navigated', initDarkToggle);
 </script>

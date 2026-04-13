@@ -89,7 +89,7 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div style="text-align: center;">
+<div class="login-wrapper" style="text-align: center;">
 
     {{-- Title --}}
     <h1 style="font-size: 28px; font-weight: 800; color: #1a1a1a; margin-bottom: 12px; line-height: 1.2;">
@@ -111,7 +111,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- Role switcher --}}
     @if($step === 'phone' || $step === 'email')
-        <div style="display: inline-flex; gap: 12px; width: 340px; background: #e8eaed; border-radius: 10px; padding: 4px; margin-bottom: 20px;">
+        <div class="role-switcher" style="display: inline-flex; gap: 12px; width: 340px; background: #e8eaed; border-radius: 10px; padding: 4px; margin-bottom: 20px;">
     
     <!-- Кнопка Шукач -->
     <button wire:click="setRole('candidate')"
@@ -143,6 +143,7 @@ new #[Layout('layouts.guest')] class extends Component
 
             {{-- Google --}}
             <a href="{{ route('social.redirect', 'google') }}"
+               class="google-btn"
                style="display:flex; align-items:center; justify-content:center; gap:12px;
                       height:48px; border:1px solid #dadce0; border-radius:8px;
                       font-size:15px; font-weight:600; color:#3c4043;
@@ -155,7 +156,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         </div>
 
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <div class="login-divider" style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
             <hr style="flex:1; border:none; border-top:1px solid #e0e0e0;">
             <span style="font-size:13px; color:#888;">або</span>
             <hr style="flex:1; border:none; border-top:1px solid #e0e0e0;">
@@ -164,9 +165,10 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- ======= КРОК 1: ТЕЛЕФОН ======= --}}
     @if($step === 'phone')
-        <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
+        <div class="login-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
             <form wire:submit="sendOtp">
                 <input
+                    class="login-input"
                     wire:model="phone"
                     type="tel"
                     placeholder="+380"
@@ -201,6 +203,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         <div style="margin-top:16px;">
             <button wire:click="showEmailLogin"
+                    class="login-email-btn"
                     style="display:flex; align-items:center; justify-content:center; gap:10px;
                            padding:14px; font-size:15px; font-weight:600; color:#1a1a1a;
                            background:transparent; border:none; cursor:pointer; border-radius:8px;
@@ -217,8 +220,8 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- ======= КРОК 2: OTP КОД ======= --}}
     @if($step === 'otp')
-        <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
-            <div style="margin-bottom:16px; padding:12px; background:#f0f7ff; border-radius:8px;">
+        <div class="login-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
+            <div class="otp-info-box" style="margin-bottom:16px; padding:12px; background:#f0f7ff; border-radius:8px;">
                 <p style="font-size:14px; color:#555; margin:0;">
                     Код надіслано на номер <strong style="color:#1a1a1a;">{{ $phone }}</strong><br>
                     через SMS, Viber або Telegram
@@ -227,6 +230,7 @@ new #[Layout('layouts.guest')] class extends Component
 
             <form wire:submit="verifyOtp">
                 <input
+                    class="login-input"
                     wire:model="otp"
                     type="text"
                     inputmode="numeric"
@@ -264,6 +268,7 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <button wire:click="backToPhone"
+                class="login-back-btn"
                 style="margin-top:16px; display:flex; align-items:center; justify-content:center;
                        gap:6px; font-size:14px; color:#555; background:transparent;
                        border:none; cursor:pointer; width:100%; padding:10px;"
@@ -275,11 +280,12 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- ======= EMAIL ЛОГІН ======= --}}
     @if($step === 'email')
-        <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
+        <div class="login-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form wire:submit="login">
                 <input
+                    class="login-input"
                     wire:model="form.email"
                     type="email"
                     placeholder="Електронна пошта"
@@ -294,6 +300,7 @@ new #[Layout('layouts.guest')] class extends Component
                 <x-input-error :messages="$errors->get('form.email')" class="mb-2" style="text-align:left;" />
 
                 <input
+                    class="login-input"
                     wire:model="form.password"
                     type="password"
                     placeholder="Пароль"
@@ -326,6 +333,7 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <button wire:click="backToPhone"
+                class="login-back-btn"
                 style="margin-top:16px; display:flex; align-items:center; justify-content:center;
                        gap:6px; font-size:14px; color:#555; background:transparent;
                        border:none; cursor:pointer; width:100%; padding:10px;"

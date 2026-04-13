@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,8 +12,15 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('img/logo/favicon.ico') }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script>
+            (function() {
+                const saved = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', saved);
+                if (saved === 'dark') document.documentElement.classList.add('dark');
+            })();
+        </script>
     </head>
-    <body class="font-sans antialiased" style="background-color: #f0f2f5; min-height: 100vh; display: flex; flex-direction: column;">
+    <body class="font-sans antialiased guest-body" style="min-height: 100vh; display: flex; flex-direction: column; background-color: #f0f2f5;">
 
         <x-header />
 

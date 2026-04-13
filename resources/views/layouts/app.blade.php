@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +18,13 @@
                 #main-content { padding-top: 64px !important; }
             }
         </style>
+        <script>
+            (function() {
+                const saved = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', saved);
+                if (saved === 'dark') document.documentElement.classList.add('dark');
+            })();
+        </script>
     </head>
     <body class="font-sans antialiased bg-slate-50 text-slate-900">
 
