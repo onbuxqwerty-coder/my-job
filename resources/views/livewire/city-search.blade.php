@@ -1,36 +1,3 @@
-<style>
-html[data-theme="dark"] .city-search-input {
-    background: #111827 !important;
-    color: #F1F5F9 !important;
-    border-color: #4B5563 !important;
-}
-html[data-theme="dark"] .city-dropdown {
-    background: #1F2937 !important;
-    border-color: #374151 !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,.5) !important;
-}
-html[data-theme="dark"] .city-dropdown-section {
-    background: #111827 !important;
-    border-color: #374151 !important;
-    color: #6B7280 !important;
-}
-html[data-theme="dark"] .city-dropdown-item {
-    color: #F1F5F9 !important;
-    border-color: #1F2937 !important;
-}
-html[data-theme="dark"] .city-dropdown-item:hover,
-html[data-theme="dark"] .city-dropdown-item-highlighted {
-    background: #1E3A5F !important;
-    color: #93C5FD !important;
-}
-html[data-theme="dark"] .city-dropdown-special {
-    border-color: #374151 !important;
-}
-html[data-theme="dark"] .city-dropdown-empty {
-    color: #6B7280 !important;
-}
-</style>
-
 <div
     class="relative"
     x-data="{
