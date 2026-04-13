@@ -43,7 +43,9 @@ class CompanyForm
                     ->columnSpanFull(),
                 TextInput::make('website')
                     ->label('Вебсайт')
-                    ->url(),
+                    ->url()
+                    ->prefix('https://')
+                    ->placeholder('example.com'),
                 Select::make('city_id')
                     ->label('Місто')
                     ->relationship('city', 'name')
