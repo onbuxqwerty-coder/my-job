@@ -113,6 +113,13 @@ new #[Layout('layouts.guest')] class extends Component
         @endif
     </p>
 
+    {{-- OAuth role mismatch error --}}
+    @if($errors->has('email'))
+        <div style="width:340px; margin-bottom:16px; padding:12px 16px; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; color:#b91c1c; font-size:14px; line-height:1.5; text-align:left;">
+            {{ $errors->first('email') }}
+        </div>
+    @endif
+
     {{-- Role switcher --}}
     @if($step === 'phone' || $step === 'email')
         <div class="role-switcher" style="display: inline-flex; gap: 12px; width: 340px; background: #e8eaed; border-radius: 10px; padding: 4px; margin-bottom: 20px;">

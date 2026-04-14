@@ -46,6 +46,9 @@ class SocialAuthController extends Controller
             ]);
         }
 
+        $oauthRole = session()->pull('oauth_role', 'candidate');
+        $requestedRole = $oauthRole === 'employer' ? UserRole::Employer : UserRole::Candidate;
+
         $user = User::query()
             ->where('provider', $provider)
             ->where('provider_id', $socialUser->getId())
@@ -57,21 +60,37 @@ class SocialAuthController extends Controller
                 ->first();
 
             if ($user) {
+                // Existing account found by email — check role mismatch
+                if ($user->role !== $requestedRole) {
+                    $existingRole = $user->role === UserRole::Employer ? 'роботодавець' : 'кандидат';
+                    $requestedRoleLabel = $requestedRole === UserRole::Employer ? 'роботодавця' : 'кандидата';
+
+                    return redirect()->route('login')->withErrors([
+                        'email' => "Цей Google-акаунт вже зареєстрований як {$existingRole}. Увійдіть як {$existingRole} або зареєструйтесь з іншим акаунтом Google.",
+                    ]);
+                }
+
                 $user->update([
                     'provider'    => $provider,
                     'provider_id' => $socialUser->getId(),
                 ]);
             } else {
-                $oauthRole = session()->pull('oauth_role', 'candidate');
-                $role = $oauthRole === 'employer' ? UserRole::Employer : UserRole::Candidate;
-
                 $user = User::create([
                     'name'        => $socialUser->getName() ?? $socialUser->getNickname() ?? 'Користувач',
                     'email'       => $socialUser->getEmail() ?? $socialUser->getId() . '@' . $provider . '.oauth',
                     'password'    => bcrypt(Str::random(32)),
-                    'role'        => $role,
+                    'role'        => $requestedRole,
                     'provider'    => $provider,
                     'provider_id' => $socialUser->getId(),
+                ]);
+            }
+        } else {
+            // Account found by provider_id — check role mismatch
+            if ($user->role !== $requestedRole) {
+                $existingRole = $user->role === UserRole::Employer ? 'роботодавець' : 'кандидат';
+
+                return redirect()->route('login')->withErrors([
+                    'email' => "Цей Google-акаунт вже зареєстрований як {$existingRole}. Увійдіть як {$existingRole} або зареєструйтесь з іншим акаунтом Google.",
                 ]);
             }
         }
