@@ -702,6 +702,46 @@ html[data-theme="dark"] .city-dropdown-empty {
   color: #6B7280 !important;
 }
 
+/* ── Dark theme: form inputs ─────────────────────────────────────── */
+html[data-theme="dark"] input[type="text"],
+html[data-theme="dark"] input[type="email"],
+html[data-theme="dark"] input[type="tel"],
+html[data-theme="dark"] input[type="password"],
+html[data-theme="dark"] input[type="url"],
+html[data-theme="dark"] input[type="number"],
+html[data-theme="dark"] input[type="search"],
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  background-color: #1F2937 !important;
+  color: #F1F5F9 !important;
+  border-color: #4B5563 !important;
+}
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: #6B7280 !important;
+}
+html[data-theme="dark"] input:focus,
+html[data-theme="dark"] textarea:focus,
+html[data-theme="dark"] select:focus {
+  border-color: #3B82F6 !important;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.25) !important;
+}
+html[data-theme="dark"] .border-gray-300 {
+  border-color: #4B5563 !important;
+}
+html[data-theme="dark"] .border-gray-200 {
+  border-color: #374151 !important;
+}
+html[data-theme="dark"] .text-gray-300 {
+  color: #9CA3AF !important;
+}
+html[data-theme="dark"] .text-gray-200 {
+  color: #D1D5DB !important;
+}
+html[data-theme="dark"] .bg-gray-200 {
+  background-color: #374151 !important;
+}
+
 /* ── Dark theme: Employer / Seeker dashboard (Tailwind overrides) ── */
 html[data-theme="dark"] .bg-white {
   background-color: #1F2937 !important;
