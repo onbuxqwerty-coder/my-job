@@ -22,6 +22,12 @@ class SocialAuthController extends Controller
     {
         abort_unless(in_array($provider, self::ALLOWED_PROVIDERS, true), 404);
 
+        $role = in_array(request('role'), ['candidate', 'employer'], true)
+            ? request('role')
+            : 'candidate';
+
+        session(['oauth_role' => $role]);
+
         return Socialite::driver($provider)->redirect();
     }
 
@@ -56,11 +62,14 @@ class SocialAuthController extends Controller
                     'provider_id' => $socialUser->getId(),
                 ]);
             } else {
+                $oauthRole = session()->pull('oauth_role', 'candidate');
+                $role = $oauthRole === 'employer' ? UserRole::Employer : UserRole::Candidate;
+
                 $user = User::create([
                     'name'        => $socialUser->getName() ?? $socialUser->getNickname() ?? 'Користувач',
                     'email'       => $socialUser->getEmail() ?? $socialUser->getId() . '@' . $provider . '.oauth',
                     'password'    => bcrypt(Str::random(32)),
-                    'role'        => UserRole::Candidate,
+                    'role'        => $role,
                     'provider'    => $provider,
                     'provider_id' => $socialUser->getId(),
                 ]);

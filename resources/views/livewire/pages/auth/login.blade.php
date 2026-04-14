@@ -146,7 +146,7 @@ new #[Layout('layouts.guest')] class extends Component
         <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
 
             {{-- Google --}}
-            <a href="{{ route('social.redirect', 'google') }}"
+            <a href="{{ route('social.redirect', ['provider' => 'google', 'role' => $role]) }}"
                class="google-btn"
                style="display:flex; align-items:center; justify-content:center; gap:12px;
                       height:48px; border:1px solid #dadce0; border-radius:8px;
