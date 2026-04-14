@@ -741,6 +741,10 @@ html[data-theme="dark"] .min-h-screen.bg-gray-50 {
   background-color: #111827 !important;
 }
 
+html[data-theme="dark"] .employer-heading {
+  color: #F1F5F9 !important;
+}
+
 /* ── Dark theme toggle button ────────────────────────────────────── */
 .dark-toggle {
   width: 40px;
