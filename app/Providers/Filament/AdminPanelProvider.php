@@ -74,6 +74,9 @@ class AdminPanelProvider extends PanelProvider
                     [data-sidebar-collapsed] .fi-main { max-width: 100% !important; }
                     html.dark body,
                     html.dark .fi-body { background-color: #111827 !important; }
+                    .filepond--image-preview-wrapper,
+                    .filepond--image-preview { background: #f3f4f6 !important; }
+                    .filepond--panel-root { background: #f9fafb !important; }
                 </style>
                 '),
             )
