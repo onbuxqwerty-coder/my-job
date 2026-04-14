@@ -140,8 +140,8 @@ new #[Layout('layouts.app')] class extends Component
                     </div>
 
                     <div class="mj-job-logo-wrap">
-                        @if($vacancy->company->logo)
-                            <img src="{{ $vacancy->company->logo }}"
+                        @if($vacancy->company->logo_url)
+                            <img src="{{ $vacancy->company->logo_url }}"
                                  alt="{{ $vacancy->company->name }}"
                                  class="mj-job-logo-img"/>
                         @else
@@ -260,8 +260,8 @@ new #[Layout('layouts.app')] class extends Component
                 {{-- Company Block --}}
                 <div class="mj-company-block">
                     <div class="mj-company-block-logo">
-                        @if($vacancy->company->logo)
-                            <img src="{{ $vacancy->company->logo }}"
+                        @if($vacancy->company->logo_url)
+                            <img src="{{ $vacancy->company->logo_url }}"
                                  alt="{{ $vacancy->company->name }}"
                                  class="mj-company-block-logo-img"/>
                         @else
@@ -449,8 +449,8 @@ new #[Layout('layouts.app')] class extends Component
                             @foreach($this->relatedVacancies->take(4) as $related)
                                 <a href="{{ route('jobs.show', $related) }}" class="mj-sidebar-related-item">
                                     <div class="mj-sidebar-related-logo">
-                                        @if($related->company->logo)
-                                            <img src="{{ $related->company->logo }}" alt="{{ $related->company->name }}"/>
+                                        @if($related->company->logo_url)
+                                            <img src="{{ $related->company->logo_url }}" alt="{{ $related->company->name }}"/>
                                         @else
                                             {{ strtoupper(substr($related->company->name, 0, 1)) }}
                                         @endif
@@ -498,8 +498,8 @@ new #[Layout('layouts.app')] class extends Component
                         <a href="{{ route('jobs.show', $related) }}" class="mj-related-card">
                             <div class="mj-related-card-top">
                                 <div class="mj-related-card-logo">
-                                    @if($related->company->logo)
-                                        <img src="{{ $related->company->logo }}" alt="{{ $related->company->name }}"/>
+                                    @if($related->company->logo_url)
+                                        <img src="{{ $related->company->logo_url }}" alt="{{ $related->company->name }}"/>
                                     @else
                                         {{ strtoupper(substr($related->company->name, 0, 1)) }}
                                     @endif

@@ -90,8 +90,8 @@ new #[Layout('layouts.app')] class extends Component
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
             <div class="flex items-start gap-4">
                 <div class="w-14 h-14 rounded-xl bg-blue-50 border border-gray-100 flex items-center justify-center font-bold text-blue-600 text-lg shrink-0 overflow-hidden">
-                    @if($company->logo)
-                        <img src="{{ Storage::disk('public')->url($company->logo) }}" alt="{{ $company->name }}" class="w-full h-full object-cover">
+                    @if($company->logo_url)
+                        <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="w-full h-full object-cover">
                     @else
                         {{ mb_strtoupper(mb_substr($company->name, 0, 1)) }}
                     @endif

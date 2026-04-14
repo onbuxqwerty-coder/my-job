@@ -132,8 +132,8 @@ new #[Layout('layouts.app')] class extends Component
 
                     {{-- Company logo --}}
                     <div class="w-11 h-11 rounded-xl bg-blue-50 border border-gray-100 flex items-center justify-center font-bold text-blue-600 shrink-0 overflow-hidden">
-                        @if($app->vacancy->company->logo)
-                            <img src="{{ Storage::disk('public')->url($app->vacancy->company->logo) }}"
+                        @if($app->vacancy->company->logo_url)
+                            <img src="{{ $app->vacancy->company->logo_url }}"
                                  alt="{{ $app->vacancy->company->name }}"
                                  class="w-full h-full object-cover">
                         @else

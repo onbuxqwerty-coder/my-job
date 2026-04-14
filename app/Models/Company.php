@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Company extends Model
 {
@@ -33,6 +34,23 @@ class Company extends Model
         return [
             'is_verified' => 'boolean',
         ];
+    }
+
+    /**
+     * Returns a normalized public URL for the logo,
+     * handling both stored path ("logos/file.jpg") and legacy full URL ("/storage/logos/file.jpg").
+     */
+    public function getLogoUrlAttribute(): ?string
+    {
+        if (!$this->logo) {
+            return null;
+        }
+
+        if (str_starts_with($this->logo, 'http') || str_starts_with($this->logo, '/storage')) {
+            return $this->logo;
+        }
+
+        return Storage::disk('public')->url($this->logo);
     }
 
     public function user(): BelongsTo

@@ -353,8 +353,8 @@ new #[Layout('layouts.app')] class extends Component
 
                             {{-- Logo --}}
                             <div class="job-logo">
-                                @if($vacancy->company->logo)
-                                    <img src="{{ $vacancy->company->logo }}" alt="{{ $vacancy->company->name }}"/>
+                                @if($vacancy->company->logo_url)
+                                    <img src="{{ $vacancy->company->logo_url }}" alt="{{ $vacancy->company->name }}"/>
                                 @else
                                     {{ strtoupper(substr($vacancy->company->name, 0, 1)) }}
                                 @endif

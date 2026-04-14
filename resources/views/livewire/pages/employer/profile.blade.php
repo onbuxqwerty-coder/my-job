@@ -54,9 +54,7 @@ new #[Layout('layouts.app')] class extends Component
         ];
 
         if ($this->logo) {
-            $data['logo'] = Storage::url(
-                $this->logo->store('logos', 'public')
-            );
+            $data['logo'] = $this->logo->store('logos', 'public');
         }
 
         Company::updateOrCreate(
@@ -123,6 +121,15 @@ new #[Layout('layouts.app')] class extends Component
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Логотип</label>
+                    @php $currentLogo = auth()->user()->company?->logo_url; @endphp
+                    @if($currentLogo)
+                        <div class="mb-2 flex items-center gap-3">
+                            <img src="{{ $currentLogo }}"
+                                 alt="Логотип"
+                                 class="w-16 h-16 object-contain rounded-xl border border-gray-200 bg-gray-50 p-1">
+                            <span class="text-xs text-gray-400">Поточний логотип</span>
+                        </div>
+                    @endif
                     <input type="file" wire:model="logo" accept="image/*"
                            class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700"/>
                     @error('logo') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
