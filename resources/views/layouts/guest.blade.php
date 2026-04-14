@@ -9,7 +9,7 @@
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900&display=swap" rel="stylesheet" />
-        <link rel="icon" type="image/webp" href="{{ asset('img/logo/mj-logo-200x200.webp') }}">
+        <link rel="icon" type="image/webp" href="{{ asset('img/logo/favicon.ico') }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script>

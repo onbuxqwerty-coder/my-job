@@ -31,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName('')
-            ->favicon(asset('img/logo/mj-logo-200x200.webp'))
+            ->favicon(asset('img/logo/favicon.ico'))
             ->sidebarCollapsibleOnDesktop()
             ->login()
             ->colors([
