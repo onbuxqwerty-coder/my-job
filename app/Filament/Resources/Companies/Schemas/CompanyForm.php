@@ -35,8 +35,8 @@ class CompanyForm
                     ->image()
                     ->disk('public')
                     ->directory('logos')
-                    ->imagePreviewHeight('80')
-                    ->panelAspectRatio('2:1')
+                    ->imagePreviewHeight('150')
+                    ->panelAspectRatio('1:1')
                     ->panelLayout('integrated')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
                     ->maxSize(2048),

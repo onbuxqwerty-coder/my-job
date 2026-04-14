@@ -77,6 +77,7 @@ class AdminPanelProvider extends PanelProvider
                     .filepond--image-preview-wrapper,
                     .filepond--image-preview { background: #f3f4f6 !important; }
                     .filepond--panel-root { background: #f9fafb !important; }
+                    .fi-fo-file-upload .filepond--root { width: 150px !important; height: 150px !important; }
                 </style>
                 '),
             )
