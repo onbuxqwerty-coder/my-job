@@ -25,10 +25,10 @@ new #[Layout('layouts.app')] class extends Component
         $company = auth()->user()->company;
 
         if ($company) {
-            $this->name        = $company->name;
-            $this->description = $company->description;
-            $this->website     = $company->website ?? '';
-            $this->location    = $company->location;
+            $this->name        = $company->name        ?? '';
+            $this->description = $company->description ?? '';
+            $this->website     = $company->website     ?? '';
+            $this->location    = $company->location    ?? '';
             $this->cityId      = (string) ($company->city_id ?? '');
         }
     }
@@ -107,7 +107,7 @@ new #[Layout('layouts.app')] class extends Component
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Вебсайт</label>
-                    <input type="url" wire:model="website" placeholder="https://"
+                    <input type="text" wire:model="website" placeholder="https://example.com"
                            class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     @error('website') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
