@@ -36,6 +36,8 @@ class CompanyForm
                     ->disk('public')
                     ->directory('logos')
                     ->imagePreviewHeight('80')
+                    ->panelAspectRatio('2:1')
+                    ->panelLayout('integrated')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
                     ->maxSize(2048),
                 Textarea::make('description')
