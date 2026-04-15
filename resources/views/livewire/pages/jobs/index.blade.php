@@ -108,7 +108,7 @@ new #[Layout('layouts.app')] class extends Component
     <div class="index-hero-bg" style="border-bottom: 1px solid var(--color-border); padding: var(--spacing-3xl) var(--spacing-lg);">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
             <h1 class="hero-title">
-                New job search service in Ukraine
+                Новий сервіс пошуку роботи в Україні
             </h1>
             <p style="font-size: 14px; color: var(--color-text-gray); margin-bottom: var(--spacing-xl);">
                 Тисячі вакансій по всій Україні
