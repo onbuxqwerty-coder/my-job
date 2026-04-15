@@ -28,7 +28,7 @@ class SocialAuthController extends Controller
 
         session(['oauth_role' => $role]);
 
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)->with(['prompt' => 'select_account'])->redirect();
     }
 
     /**
