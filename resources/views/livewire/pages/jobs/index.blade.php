@@ -157,7 +157,7 @@ new #[Layout('layouts.app')] class extends Component
             color: var(--color-text-dark);
             transition: all var(--transition-fast);
             outline: none;
-            background: #d2d2d2;
+            background: #ffffff;
             min-width: 0;
             box-sizing: border-box;
         }
