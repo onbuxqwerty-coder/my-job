@@ -592,6 +592,23 @@ html[data-theme="dark"] .job-card--hot-top {
   background-color: #1F2937 !important;
 }
 
+/* Index page — light theme backgrounds */
+.index-hero-bg {
+  background: #d2d2d2;
+}
+
+/* Index page — dark theme overrides */
+html[data-theme="dark"] .mj-filters {
+  background: #1F2937 !important;
+}
+html[data-theme="dark"] .index-hero-bg {
+  background: #1F2937 !important;
+}
+html[data-theme="dark"] .hero-search-input {
+  background: #1F2937 !important;
+  color: #F1F5F9 !important;
+}
+
 /* Radio hover */
 html[data-theme="dark"] .radio-item:hover {
   background-color: #374151 !important;
