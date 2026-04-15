@@ -843,3 +843,13 @@ html[data-theme="dark"] .employer-heading {
 .dark .seeker-dashboard-bg {
     background-image: none;
 }
+
+/* Employer dashboard card — 3px border light theme only */
+.employer-card-border {
+    border-width: 3px;
+    border-color: #D1D5DB;
+}
+html[data-theme="dark"] .employer-card-border {
+    border-width: 1px;
+    border-color: #374151;
+}

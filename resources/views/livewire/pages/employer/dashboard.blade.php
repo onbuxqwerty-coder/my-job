@@ -77,7 +77,7 @@ new #[Layout('layouts.app')] class extends Component
         @else
 
             {{-- Vacancies table --}}
-            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <div class="bg-white rounded-2xl border employer-card-border overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100">
                     <h2 class="text-base font-semibold text-gray-900">Мої вакансії</h2>
                 </div>
