@@ -156,7 +156,7 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen seeker-dashboard-bg dark:bg-gray-900">
     <x-employer-tabs />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -182,7 +182,7 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         {{-- Filters --}}
-        <div class="bg-white rounded-2xl border border-gray-200 p-4 mb-5 flex flex-wrap items-center gap-3">
+        <div class="bg-white rounded-2xl border employer-card-border p-4 mb-5 flex flex-wrap items-center gap-3">
 
             {{-- Status --}}
             <select wire:model.live="filterStatus"
@@ -237,7 +237,7 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         {{-- Table --}}
-        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-2xl border employer-card-border overflow-hidden">
             @if($this->applications->isEmpty())
                 <div class="p-16 text-center text-gray-400">
                     {{ $this->hasActiveFilters ? 'Кандидатів за цими фільтрами не знайдено.' : 'Відгуків ще немає.' }}

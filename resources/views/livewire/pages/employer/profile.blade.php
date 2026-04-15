@@ -67,7 +67,7 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen seeker-dashboard-bg dark:bg-gray-900">
     <x-employer-tabs />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -76,7 +76,7 @@ new #[Layout('layouts.app')] class extends Component
             <h2 class="text-lg font-semibold text-gray-900">Профіль компанії</h2>
         </div>
 
-        <div class="bg-white rounded-2xl border border-gray-200 p-8">
+        <div class="bg-white rounded-2xl border employer-card-border p-8">
             @if($saved)
                 <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
                     ✅ Профіль успішно збережено.

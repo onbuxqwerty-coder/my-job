@@ -212,7 +212,7 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen seeker-dashboard-bg dark:bg-gray-900">
     <x-employer-tabs />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -243,21 +243,21 @@ new #[Layout('layouts.app')] class extends Component
 
         {{-- ===== KPI CARDS ===== --}}
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white rounded-2xl border border-gray-200 p-5">
+            <div class="bg-white rounded-2xl border employer-card-border p-5">
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Активні вакансії</p>
                 <p class="text-3xl font-bold text-gray-900">{{ $s['activeVacancies'] }}</p>
             </div>
-            <div class="bg-white rounded-2xl border border-gray-200 p-5">
+            <div class="bg-white rounded-2xl border employer-card-border p-5">
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Кандидатів</p>
                 <p class="text-3xl font-bold text-blue-600">{{ $s['totalApplications'] }}</p>
                 <p class="text-xs text-gray-400 mt-1">за обраний період</p>
             </div>
-            <div class="bg-white rounded-2xl border border-gray-200 p-5">
+            <div class="bg-white rounded-2xl border employer-card-border p-5">
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Конвертація</p>
                 <p class="text-3xl font-bold text-green-600">{{ $s['conversionRate'] }}%</p>
                 <p class="text-xs text-gray-400 mt-1">{{ $s['hiredCount'] }} найнято</p>
             </div>
-            <div class="bg-white rounded-2xl border border-gray-200 p-5">
+            <div class="bg-white rounded-2xl border employer-card-border p-5">
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Сер. рейтинг</p>
                 <p class="text-3xl font-bold text-amber-500">
                     {{ $s['avgRating'] ? number_format($s['avgRating'], 1) : '—' }}
@@ -269,7 +269,7 @@ new #[Layout('layouts.app')] class extends Component
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
             {{-- ===== CONVERSION FUNNEL ===== --}}
-            <div class="bg-white rounded-2xl border border-gray-200 p-6">
+            <div class="bg-white rounded-2xl border employer-card-border p-6">
                 <h2 class="text-sm font-semibold text-gray-900 mb-5">Воронка конвертації</h2>
 
                 @php
@@ -311,7 +311,7 @@ new #[Layout('layouts.app')] class extends Component
             </div>
 
             {{-- ===== TREND CHART ===== --}}
-            <div class="bg-white rounded-2xl border border-gray-200 p-6">
+            <div class="bg-white rounded-2xl border employer-card-border p-6">
                 <h2 class="text-sm font-semibold text-gray-900 mb-5">Тренд подачі заявок</h2>
 
                 @php
@@ -371,7 +371,7 @@ new #[Layout('layouts.app')] class extends Component
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
             {{-- ===== TOP-5 VACANCIES ===== --}}
-            <div class="bg-white rounded-2xl border border-gray-200 p-6">
+            <div class="bg-white rounded-2xl border employer-card-border p-6">
                 <h2 class="text-sm font-semibold text-gray-900 mb-4">Топ-5 вакансій</h2>
 
                 @if($s['topVacancies']->isEmpty())
@@ -399,7 +399,7 @@ new #[Layout('layouts.app')] class extends Component
             </div>
 
             {{-- ===== TEAM ACTIVITY ===== --}}
-            <div class="bg-white rounded-2xl border border-gray-200 p-6">
+            <div class="bg-white rounded-2xl border employer-card-border p-6">
                 <h2 class="text-sm font-semibold text-gray-900 mb-4">Активність команди</h2>
 
                 @if(empty($s['teamActivity']))
