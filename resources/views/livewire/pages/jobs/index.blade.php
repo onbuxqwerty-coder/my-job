@@ -44,6 +44,12 @@ new #[Layout('layouts.app')] class extends Component
     #[Url(history: true)]
     public array $suitability = [];
 
+    #[Url(history: true)]
+    public int $perPage = 10;
+
+    /** @var array<int> */
+    public array $perPageOptions = [10, 25, 50];
+
     public function updatingSearch(): void         { $this->resetPage(); }
     public function updatingCityId(): void         { $this->resetPage(); }
     public function updatingCategoryId(): void     { $this->resetPage(); }
@@ -52,10 +58,11 @@ new #[Layout('layouts.app')] class extends Component
     public function updatingSalaryMax(): void      { $this->resetPage(); }
     public function updatingLanguages(): void      { $this->resetPage(); }
     public function updatingSuitability(): void    { $this->resetPage(); }
+    public function updatingPerPage(): void        { $this->resetPage(); }
 
     public function clearFilters(): void
     {
-        $this->reset(['search', 'cityId', 'categoryId', 'employmentType', 'salaryMin', 'salaryMax', 'languages', 'suitability']);
+        $this->reset(['search', 'cityId', 'categoryId', 'employmentType', 'salaryMin', 'salaryMax', 'languages', 'suitability', 'perPage']);
         $this->resetPage();
     }
 
@@ -71,6 +78,7 @@ new #[Layout('layouts.app')] class extends Component
             languages:      $this->languages,
             suitability:    $this->suitability,
             cityId:         $this->cityId ? (int) $this->cityId : null,
+            perPage:        in_array($this->perPage, $this->perPageOptions) ? $this->perPage : 10,
         ));
     }
 
@@ -304,10 +312,24 @@ new #[Layout('layouts.app')] class extends Component
                 <span>
                     Знайдено <strong style="color: var(--color-text-dark);">{{ $this->vacancies->total() }}</strong> вакансій
                 </span>
-                {{-- Hamburger (mobile only) --}}
-                <button class="mj-hamburger" @click="filtersOpen = true" aria-label="Відкрити фільтри">
-                    ☰
-                </button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label for="per-page-select" style="font-size: 13px; color: var(--color-text-gray); white-space: nowrap;">
+                        Показувати:
+                    </label>
+                    <select id="per-page-select"
+                            wire:model.live="perPage"
+                            style="height: 34px; padding: 0 8px; font-size: 13px; border: 1px solid #a7a7a7;
+                                   border-radius: var(--radius-md); background: var(--color-bg-card);
+                                   color: var(--color-text-dark); cursor: pointer;">
+                        @foreach($perPageOptions as $option)
+                            <option value="{{ $option }}">{{ $option }}</option>
+                        @endforeach
+                    </select>
+                    {{-- Hamburger (mobile only) --}}
+                    <button class="mj-hamburger" @click="filtersOpen = true" aria-label="Відкрити фільтри">
+                        ☰
+                    </button>
+                </div>
             </div>
 
             {{-- Vacancy cards --}}
