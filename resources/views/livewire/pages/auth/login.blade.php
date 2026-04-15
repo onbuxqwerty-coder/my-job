@@ -156,7 +156,7 @@ new #[Layout('layouts.guest')] class extends Component
             <a href="{{ route('social.redirect', ['provider' => 'google', 'role' => $role]) }}"
                class="google-btn"
                style="display:flex; align-items:center; justify-content:center; gap:12px;
-                      height:48px; border:1px solid #dadce0; border-radius:8px;
+                      height:48px; border:1px solid #a7a7a7; border-radius:8px;
                       font-size:15px; font-weight:600; color:#3c4043;
                       background:#fff; text-decoration:none; transition:background-color 0.2s;"
                onmouseover="this.style.backgroundColor='#f8f9fa'"
@@ -176,7 +176,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- ======= КРОК 1: ТЕЛЕФОН ======= --}}
     @if($step === 'phone')
-        <div class="login-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
+        <div class="login-card" style="background:#fff; border:1px solid #a7a7a7; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
             <form wire:submit="sendOtp">
                 <input
                     class="login-input"
@@ -231,7 +231,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- ======= КРОК 2: OTP КОД ======= --}}
     @if($step === 'otp')
-        <div class="login-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
+        <div class="login-card" style="background:#fff; border:1px solid #a7a7a7; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
             <div class="otp-info-box" style="margin-bottom:16px; padding:12px; background:#f0f7ff; border-radius:8px;">
                 <p style="font-size:14px; color:#555; margin:0;">
                     Код надіслано на номер <strong style="color:#1a1a1a;">{{ $phone }}</strong><br>
@@ -291,7 +291,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- ======= EMAIL ЛОГІН ======= --}}
     @if($step === 'email')
-        <div class="login-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
+        <div class="login-card" style="background:#fff; border:1px solid #a7a7a7; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form wire:submit="login">
