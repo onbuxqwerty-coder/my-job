@@ -105,7 +105,7 @@ new #[Layout('layouts.app')] class extends Component
 <div x-data="{ filtersOpen: false }" class="seeker-dashboard-bg dark:bg-gray-900">
 
     {{-- Hero / Search --}}
-    <div style="background: var(--color-bg-white); border-bottom: 1px solid var(--color-border); padding: var(--spacing-3xl) var(--spacing-lg);">
+    <div style="background: #d2d2d2; border-bottom: 1px solid var(--color-border); padding: var(--spacing-3xl) var(--spacing-lg);">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
             <h1 class="hero-title">
                 Знайди свою роботу
@@ -157,7 +157,7 @@ new #[Layout('layouts.app')] class extends Component
             color: var(--color-text-dark);
             transition: all var(--transition-fast);
             outline: none;
-            background: var(--color-bg-white);
+            background: #d2d2d2;
             min-width: 0;
             box-sizing: border-box;
         }
@@ -374,7 +374,7 @@ new #[Layout('layouts.app')] class extends Component
 
                 </a>
             @empty
-                <div style="background: var(--color-bg-white); border: 1px solid var(--color-border);
+                <div style="background: #d2d2d2; border: 1px solid var(--color-border);
                             border-radius: var(--radius-lg); padding: 64px var(--spacing-xl); text-align: center;">
                     <svg style="width: 48px; height: 48px; color: var(--color-text-light-gray); margin: 0 auto var(--spacing-lg);"
                          fill="none" viewBox="0 0 24 24" stroke="currentColor">
