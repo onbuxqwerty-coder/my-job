@@ -803,3 +803,13 @@ html[data-theme="dark"] .employer-heading {
 .dark-toggle:hover {
   background: rgba(255,255,255,0.2);
 }
+
+.seeker-dashboard-bg {
+    background-image: url('/img/bg-main.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+.dark .seeker-dashboard-bg {
+    background-image: none;
+}
