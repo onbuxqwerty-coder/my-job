@@ -587,6 +587,11 @@ html[data-theme="dark"] .job-card--featured {
   border-color: #92400E !important;
 }
 
+/* Seeker dashboard header title */
+html[data-theme="dark"] .seeker-header-title {
+  color: #F1F5F9 !important;
+}
+
 /* Hot-top card */
 html[data-theme="dark"] .job-card--hot-top {
   background-color: #1F2937 !important;

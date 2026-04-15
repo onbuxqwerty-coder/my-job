@@ -32,7 +32,7 @@
             {{-- Left: user name --}}
             <div style="flex-shrink:0;">
                 <p style="font-size:11px; font-weight:700; color:#9ca3af; text-transform:uppercase; letter-spacing:.08em; margin-bottom:2px;">Кабінет шукача</p>
-                <h1 style="font-size:1.2rem; font-weight:800; color:#111827; line-height:1.3; margin:0;">
+                <h1 class="seeker-header-title" style="font-size:1.2rem; font-weight:800; color:#111827; line-height:1.3; margin:0;">
                     {{ $user->name }}
                 </h1>
             </div>
