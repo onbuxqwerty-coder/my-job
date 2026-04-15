@@ -618,6 +618,7 @@ html[data-theme="dark"] .job-card--hot-top {
 /* Index page — dark theme overrides */
 html[data-theme="dark"] .mj-filters {
   background: #1F2937 !important;
+  border-color: #374151 !important;
 }
 html[data-theme="dark"] .index-hero-bg {
   background: #1F2937 !important;
