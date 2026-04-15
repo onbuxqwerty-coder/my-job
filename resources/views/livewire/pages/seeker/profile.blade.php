@@ -62,7 +62,7 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen seeker-dashboard-bg dark:bg-gray-900">
     <x-seeker-tabs />
 
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
