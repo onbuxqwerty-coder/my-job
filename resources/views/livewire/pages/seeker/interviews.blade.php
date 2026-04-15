@@ -124,7 +124,7 @@ new #[Layout('layouts.app')] class extends Component
                     </div>
                 </div>
             @empty
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm py-16 text-center text-gray-400">
+                <div class="bg-white rounded-2xl border employer-card-border shadow-sm py-16 text-center text-gray-400">
                     <p class="text-sm">{{ $tab === 'upcoming' ? 'Немає запланованих співбесід' : 'Минулих співбесід немає' }}</p>
                 </div>
             @endforelse

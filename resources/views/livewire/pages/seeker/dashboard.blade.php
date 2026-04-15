@@ -87,7 +87,7 @@ new #[Layout('layouts.app')] class extends Component
                 ];
             @endphp
             @foreach($statCards as $card)
-                <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center shadow-sm">
+                <div class="bg-white rounded-2xl border employer-card-border p-5 text-center shadow-sm">
                     <p style="font-size:2rem; font-weight:800; color:{{ $card['color'] }}; line-height:1;">{{ $card['value'] }}</p>
                     <p class="text-xs text-gray-500 mt-1">{{ $card['label'] }}</p>
                 </div>
@@ -97,7 +97,7 @@ new #[Layout('layouts.app')] class extends Component
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
             {{-- Upcoming interviews --}}
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="bg-white rounded-2xl border employer-card-border shadow-sm overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h2 class="text-base font-semibold text-gray-900">Найближчі співбесіди</h2>
                     <a href="{{ route('seeker.interviews') }}" class="text-sm text-blue-600 hover:underline">Всі →</a>
@@ -130,7 +130,7 @@ new #[Layout('layouts.app')] class extends Component
             </div>
 
             {{-- Recent applications --}}
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="bg-white rounded-2xl border employer-card-border shadow-sm overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h2 class="text-base font-semibold text-gray-900">Останні заявки</h2>
                     <a href="{{ route('seeker.applications') }}" class="text-sm text-blue-600 hover:underline">Всі →</a>
@@ -168,7 +168,7 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         {{-- Recommended vacancies --}}
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="bg-white rounded-2xl border employer-card-border shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-100">
                 <h2 class="text-base font-semibold text-gray-900">Рекомендовані вакансії</h2>
             </div>

@@ -67,7 +67,7 @@ new #[Layout('layouts.app')] class extends Component
 
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="bg-white rounded-2xl border employer-card-border shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-100">
                 <h2 class="text-base font-semibold text-gray-900">Особисті дані</h2>
             </div>

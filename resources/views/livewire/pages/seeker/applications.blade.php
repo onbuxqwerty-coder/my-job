@@ -125,7 +125,7 @@ new #[Layout('layouts.app')] class extends Component
             ];
         @endphp
 
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="bg-white rounded-2xl border employer-card-border shadow-sm overflow-hidden">
             @forelse($this->applications as $app)
                 <a href="{{ route('seeker.application.detail', $app->id) }}"
                    class="flex items-center gap-4 px-6 py-4 border-b border-gray-50 last:border-b-0 hover:bg-gray-50 transition-colors group">
