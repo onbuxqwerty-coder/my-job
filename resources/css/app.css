@@ -862,3 +862,10 @@ html[data-theme="dark"] .employer-card-border {
     border-width: 1px;
     border-color: #374151;
 }
+
+/* Global border override — light theme: all Tailwind gray borders → #a7a7a7 */
+html:not([data-theme="dark"]) .border-gray-100,
+html:not([data-theme="dark"]) .border-gray-200,
+html:not([data-theme="dark"]) .border-gray-300 {
+    border-color: #a7a7a7 !important;
+}
