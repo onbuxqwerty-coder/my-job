@@ -40,7 +40,7 @@
             {{-- Center: stats --}}
             <div style="display:flex; align-items:center; gap:20px;">
                 <div style="display:flex; align-items:baseline; gap:6px;">
-                    <span style="font-size:1.5rem; font-weight:800; color:#111827;">{{ $totalApps }}</span>
+                    <span class="seeker-header-title" style="font-size:1.5rem; font-weight:800; color:#111827;">{{ $totalApps }}</span>
                     <span style="font-size:0.75rem; color:#9ca3af; white-space:nowrap;">всього заявок</span>
                 </div>
                 <div style="width:1px; height:20px; background:#e5e7eb;"></div>
