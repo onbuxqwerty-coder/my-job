@@ -20,7 +20,7 @@
             })();
         </script>
     </head>
-    <body class="font-sans antialiased guest-body" style="min-height: 100vh; display: flex; flex-direction: column; background-color: #f0f2f5;">
+    <body class="font-sans antialiased guest-body seeker-dashboard-bg" style="min-height: 100vh; display: flex; flex-direction: column; background-color: #f0f2f5;">
 
         <x-header />
 
