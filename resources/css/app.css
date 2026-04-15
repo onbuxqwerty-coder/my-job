@@ -853,10 +853,10 @@ html[data-theme="dark"] .employer-heading {
     background-image: none;
 }
 
-/* Employer dashboard card — 3px border light theme only */
+/* Card border — light theme */
 .employer-card-border {
-    border-width: 3px;
-    border-color: #D1D5DB;
+    border-width: 1px;
+    border-color: #a7a7a7;
 }
 html[data-theme="dark"] .employer-card-border {
     border-width: 1px;
