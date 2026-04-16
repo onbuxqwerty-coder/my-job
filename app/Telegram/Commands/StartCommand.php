@@ -89,8 +89,8 @@ final class StartCommand
         // Зберігаємо токен для подальшої обробки контакту
         Cache::put("tg_auth_pending:{$telegramId}", $token, 300);
 
-        $keyboard = ReplyKeyboardMarkup::make(oneTimeKeyboard: true, resizeKeyboard: true)
-            ->addRow(KeyboardButton::make('📱 Поділитися контактом', requestContact: true));
+        $keyboard = ReplyKeyboardMarkup::make(one_time_keyboard: true, resize_keyboard: true)
+            ->addRow(KeyboardButton::make('📱 Поділитися контактом', request_contact: true));
 
         $bot->sendMessage(
             text: "👋 <b>Вхід на My Job</b>\n\nНатисніть кнопку нижче, щоб підтвердити свій номер телефону та авторизуватися на сайті.",
