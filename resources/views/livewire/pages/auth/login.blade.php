@@ -211,7 +211,7 @@ new #[Layout('layouts.guest')] class extends Component
                 </p>
             </form>
 
-            <hr style="border:none; border-top:1px solid #e0e0e0; margin:16px 0;">
+            <hr style="border:none; border-top:1px solid #a7a7a7; margin:16px 0;">
 
             <button wire:click="showEmailLogin"
                     class="login-email-btn"
