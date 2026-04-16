@@ -14,10 +14,8 @@ new #[Layout('layouts.app')] class extends Component
     #[Validate('required|email|max:100')]
     public string $email = '';
 
-    #[Validate('nullable|string|max:20')]
     public string $phone = '';
 
-    #[Validate('nullable|numeric|min:1000000000|max:9999999999')]
     public string $telegram_id = '';
 
     #[Validate('nullable|string|min:8')]
@@ -39,7 +37,16 @@ new #[Layout('layouts.app')] class extends Component
 
     public function save(): void
     {
-        $this->validate();
+        $userId = auth()->id();
+
+        $this->validate([
+            'name'                  => 'required|string|min:2|max:100',
+            'email'                 => 'required|email|max:100|unique:users,email,' . $userId,
+            'phone'                 => 'nullable|string|max:20|unique:users,phone,' . $userId,
+            'telegram_id'           => 'nullable|numeric|min:1000000000|max:9999999999|unique:users,telegram_id,' . $userId,
+            'password'              => 'nullable|string|min:8',
+            'password_confirmation' => 'nullable|string|same:password',
+        ]);
 
         $data = [
             'name'        => $this->name,
