@@ -74,6 +74,11 @@ final class StartCommand
     {
         $telegramId = $bot->userId();
 
+        \Illuminate\Support\Facades\Log::info('handleAuthDeepLink', [
+            'telegramId' => $telegramId,
+            'token'      => substr($token, 0, 8),
+        ]);
+
         if (! $telegramId || ! $token) {
             $bot->sendMessage('❌ Недійсне посилання. Спробуйте ще раз на сайті.');
             return;
@@ -90,6 +95,8 @@ final class StartCommand
             parse_mode: 'HTML',
             reply_markup: $keyboard,
         );
+
+        \Illuminate\Support\Facades\Log::info('handleAuthDeepLink: message sent', ['telegramId' => $telegramId]);
     }
 
     private function handleAccountLink(Nutgram $bot, string $token): void
