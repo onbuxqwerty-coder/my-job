@@ -74,7 +74,7 @@ class AdminPanelProvider extends PanelProvider
                     [data-sidebar-collapsed] .fi-main-ctn,
                     [data-sidebar-collapsed] .fi-main { max-width: 100% !important; }
                     body, .fi-body {
-                        background-image: url('/img/bg-main.webp?v=3');
+                        background-image: url("/img/bg-main.webp?v=3");
                         background-size: auto;
                         background-attachment: fixed;
                         background-repeat: repeat;
