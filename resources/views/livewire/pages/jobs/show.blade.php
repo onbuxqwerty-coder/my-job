@@ -761,7 +761,7 @@ new #[Layout('layouts.app')] class extends Component
 .mj-desc-body {
     font-size: 18px;
     line-height: 1.8;
-    color: #374151;
+    color: var(--color-text-dark);
 }
 .mj-desc-body br { display: block; content: ''; margin-top: 4px; }
 

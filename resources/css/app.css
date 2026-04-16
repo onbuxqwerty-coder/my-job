@@ -864,6 +864,47 @@ html[data-theme="dark"] .employer-card-border {
     border-color: #374151;
 }
 
+/* ── Dark theme: Job Show Page ───────────────────────────────────── */
+html[data-theme="dark"] .mj-show-bg {
+  background: #111827 !important;
+}
+html[data-theme="dark"] .mj-show-main,
+html[data-theme="dark"] .mj-apply-card,
+html[data-theme="dark"] .mj-stats-card,
+html[data-theme="dark"] .mj-sidebar-related,
+html[data-theme="dark"] .mj-related-card {
+  background: #1F2937 !important;
+  border-color: #374151 !important;
+}
+html[data-theme="dark"] .mj-salary-block {
+  background: #14532d !important;
+  border-color: #166534 !important;
+}
+html[data-theme="dark"] .mj-suit-row {
+  background: #1F2937 !important;
+  border-color: #374151 !important;
+}
+html[data-theme="dark"] .mj-tag--gray     { background: #374151 !important; color: #D1D5DB !important; }
+html[data-theme="dark"] .mj-tag--blue     { background: #1e3a5f !important; color: #93C5FD !important; }
+html[data-theme="dark"] .mj-tag--purple   { background: #2e1065 !important; color: #C4B5FD !important; }
+html[data-theme="dark"] .mj-tag--green    { background: #14532d !important; color: #86EFAC !important; }
+html[data-theme="dark"] .mj-tag--orange   { background: #431407 !important; color: #FED7AA !important; }
+html[data-theme="dark"] .mj-tag--category { background: #0c4a6e !important; color: #7DD3FC !important; }
+html[data-theme="dark"] .mj-tag--featured { background: #713f12 !important; color: #FDE68A !important; }
+html[data-theme="dark"] .mj-suit-tag      { background: #2e1065 !important; color: #C4B5FD !important; }
+html[data-theme="dark"] .mj-lang-tag      { background: #0c4a6e !important; color: #7DD3FC !important; }
+html[data-theme="dark"] .mj-tg-share:hover { background: #1e3a5f !important; }
+html[data-theme="dark"] .mj-divider { background: #374151 !important; }
+html[data-theme="dark"] .mj-sidebar-related-item:hover { background: #374151 !important; }
+html[data-theme="dark"] .mj-related-card:hover { border-color: #3B82F6 !important; }
+html[data-theme="dark"] .mj-apply-notice  { background: #374151 !important; }
+html[data-theme="dark"] .mj-apply-notice--success { background: #14532d !important; color: #86EFAC !important; }
+html[data-theme="dark"] .mj-apply-form-close:hover { background: #374151 !important; }
+html[data-theme="dark"] .mj-job-logo-placeholder,
+html[data-theme="dark"] .mj-company-block-logo-placeholder,
+html[data-theme="dark"] .mj-related-card-logo,
+html[data-theme="dark"] .mj-sidebar-related-logo { background: #374151 !important; }
+
 /* Global border override — light theme: all Tailwind gray borders → #a7a7a7 */
 html:not([data-theme="dark"]) .border-gray-100,
 html:not([data-theme="dark"]) .border-gray-200,

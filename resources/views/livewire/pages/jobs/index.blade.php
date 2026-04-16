@@ -312,24 +312,10 @@ new #[Layout('layouts.app')] class extends Component
                 <span>
                     Знайдено <strong style="color: var(--color-text-dark);">{{ $this->vacancies->total() }}</strong> вакансій
                 </span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <label for="per-page-select" style="font-size: 13px; color: var(--color-text-gray); white-space: nowrap;">
-                        Показувати:
-                    </label>
-                    <select id="per-page-select"
-                            wire:model.live="perPage"
-                            style="height: 34px; padding: 0 8px; font-size: 13px; border: 1px solid #a7a7a7;
-                                   border-radius: var(--radius-md); background: var(--color-bg-card);
-                                   color: var(--color-text-dark); cursor: pointer;">
-                        @foreach($perPageOptions as $option)
-                            <option value="{{ $option }}">{{ $option }}</option>
-                        @endforeach
-                    </select>
-                    {{-- Hamburger (mobile only) --}}
-                    <button class="mj-hamburger" @click="filtersOpen = true" aria-label="Відкрити фільтри">
-                        ☰
-                    </button>
-                </div>
+                {{-- Hamburger (mobile only) --}}
+                <button class="mj-hamburger" @click="filtersOpen = true" aria-label="Відкрити фільтри">
+                    ☰
+                </button>
             </div>
 
             {{-- Vacancy cards --}}
@@ -408,10 +394,26 @@ new #[Layout('layouts.app')] class extends Component
                 </div>
             @endforelse
 
-            {{-- Pagination --}}
-            @if($this->vacancies->hasPages())
-                <div class="mj-pagination">
-                    {{ $this->vacancies->links() }}
+            {{-- Pagination + per-page --}}
+            @if($this->vacancies->hasPages() || $this->vacancies->total() > min($perPageOptions))
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 8px;">
+                    <div class="mj-pagination" style="margin-top: 0;">
+                        {{ $this->vacancies->links() }}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                        <label for="per-page-select" style="font-size: 13px; color: var(--color-text-gray); white-space: nowrap;">
+                            Показувати:
+                        </label>
+                        <select id="per-page-select"
+                                wire:model.live="perPage"
+                                style="height: 34px; padding: 0 8px; font-size: 13px; border: 1px solid #a7a7a7;
+                                       border-radius: var(--radius-md); background: var(--color-bg-card);
+                                       color: var(--color-text-dark); cursor: pointer;">
+                            @foreach($perPageOptions as $option)
+                                <option value="{{ $option }}">{{ $option }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             @endif
 
