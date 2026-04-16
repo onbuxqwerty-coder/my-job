@@ -73,8 +73,17 @@ class AdminPanelProvider extends PanelProvider
                     .fi-body { overflow-x: hidden; }
                     [data-sidebar-collapsed] .fi-main-ctn,
                     [data-sidebar-collapsed] .fi-main { max-width: 100% !important; }
+                    body, .fi-body {
+                        background-image: url('/img/bg-main.webp?v=3');
+                        background-size: auto;
+                        background-attachment: fixed;
+                        background-repeat: repeat;
+                    }
                     html.dark body,
-                    html.dark .fi-body { background-color: #111827 !important; }
+                    html.dark .fi-body {
+                        background-color: #111827 !important;
+                        background-image: none !important;
+                    }
                     .filepond--image-preview-wrapper,
                     .filepond--image-preview { background: #f3f4f6 !important; }
                     .filepond--panel-root { background: #f9fafb !important; }
