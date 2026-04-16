@@ -386,9 +386,7 @@ new #[Layout('layouts.guest')] class extends Component
         </button>
     @endif
 
-</div>
-
-{{-- Telegram Auth Modal --}}
+    {{-- Telegram Auth Modal --}}
 <div id="tg-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
      z-index:9999; align-items:center; justify-content:center;">
     <div style="background:#fff; border-radius:16px; padding:32px 24px; max-width:360px; width:90%;
@@ -490,3 +488,5 @@ function closeTgModal() {
     document.getElementById('tg-modal').style.display = 'none';
 }
 </script>
+
+</div>
