@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Livewire\Forms\LoginForm;
-use App\Services\PhoneOtpService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
@@ -11,15 +10,11 @@ use Livewire\Volt\Component;
 
 new #[Layout('layouts.guest')] class extends Component
 {
-    // Крок: 'phone' | 'otp' | 'email'
-    public string $step = 'phone';
+    // Крок: 'main' | 'email'
+    public string $step = 'main';
 
     // Роль: 'candidate' | 'employer'
     public string $role = 'candidate';
-
-    // Phone flow
-    public string $phone = '';
-    public string $otp   = '';
 
     // Email flow
     public LoginForm $form;
@@ -27,46 +22,6 @@ new #[Layout('layouts.guest')] class extends Component
     public function setRole(string $role): void
     {
         $this->role = $role;
-        $this->step = 'phone';
-        $this->resetErrorBag();
-    }
-
-    public function sendOtp(PhoneOtpService $otpService): void
-    {
-        $this->validate(['phone' => ['required', 'string', 'min:10']]);
-
-        $otpService->sendOtp($this->phone);
-
-        $this->step = 'otp';
-    }
-
-    public function verifyOtp(PhoneOtpService $otpService): void
-    {
-        $this->validate(['otp' => ['required', 'string', 'size:6']]);
-
-        if (!$otpService->verifyOtp($this->phone, $this->otp)) {
-            $this->addError('otp', 'Невірний або прострочений код. Спробуйте ще раз.');
-            return;
-        }
-
-        $user = $otpService->findOrCreateUser($this->phone, $this->role);
-
-        Auth::login($user, remember: true);
-        Session::regenerate();
-
-        $default = match($user->role->value) {
-            'employer'  => route('employer.dashboard', absolute: false),
-            'candidate' => route('seeker.dashboard', absolute: false),
-            default     => route('home', absolute: false),
-        };
-
-        $this->redirectIntended(default: $default, navigate: true);
-    }
-
-    public function backToPhone(): void
-    {
-        $this->step = 'phone';
-        $this->otp  = '';
         $this->resetErrorBag();
     }
 
@@ -76,13 +31,19 @@ new #[Layout('layouts.guest')] class extends Component
         $this->resetErrorBag();
     }
 
+    public function backToMain(): void
+    {
+        $this->step = 'main';
+        $this->resetErrorBag();
+    }
+
     public function login(): void
     {
         $this->validate();
         $this->form->authenticate();
         Session::regenerate();
 
-        $user = Auth::user();
+        $user    = Auth::user();
         $default = match($user->role->value) {
             'employer'  => route('employer.dashboard', absolute: false),
             'candidate' => route('seeker.dashboard', absolute: false),
@@ -109,123 +70,78 @@ new #[Layout('layouts.guest')] class extends Component
         @if($role === 'employer')
             Увійдіть, щоб розміщувати вакансії<br>та знаходити кращих кандидатів.
         @else
-            Увійдіть, щоб керувати розміщенням вашого резюме,<br>відгукуватися на вакансії та отримувати пропозиції від роботодавців.
+            Увійдіть, щоб керувати резюме,<br>відгукуватися на вакансії та отримувати пропозиції.
         @endif
     </p>
 
     {{-- OAuth role mismatch error --}}
-    @if($errors->has('email'))
-        <div style="width:340px; margin-bottom:16px; padding:12px 16px; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; color:#b91c1c; font-size:14px; line-height:1.5; text-align:left;">
-            {{ $errors->first('email') }}
+    @if($errors->has('email') || $errors->has('telegram'))
+        <div style="margin-bottom:16px; padding:12px 16px; background:#fef2f2; border:1px solid #fecaca;
+                    border-radius:10px; color:#b91c1c; font-size:14px; line-height:1.5; text-align:left;">
+            {{ $errors->first('email') ?: $errors->first('telegram') }}
         </div>
     @endif
 
     {{-- Role switcher --}}
-    @if($step === 'phone' || $step === 'email')
-        <div class="role-switcher" style="display: inline-flex; gap: 12px; width: 340px; background: #e8eaed; border-radius: 10px; padding: 4px; margin-bottom: 20px;">
-    
-    <!-- Кнопка Шукач -->
-    <button wire:click="setRole('candidate')"
-            style="flex: 1; padding: 10px; font-size: 16px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: all 0.3s ease;
-                   border: 1px solid {{ $role === 'candidate' ? '#2d323b' : 'transparent' }};
-                   background: {{ $role === 'candidate' ? '#2d323b' : 'transparent' }};
-                   color: {{ $role === 'candidate' ? '#ffffff' : '#5f6368' }};
-                   box-shadow: {{ $role === 'candidate' ? '0 4px 8px rgba(45, 50, 59, 0.2)' : 'none' }};">
-        Шукач
-    </button>
+    <div class="role-switcher" style="display: inline-flex; gap: 12px; width: 340px; background: #e8eaed;
+         border-radius: 10px; padding: 4px; margin-bottom: 20px;">
+        <button wire:click="setRole('candidate')"
+                style="flex: 1; padding: 10px; font-size: 16px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: all 0.3s ease;
+                       border: 1px solid {{ $role === 'candidate' ? '#2d323b' : 'transparent' }};
+                       background: {{ $role === 'candidate' ? '#2d323b' : 'transparent' }};
+                       color: {{ $role === 'candidate' ? '#ffffff' : '#5f6368' }};
+                       box-shadow: {{ $role === 'candidate' ? '0 4px 8px rgba(45,50,59,0.2)' : 'none' }};">
+            Шукач
+        </button>
+        <button wire:click="setRole('employer')"
+                style="flex: 1; padding: 10px; font-size: 16px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: all 0.3s ease;
+                       border: 1px solid {{ $role === 'employer' ? '#2d323b' : 'transparent' }};
+                       background: {{ $role === 'employer' ? '#2d323b' : 'transparent' }};
+                       color: {{ $role === 'employer' ? '#ffffff' : '#5f6368' }};
+                       box-shadow: {{ $role === 'employer' ? '0 4px 8px rgba(45,50,59,0.2)' : 'none' }};">
+            Роботодавець
+        </button>
+    </div>
 
-    <!-- Кнопка Роботодавець -->
-    <button wire:click="setRole('employer')"
-            style="flex: 1; padding: 10px; font-size: 16px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: all 0.3s ease;
-                   border: 1px solid {{ $role === 'employer' ? '#2d323b' : 'transparent' }};
-                   background: {{ $role === 'employer' ? '#2d323b' : 'transparent' }};
-                   color: {{ $role === 'employer' ? '#ffffff' : '#5f6368' }};
-                   box-shadow: {{ $role === 'employer' ? '0 4px 8px rgba(45, 50, 59, 0.2)' : 'none' }};">
-        Роботодавець
-    </button>
+    {{-- ======= ГОЛОВНИЙ КРОК ======= --}}
+    @if($step === 'main')
+        <div class="login-card" style="background:#fff; border:1px solid #a7a7a7; border-radius:12px;
+                    box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
 
-</div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
 
-    @endif
-
-    {{-- ======= SOCIAL AUTH ======= --}}
-    @if($step === 'phone')
-        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-
-            {{-- Telegram --}}
-            <button type="button" id="tg-login-btn"
-                    onclick="telegramLogin('{{ $role }}')"
-                    style="display:flex; align-items:center; justify-content:center; gap:12px;
-                           height:48px; border:1px solid #a7a7a7; border-radius:8px;
-                           font-size:15px; font-weight:600; color:#fff;
-                           background:#2AABEE; text-decoration:none; transition:background-color 0.2s;
-                           cursor:pointer; width:100%;"
-                    onmouseover="this.style.backgroundColor='#1a9bde'"
-                    onmouseout="this.style.backgroundColor='#2AABEE'">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
-                </svg>
-                Увійти через Telegram
-            </button>
-
-            {{-- Google --}}
-            <a href="{{ route('social.redirect', ['provider' => 'google', 'role' => $role]) }}"
-               class="google-btn"
-               style="display:flex; align-items:center; justify-content:center; gap:12px;
-                      height:48px; border:1px solid #a7a7a7; border-radius:8px;
-                      font-size:15px; font-weight:600; color:#3c4043;
-                      background:#fff; text-decoration:none; transition:background-color 0.2s;"
-               onmouseover="this.style.backgroundColor='#f8f9fa'"
-               onmouseout="this.style.backgroundColor='#fff'">
-                <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.2 30.2 0 24 0 14.7 0 6.7 5.4 2.7 13.3l7.9 6.1C12.5 13 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.4c-.5 2.8-2.1 5.1-4.4 6.7l7 5.4C43.2 36.8 46.1 31.1 46.1 24.5z"/><path fill="#FBBC05" d="M10.6 28.6A14.8 14.8 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7.9-6.1A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7-5.4c-2 1.4-4.6 2.2-8.2 2.2-6.2 0-11.5-4.2-13.4-9.8l-7.9 6.1C6.7 42.6 14.7 48 24 48z"/></svg>
-                Продовжити з Google
-            </a>
-
-        </div>
-
-        <div class="login-divider" style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-            <hr style="flex:1; border:none; border-top:1px solid #e0e0e0;">
-            <span style="font-size:13px; color:#888;">або</span>
-            <hr style="flex:1; border:none; border-top:1px solid #e0e0e0;">
-        </div>
-    @endif
-
-    {{-- ======= КРОК 1: ТЕЛЕФОН ======= --}}
-    @if($step === 'phone')
-        <div class="login-card" style="background:#fff; border:1px solid #a7a7a7; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
-            <form wire:submit="sendOtp">
-                <input
-                    class="login-input"
-                    wire:model="phone"
-                    type="tel"
-                    placeholder="+380"
-                    required autofocus
-                    style="width:100%; height:48px; padding:0 16px; font-size:15px;
-                           border:1px solid #d0d5dd; border-radius:8px; outline:none;
-                           color:#1a1a1a; background:#fff; margin-bottom:12px;
-                           box-sizing:border-box; transition:border-color 0.2s;"
-                    onfocus="this.style.borderColor='#1a73e8'"
-                    onblur="this.style.borderColor='#d0d5dd'"
-                />
-                <x-input-error :messages="$errors->get('phone')" class="mb-3" style="text-align:left;" />
-
-                <button type="submit"
-                        style="width:100%; height:48px; font-size:16px; font-weight:600;
-                               background-color:#1a73e8; color:#fff; border:none;
-                               border-radius:8px; cursor:pointer; transition:background-color 0.2s;"
-                        onmouseover="this.style.backgroundColor='#1557b0'"
-                        onmouseout="this.style.backgroundColor='#1a73e8'">
-                    <span wire:loading.remove wire:target="sendOtp">Отримати код</span>
-                    <span wire:loading wire:target="sendOtp">Надсилання...</span>
+                {{-- Telegram (основний) --}}
+                <button type="button" id="tg-login-btn"
+                        onclick="telegramLogin('{{ $role }}')"
+                        style="display:flex; align-items:center; justify-content:center; gap:12px;
+                               height:52px; border:none; border-radius:8px; font-size:16px; font-weight:700;
+                               color:#fff; background:#2AABEE; cursor:pointer; width:100%; transition:background 0.2s;"
+                        onmouseover="this.style.background='#1a9bde'"
+                        onmouseout="this.style.background='#2AABEE'">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+                    </svg>
+                    Увійти через Telegram
                 </button>
 
-                <p style="font-size:12px; color:#888; margin-top:14px; line-height:1.5;">
-                    Продовжуючи, ви приймаєте
-                    <a href="#" style="color:#1a73e8; text-decoration:underline;">правила сервісу</a>
-                    та
-                    <a href="#" style="color:#1a73e8; text-decoration:underline;">політику конфіденційності</a>.
-                </p>
-            </form>
+                {{-- Google --}}
+                <a href="{{ route('social.redirect', ['provider' => 'google', 'role' => $role]) }}"
+                   class="google-btn"
+                   style="display:flex; align-items:center; justify-content:center; gap:12px;
+                          height:52px; border:1px solid #a7a7a7; border-radius:8px; font-size:15px;
+                          font-weight:600; color:#3c4043; background:#fff; text-decoration:none; transition:background 0.2s;"
+                   onmouseover="this.style.background='#f8f9fa'"
+                   onmouseout="this.style.background='#fff'">
+                    <svg width="20" height="20" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.2 30.2 0 24 0 14.7 0 6.7 5.4 2.7 13.3l7.9 6.1C12.5 13 17.8 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.4c-.5 2.8-2.1 5.1-4.4 6.7l7 5.4C43.2 36.8 46.1 31.1 46.1 24.5z"/>
+                        <path fill="#FBBC05" d="M10.6 28.6A14.8 14.8 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7.9-6.1A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.9-6.1z"/>
+                        <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7-5.4c-2 1.4-4.6 2.2-8.2 2.2-6.2 0-11.5-4.2-13.4-9.8l-7.9 6.1C6.7 42.6 14.7 48 24 48z"/>
+                    </svg>
+                    Продовжити з Google
+                </a>
+
+            </div>
 
             <hr style="border:none; border-top:1px solid #a7a7a7; margin:16px 0;">
 
@@ -234,9 +150,9 @@ new #[Layout('layouts.guest')] class extends Component
                     style="display:flex; align-items:center; justify-content:center; gap:10px;
                            padding:12px; font-size:15px; font-weight:600; color:#1a1a1a;
                            background:transparent; border:none; cursor:pointer; border-radius:8px;
-                           transition:background-color 0.2s; width:100%;"
-                    onmouseover="this.style.backgroundColor='#e8eaed'"
-                    onmouseout="this.style.backgroundColor='transparent'">
+                           transition:background 0.2s; width:100%;"
+                    onmouseover="this.style.background='#e8eaed'"
+                    onmouseout="this.style.background='transparent'">
                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:#555; flex-shrink:0;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
@@ -253,69 +169,10 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
     @endif
 
-    {{-- ======= КРОК 2: OTP КОД ======= --}}
-    @if($step === 'otp')
-        <div class="login-card" style="background:#fff; border:1px solid #a7a7a7; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
-            <div class="otp-info-box" style="margin-bottom:16px; padding:12px; background:#f0f7ff; border-radius:8px;">
-                <p style="font-size:14px; color:#555; margin:0;">
-                    Код надіслано на номер <strong style="color:#1a1a1a;">{{ $phone }}</strong><br>
-                    через SMS, Viber або Telegram
-                </p>
-            </div>
-
-            <form wire:submit="verifyOtp">
-                <input
-                    class="login-input"
-                    wire:model="otp"
-                    type="text"
-                    inputmode="numeric"
-                    maxlength="6"
-                    placeholder="• • • • • •"
-                    required autofocus
-                    style="width:100%; height:56px; padding:0 16px; font-size:24px; letter-spacing:10px;
-                           text-align:center; border:1px solid #d0d5dd; border-radius:8px; outline:none;
-                           color:#1a1a1a; background:#fff; margin-bottom:12px;
-                           box-sizing:border-box; transition:border-color 0.2s;"
-                    onfocus="this.style.borderColor='#1a73e8'"
-                    onblur="this.style.borderColor='#d0d5dd'"
-                />
-                <x-input-error :messages="$errors->get('otp')" class="mb-3" style="text-align:left;" />
-
-                <button type="submit"
-                        style="width:100%; height:48px; font-size:16px; font-weight:600;
-                               background-color:#1a73e8; color:#fff; border:none;
-                               border-radius:8px; cursor:pointer; transition:background-color 0.2s; margin-bottom:12px;"
-                        onmouseover="this.style.backgroundColor='#1557b0'"
-                        onmouseout="this.style.backgroundColor='#1a73e8'">
-                    <span wire:loading.remove wire:target="verifyOtp">Підтвердити</span>
-                    <span wire:loading wire:target="verifyOtp">Перевірка...</span>
-                </button>
-
-                <button type="button" wire:click="sendOtp"
-                        style="width:100%; height:40px; font-size:14px; font-weight:500; color:#1a73e8;
-                               background:transparent; border:none; cursor:pointer;"
-                        onmouseover="this.style.opacity='0.7'"
-                        onmouseout="this.style.opacity='1'">
-                    <span wire:loading.remove wire:target="sendOtp">Надіслати код повторно</span>
-                    <span wire:loading wire:target="sendOtp">Надсилання...</span>
-                </button>
-            </form>
-        </div>
-
-        <button wire:click="backToPhone"
-                class="login-back-btn"
-                style="margin-top:16px; display:flex; align-items:center; justify-content:center;
-                       gap:6px; font-size:14px; color:#555; background:transparent;
-                       border:none; cursor:pointer; width:100%; padding:10px;"
-                onmouseover="this.style.color='#1a1a1a'"
-                onmouseout="this.style.color='#555'">
-            ← Змінити номер
-        </button>
-    @endif
-
     {{-- ======= EMAIL ЛОГІН ======= --}}
     @if($step === 'email')
-        <div class="login-card" style="background:#fff; border:1px solid #a7a7a7; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
+        <div class="login-card" style="background:#fff; border:1px solid #a7a7a7; border-radius:12px;
+                    box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px;">
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form wire:submit="login">
@@ -352,141 +209,143 @@ new #[Layout('layouts.guest')] class extends Component
                 <button type="submit"
                         style="width:100%; height:48px; font-size:16px; font-weight:600;
                                background-color:#1a73e8; color:#fff; border:none;
-                               border-radius:8px; cursor:pointer; transition:background-color 0.2s;"
-                        onmouseover="this.style.backgroundColor='#1557b0'"
-                        onmouseout="this.style.backgroundColor='#1a73e8'">
+                               border-radius:8px; cursor:pointer; transition:background 0.2s;"
+                        onmouseover="this.style.background='#1557b0'"
+                        onmouseout="this.style.background='#1a73e8'">
                     Увійти
                 </button>
 
-                @if (Route::has('password.request'))
+                @if(Route::has('password.request'))
                     <a href="{{ route('password.request') }}" wire:navigate
                        style="display:block; margin-top:12px; font-size:13px; color:#1a73e8; text-decoration:underline;">
                         Забули пароль?
                     </a>
                 @endif
             </form>
+
+            <p style="margin-top:12px; font-size:14px; color:#888;">
+                Немає акаунту?
+                <a href="{{ route('register') }}" wire:navigate
+                   style="color:#1a73e8; font-weight:600; text-decoration:none;">
+                    Зареєструватись
+                </a>
+            </p>
         </div>
 
-        <p style="margin-top:12px; font-size:14px; color:#888;">
-            Немає акаунту?
-            <a href="{{ route('register') }}" wire:navigate
-               style="color:#1a73e8; font-weight:600; text-decoration:none;">
-                Зареєструватись
-            </a>
-        </p>
-
-        <button wire:click="backToPhone"
+        <button wire:click="backToMain"
                 class="login-back-btn"
-                style="margin-top:8px; display:flex; align-items:center; justify-content:center;
+                style="margin-top:12px; display:flex; align-items:center; justify-content:center;
                        gap:6px; font-size:14px; color:#555; background:transparent;
                        border:none; cursor:pointer; width:100%; padding:10px;"
                 onmouseover="this.style.color='#1a1a1a'"
                 onmouseout="this.style.color='#555'">
-            ← Увійти за номером телефону
+            ← Назад
         </button>
     @endif
 
     {{-- Telegram Auth Modal --}}
-<div id="tg-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
-     z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#fff; border-radius:16px; padding:32px 24px; max-width:360px; width:90%;
-                text-align:center; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.2);">
-        <button onclick="closeTgModal()"
-                style="position:absolute; top:12px; right:16px; background:none; border:none;
-                       font-size:20px; color:#888; cursor:pointer;">✕</button>
+    <div id="tg-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
+         z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:16px; padding:32px 24px; max-width:360px; width:90%;
+                    text-align:center; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+            <button onclick="closeTgModal()"
+                    style="position:absolute; top:12px; right:16px; background:none; border:none;
+                           font-size:20px; color:#888; cursor:pointer;">✕</button>
 
-        <div style="width:56px; height:56px; background:#2AABEE; border-radius:50%;
-             display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
-            </svg>
-        </div>
+            <div style="width:56px; height:56px; background:#2AABEE; border-radius:50%;
+                 display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+                </svg>
+            </div>
 
-        <h3 id="tg-modal-title" style="font-size:18px; font-weight:700; color:#1a1a1a; margin:0 0 8px;">
-            Відкрийте Telegram
-        </h3>
-        <p id="tg-modal-text" style="font-size:14px; color:#666; margin:0 0 20px; line-height:1.6;">
-            Натисніть "Start" у боті та поділіться своїм номером телефону. Сторінка оновиться автоматично.
-        </p>
+            <h3 id="tg-modal-title" style="font-size:18px; font-weight:700; color:#1a1a1a; margin:0 0 8px;">
+                Відкрийте Telegram
+            </h3>
+            <p id="tg-modal-text" style="font-size:14px; color:#666; margin:0 0 20px; line-height:1.6;">
+                Натисніть "Start" у боті та поділіться своїм номером телефону. Сторінка оновиться автоматично.
+            </p>
 
-        <a id="tg-deep-link" href="#" target="_blank"
-           style="display:block; background:#2AABEE; color:#fff; font-weight:700; font-size:15px;
-                  padding:12px; border-radius:8px; text-decoration:none; margin-bottom:12px;">
-            Відкрити бота →
-        </a>
+            <a id="tg-deep-link" href="#" target="_blank"
+               style="display:block; background:#2AABEE; color:#fff; font-weight:700; font-size:15px;
+                      padding:12px; border-radius:8px; text-decoration:none; margin-bottom:12px;">
+                Відкрити бота →
+            </a>
 
-        <div id="tg-spinner" style="font-size:13px; color:#888;">
-            <span style="display:inline-block; animation:tg-spin 1s linear infinite;">⟳</span>
-            Очікую підтвердження...
+            <div id="tg-spinner" style="font-size:13px; color:#888;">
+                <span style="display:inline-block; animation:tg-spin 1s linear infinite;">⟳</span>
+                Очікую підтвердження...
+            </div>
         </div>
     </div>
-</div>
 
-<style>
-@keyframes tg-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-</style>
+    <style>
+    @keyframes tg-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
 
-<script>
-let _tgPollInterval = null;
+    <script>
+    let _tgPollInterval = null;
 
-async function telegramLogin(role) {
-    try {
+    async function telegramLogin(role) {
         const btn = document.getElementById('tg-login-btn');
-        if (btn) { btn.disabled = true; btn.textContent = 'Завантаження...'; }
+        try {
+            if (btn) { btn.disabled = true; btn.textContent = 'Завантаження...'; }
 
-        const res = await fetch('/api/telegram/auth/init', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({ role }),
-        });
+            const res = await fetch('/api/telegram/auth/init', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({ role }),
+            });
 
-        if (!res.ok) throw new Error('init failed');
-        const { token, deep_link } = await res.json();
+            if (!res.ok) throw new Error('init failed');
+            const { token, deep_link } = await res.json();
 
-        document.getElementById('tg-deep-link').href = deep_link;
-        document.getElementById('tg-modal').style.display = 'flex';
+            document.getElementById('tg-deep-link').href = deep_link;
+            document.getElementById('tg-modal').style.display = 'flex';
+            document.getElementById('tg-modal-title').textContent = 'Відкрийте Telegram';
+            document.getElementById('tg-modal-text').textContent = 'Натисніть "Start" у боті та поділіться своїм номером телефону. Сторінка оновиться автоматично.';
+            document.getElementById('tg-spinner').style.display = 'block';
 
-        _tgPollInterval = setInterval(() => pollTgStatus(token), 2000);
-        setTimeout(() => { clearInterval(_tgPollInterval); closeTgModal(); }, 300000);
+            _tgPollInterval = setInterval(() => pollTgStatus(token), 2000);
+            setTimeout(() => { clearInterval(_tgPollInterval); closeTgModal(); }, 300000);
 
-    } catch {
-        alert('Помилка. Спробуйте ще раз.');
-    } finally {
-        const btn = document.getElementById('tg-login-btn');
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg> Увійти через Telegram`;
+        } catch {
+            alert('Помилка. Спробуйте ще раз.');
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg> Увійти через Telegram`;
+            }
         }
     }
-}
 
-async function pollTgStatus(token) {
-    try {
-        const res = await fetch(`/api/telegram/auth/status/${token}`);
-        if (!res.ok) return;
-        const data = await res.json();
+    async function pollTgStatus(token) {
+        try {
+            const res = await fetch(`/api/telegram/auth/status/${token}`);
+            if (!res.ok) return;
+            const data = await res.json();
 
-        if (data.status === 'authorized' && data.login_url) {
-            clearInterval(_tgPollInterval);
-            document.getElementById('tg-modal-title').textContent = '✅ Авторизовано!';
-            document.getElementById('tg-modal-text').textContent = 'Перенаправляємо...';
-            document.getElementById('tg-spinner').style.display = 'none';
-            setTimeout(() => { window.location.href = data.login_url; }, 500);
-        } else if (data.status === 'expired' || data.status === 'not_found') {
-            clearInterval(_tgPollInterval);
-            closeTgModal();
-            alert('Сесія прострочена. Спробуйте ще раз.');
-        }
-    } catch {}
-}
+            if (data.status === 'authorized' && data.login_url) {
+                clearInterval(_tgPollInterval);
+                document.getElementById('tg-modal-title').textContent = '✅ Авторизовано!';
+                document.getElementById('tg-modal-text').textContent = 'Перенаправляємо...';
+                document.getElementById('tg-spinner').style.display = 'none';
+                setTimeout(() => { window.location.href = data.login_url; }, 500);
+            } else if (data.status === 'expired' || data.status === 'not_found') {
+                clearInterval(_tgPollInterval);
+                closeTgModal();
+                alert('Сесія прострочена. Спробуйте ще раз.');
+            }
+        } catch {}
+    }
 
-function closeTgModal() {
-    clearInterval(_tgPollInterval);
-    document.getElementById('tg-modal').style.display = 'none';
-}
-</script>
+    function closeTgModal() {
+        clearInterval(_tgPollInterval);
+        document.getElementById('tg-modal').style.display = 'none';
+    }
+    </script>
 
 </div>
