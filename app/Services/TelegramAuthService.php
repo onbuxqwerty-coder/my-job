@@ -22,7 +22,7 @@ final class TelegramAuthService
     public function generateSession(string $role = 'candidate'): array
     {
         $token = Str::random(48);
-        $botUsername = config('nutgram.config.username', env('TELEGRAM_BOT_USERNAME', 'MyJobBot'));
+        $botUsername = env('TELEGRAM_BOT_USERNAME', 'myjob_in_bot');
 
         TelegramSession::create([
             'session_token' => $token,
