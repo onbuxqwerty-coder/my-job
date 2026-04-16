@@ -12,7 +12,13 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Webhook;
 
 Route::post('/telegram/webhook', function (Nutgram $bot): void {
-    Log::info('Telegram webhook hit', ['body' => request()->getContent()]);
+    $laravelBody = request()->getContent();
+    $rawInput    = file_get_contents('php://input');
+    Log::info('Telegram webhook hit', [
+        'laravel_body' => substr($laravelBody, 0, 200),
+        'raw_input'    => substr($rawInput, 0, 200),
+        'match'        => $laravelBody === $rawInput ? 'yes' : 'NO - MISMATCH',
+    ]);
     $bot->setRunningMode(Webhook::class);
     $bot->onCommand('start', StartCommand::class);
     $bot->onCommand('alerts', AlertsCommand::class);
