@@ -8,8 +8,10 @@ use App\Telegram\Commands\StartCommand;
 use App\Telegram\Handlers\ContactAuthHandler;
 use Illuminate\Support\Facades\Route;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\RunningMode\Webhook;
 
 Route::post('/telegram/webhook', function (Nutgram $bot): void {
+    $bot->setRunningMode(Webhook::class);
     $bot->onCommand('start', StartCommand::class);
     $bot->onCommand('alerts', AlertsCommand::class);
     $bot->onCallbackQueryData('alert_toggle:[0-9]+', AlertToggleCallback::class);
