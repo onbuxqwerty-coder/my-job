@@ -210,13 +210,13 @@ new #[Layout('layouts.guest')] class extends Component
                     <a href="#" style="color:#1a73e8; text-decoration:underline;">політику конфіденційності</a>.
                 </p>
             </form>
-        </div>
 
-        <div style="margin-top:16px;">
+            <hr style="border:none; border-top:1px solid #e0e0e0; margin:16px 0;">
+
             <button wire:click="showEmailLogin"
                     class="login-email-btn"
                     style="display:flex; align-items:center; justify-content:center; gap:10px;
-                           padding:14px; font-size:15px; font-weight:600; color:#1a1a1a;
+                           padding:12px; font-size:15px; font-weight:600; color:#1a1a1a;
                            background:transparent; border:none; cursor:pointer; border-radius:8px;
                            transition:background-color 0.2s; width:100%;"
                     onmouseover="this.style.backgroundColor='#e8eaed'"
@@ -227,7 +227,7 @@ new #[Layout('layouts.guest')] class extends Component
                 Увійти за допомогою ел. пошти
             </button>
 
-            <p style="font-size:14px; color:#888; margin-top:4px;">
+            <p style="font-size:14px; color:#888; margin-top:8px; text-align:center;">
                 Немає акаунту?
                 <a href="{{ route('register') }}" wire:navigate
                    style="color:#1a73e8; font-weight:600; text-decoration:none;">
