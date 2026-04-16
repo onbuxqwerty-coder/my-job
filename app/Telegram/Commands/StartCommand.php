@@ -6,7 +6,11 @@ namespace App\Telegram\Commands;
 
 use App\Models\User;
 use App\Models\Vacancy;
+use Illuminate\Support\Facades\Cache;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
@@ -25,6 +29,11 @@ final class StartCommand
 
         if (str_starts_with($payload, 'link_')) {
             $this->handleAccountLink($bot, substr($payload, 5));
+            return;
+        }
+
+        if (str_starts_with($payload, 'auth_')) {
+            $this->handleAuthDeepLink($bot, substr($payload, 5));
             return;
         }
 
@@ -59,6 +68,28 @@ final class StartCommand
         );
 
         $bot->sendMessage(text: $text, parse_mode: 'HTML', reply_markup: $keyboard);
+    }
+
+    private function handleAuthDeepLink(Nutgram $bot, string $token): void
+    {
+        $telegramId = $bot->userId();
+
+        if (! $telegramId || ! $token) {
+            $bot->sendMessage('❌ Недійсне посилання. Спробуйте ще раз на сайті.');
+            return;
+        }
+
+        // Зберігаємо токен для подальшої обробки контакту
+        Cache::put("tg_auth_pending:{$telegramId}", $token, 300);
+
+        $keyboard = ReplyKeyboardMarkup::make(oneTimeKeyboard: true, resizeKeyboard: true)
+            ->addRow(KeyboardButton::make('📱 Поділитися контактом', requestContact: true));
+
+        $bot->sendMessage(
+            text: "👋 <b>Вхід на My Job</b>\n\nНатисніть кнопку нижче, щоб підтвердити свій номер телефону та авторизуватися на сайті.",
+            parse_mode: 'HTML',
+            reply_markup: $keyboard,
+        );
     }
 
     private function handleAccountLink(Nutgram $bot, string $token): void

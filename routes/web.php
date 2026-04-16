@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\TelegramAuthController;
 use App\Models\Category;
 use App\Models\Interview;
 use App\Models\Vacancy;
@@ -49,6 +50,11 @@ Route::get('/sitemap.xml', function () {
 
     return response($xml)->header('Content-Type', 'application/xml');
 })->name('sitemap');
+
+// ── Telegram Auth ───────────────────────────────────────────────────────────
+Route::get('/telegram/auth/login/{token}', [TelegramAuthController::class, 'login'])
+    ->name('telegram.auth.login')
+    ->middleware('throttle:10,1');
 
 // ── Social Auth ─────────────────────────────────────────────────────────────
 Route::get('/auth/{provider}/redirect', [\App\Http\Controllers\SocialAuthController::class, 'redirect'])

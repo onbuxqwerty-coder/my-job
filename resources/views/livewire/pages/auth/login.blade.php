@@ -152,6 +152,22 @@ new #[Layout('layouts.guest')] class extends Component
     @if($step === 'phone')
         <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
 
+            {{-- Telegram --}}
+            <button type="button" id="tg-login-btn"
+                    onclick="telegramLogin('{{ $role }}')"
+                    style="display:flex; align-items:center; justify-content:center; gap:12px;
+                           height:48px; border:1px solid #a7a7a7; border-radius:8px;
+                           font-size:15px; font-weight:600; color:#fff;
+                           background:#2AABEE; text-decoration:none; transition:background-color 0.2s;
+                           cursor:pointer; width:100%;"
+                    onmouseover="this.style.backgroundColor='#1a9bde'"
+                    onmouseout="this.style.backgroundColor='#2AABEE'">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+                </svg>
+                Увійти через Telegram
+            </button>
+
             {{-- Google --}}
             <a href="{{ route('social.redirect', ['provider' => 'google', 'role' => $role]) }}"
                class="google-btn"
@@ -371,3 +387,106 @@ new #[Layout('layouts.guest')] class extends Component
     @endif
 
 </div>
+
+{{-- Telegram Auth Modal --}}
+<div id="tg-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
+     z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:32px 24px; max-width:360px; width:90%;
+                text-align:center; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+        <button onclick="closeTgModal()"
+                style="position:absolute; top:12px; right:16px; background:none; border:none;
+                       font-size:20px; color:#888; cursor:pointer;">✕</button>
+
+        <div style="width:56px; height:56px; background:#2AABEE; border-radius:50%;
+             display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+            </svg>
+        </div>
+
+        <h3 id="tg-modal-title" style="font-size:18px; font-weight:700; color:#1a1a1a; margin:0 0 8px;">
+            Відкрийте Telegram
+        </h3>
+        <p id="tg-modal-text" style="font-size:14px; color:#666; margin:0 0 20px; line-height:1.6;">
+            Натисніть "Start" у боті та поділіться своїм номером телефону. Сторінка оновиться автоматично.
+        </p>
+
+        <a id="tg-deep-link" href="#" target="_blank"
+           style="display:block; background:#2AABEE; color:#fff; font-weight:700; font-size:15px;
+                  padding:12px; border-radius:8px; text-decoration:none; margin-bottom:12px;">
+            Відкрити бота →
+        </a>
+
+        <div id="tg-spinner" style="font-size:13px; color:#888;">
+            <span style="display:inline-block; animation:tg-spin 1s linear infinite;">⟳</span>
+            Очікую підтвердження...
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes tg-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+</style>
+
+<script>
+let _tgPollInterval = null;
+
+async function telegramLogin(role) {
+    try {
+        const btn = document.getElementById('tg-login-btn');
+        if (btn) { btn.disabled = true; btn.textContent = 'Завантаження...'; }
+
+        const res = await fetch('/api/telegram/auth/init', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+            body: JSON.stringify({ role }),
+        });
+
+        if (!res.ok) throw new Error('init failed');
+        const { token, deep_link } = await res.json();
+
+        document.getElementById('tg-deep-link').href = deep_link;
+        document.getElementById('tg-modal').style.display = 'flex';
+
+        _tgPollInterval = setInterval(() => pollTgStatus(token), 2000);
+        setTimeout(() => { clearInterval(_tgPollInterval); closeTgModal(); }, 300000);
+
+    } catch {
+        alert('Помилка. Спробуйте ще раз.');
+    } finally {
+        const btn = document.getElementById('tg-login-btn');
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg> Увійти через Telegram`;
+        }
+    }
+}
+
+async function pollTgStatus(token) {
+    try {
+        const res = await fetch(`/api/telegram/auth/status/${token}`);
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (data.status === 'authorized' && data.login_url) {
+            clearInterval(_tgPollInterval);
+            document.getElementById('tg-modal-title').textContent = '✅ Авторизовано!';
+            document.getElementById('tg-modal-text').textContent = 'Перенаправляємо...';
+            document.getElementById('tg-spinner').style.display = 'none';
+            setTimeout(() => { window.location.href = data.login_url; }, 500);
+        } else if (data.status === 'expired' || data.status === 'not_found') {
+            clearInterval(_tgPollInterval);
+            closeTgModal();
+            alert('Сесія прострочена. Спробуйте ще раз.');
+        }
+    } catch {}
+}
+
+function closeTgModal() {
+    clearInterval(_tgPollInterval);
+    document.getElementById('tg-modal').style.display = 'none';
+}
+</script>
