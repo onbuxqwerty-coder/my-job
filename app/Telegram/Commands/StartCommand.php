@@ -22,6 +22,8 @@ final class StartCommand
         $parts = explode(' ', $text, 2);
         $payload = trim($parts[1] ?? '');
 
+        \Illuminate\Support\Facades\Log::info('StartCommand invoked', ['text' => $text, 'payload' => $payload]);
+
         if (str_starts_with($payload, 'job_')) {
             $this->handleJobDeepLink($bot, (int) substr($payload, 4));
             return;
