@@ -285,6 +285,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     <script>
     let _tgPollInterval = null;
+    let _tgToken = null;
 
     async function telegramLogin(role) {
         const btn = document.getElementById('tg-login-btn');
@@ -303,6 +304,7 @@ new #[Layout('layouts.guest')] class extends Component
             if (!res.ok) throw new Error('init failed');
             const { token, deep_link } = await res.json();
 
+            _tgToken = token;
             document.getElementById('tg-deep-link').href = deep_link;
             document.getElementById('tg-modal').style.display = 'flex';
             document.getElementById('tg-modal-title').textContent = 'Відкрийте Telegram';
@@ -310,7 +312,7 @@ new #[Layout('layouts.guest')] class extends Component
             document.getElementById('tg-spinner').style.display = 'block';
 
             _tgPollInterval = setInterval(() => pollTgStatus(token), 2000);
-            setTimeout(() => { clearInterval(_tgPollInterval); closeTgModal(); }, 300000);
+            setTimeout(() => { clearInterval(_tgPollInterval); _tgToken = null; closeTgModal(); }, 300000);
 
         } catch {
             alert('Помилка. Спробуйте ще раз.');
@@ -330,12 +332,14 @@ new #[Layout('layouts.guest')] class extends Component
 
             if (data.status === 'authorized' && data.login_url) {
                 clearInterval(_tgPollInterval);
+                _tgToken = null;
                 document.getElementById('tg-modal-title').textContent = '✅ Авторизовано!';
                 document.getElementById('tg-modal-text').textContent = 'Перенаправляємо...';
                 document.getElementById('tg-spinner').style.display = 'none';
                 setTimeout(() => { window.location.href = data.login_url; }, 500);
             } else if (data.status === 'expired' || data.status === 'not_found') {
                 clearInterval(_tgPollInterval);
+                _tgToken = null;
                 closeTgModal();
                 alert('Сесія прострочена. Спробуйте ще раз.');
             }
@@ -344,8 +348,18 @@ new #[Layout('layouts.guest')] class extends Component
 
     function closeTgModal() {
         clearInterval(_tgPollInterval);
+        _tgToken = null;
         document.getElementById('tg-modal').style.display = 'none';
     }
+
+    // На мобільних: відновити polling коли повертаємось з Telegram
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible' && _tgToken) {
+            clearInterval(_tgPollInterval);
+            pollTgStatus(_tgToken);
+            _tgPollInterval = setInterval(() => pollTgStatus(_tgToken), 2000);
+        }
+    });
     </script>
 
 </div>
