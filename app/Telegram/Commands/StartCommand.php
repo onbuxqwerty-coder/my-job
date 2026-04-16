@@ -22,7 +22,6 @@ final class StartCommand
         $parts = explode(' ', $text, 2);
         $payload = trim($parts[1] ?? '');
 
-        \Illuminate\Support\Facades\Log::info('StartCommand invoked', ['text' => $text, 'payload' => $payload]);
 
         if (str_starts_with($payload, 'job_')) {
             $this->handleJobDeepLink($bot, (int) substr($payload, 4));
@@ -76,11 +75,6 @@ final class StartCommand
     {
         $telegramId = $bot->userId();
 
-        \Illuminate\Support\Facades\Log::info('handleAuthDeepLink', [
-            'telegramId' => $telegramId,
-            'token'      => substr($token, 0, 8),
-        ]);
-
         if (! $telegramId || ! $token) {
             $bot->sendMessage('❌ Недійсне посилання. Спробуйте ще раз на сайті.');
             return;
@@ -98,7 +92,6 @@ final class StartCommand
             reply_markup: $keyboard,
         );
 
-        \Illuminate\Support\Facades\Log::info('handleAuthDeepLink: message sent', ['telegramId' => $telegramId]);
     }
 
     private function handleAccountLink(Nutgram $bot, string $token): void

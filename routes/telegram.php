@@ -12,7 +12,6 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Webhook;
 
 Route::post('/telegram/webhook', function (Nutgram $bot): void {
-    Log::info('Telegram webhook hit', ['text' => request()->input('message.text') ?? request()->input('callback_query.data') ?? 'no-text']);
     $bot->setRunningMode(Webhook::class);
     $bot->onCommand('start', StartCommand::class);
     $bot->onCommand('start {payload}', StartCommand::class);
