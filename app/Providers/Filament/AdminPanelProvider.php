@@ -84,6 +84,18 @@ class AdminPanelProvider extends PanelProvider
                         background-color: #111827 !important;
                         background-image: none !important;
                     }
+                    html:not(.dark) .fi-card,
+                    html:not(.dark) .fi-section,
+                    html:not(.dark) .fi-wi-account,
+                    html:not(.dark) .fi-wi-filament-info,
+                    html:not(.dark) [class*="fi-wi-"],
+                    html:not(.dark) .fi-sidebar-nav,
+                    html:not(.dark) .fi-topbar,
+                    html:not(.dark) .fi-ta-ctn,
+                    html:not(.dark) .fi-fo-field-wrp,
+                    html:not(.dark) .fi-modal-window {
+                        border: 1px solid #a7a7a7 !important;
+                    }
                     .filepond--image-preview-wrapper,
                     .filepond--image-preview { background: #f3f4f6 !important; }
                     .filepond--panel-root { background: #f9fafb !important; }
