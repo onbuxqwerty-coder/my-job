@@ -6,6 +6,7 @@ use App\Telegram\Callbacks\AlertToggleCallback;
 use App\Telegram\Commands\AlertsCommand;
 use App\Telegram\Commands\StartCommand;
 use App\Telegram\Handlers\ContactAuthHandler;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Webhook;
@@ -16,5 +17,10 @@ Route::post('/telegram/webhook', function (Nutgram $bot): void {
     $bot->onCommand('alerts', AlertsCommand::class);
     $bot->onCallbackQueryData('alert_toggle:[0-9]+', AlertToggleCallback::class);
     $bot->onContact(ContactAuthHandler::class);
-    $bot->run();
+
+    try {
+        $bot->run();
+    } catch (\Throwable $e) {
+        Log::warning('Telegram webhook error: ' . $e->getMessage());
+    }
 })->middleware('throttle:30,1');
