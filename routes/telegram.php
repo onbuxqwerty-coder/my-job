@@ -13,6 +13,6 @@ Route::post('/telegram/webhook', function (Nutgram $bot): void {
     $bot->onCommand('start', StartCommand::class);
     $bot->onCommand('alerts', AlertsCommand::class);
     $bot->onCallbackQueryData('alert_toggle:[0-9]+', AlertToggleCallback::class);
-    $bot->onMessage(ContactAuthHandler::class, fn($update) => $update->message?->contact !== null);
+    $bot->onContact(ContactAuthHandler::class);
     $bot->run();
 })->middleware('throttle:30,1');
