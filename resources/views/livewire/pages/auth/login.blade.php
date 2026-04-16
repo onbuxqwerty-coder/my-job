@@ -226,6 +226,14 @@ new #[Layout('layouts.guest')] class extends Component
                 </svg>
                 Увійти за допомогою ел. пошти
             </button>
+
+            <p style="font-size:14px; color:#888; margin-top:4px;">
+                Немає акаунту?
+                <a href="{{ route('register') }}" wire:navigate
+                   style="color:#1a73e8; font-weight:600; text-decoration:none;">
+                    Зареєструватись
+                </a>
+            </p>
         </div>
     @endif
 
@@ -343,9 +351,17 @@ new #[Layout('layouts.guest')] class extends Component
             </form>
         </div>
 
+        <p style="margin-top:12px; font-size:14px; color:#888;">
+            Немає акаунту?
+            <a href="{{ route('register') }}" wire:navigate
+               style="color:#1a73e8; font-weight:600; text-decoration:none;">
+                Зареєструватись
+            </a>
+        </p>
+
         <button wire:click="backToPhone"
                 class="login-back-btn"
-                style="margin-top:16px; display:flex; align-items:center; justify-content:center;
+                style="margin-top:8px; display:flex; align-items:center; justify-content:center;
                        gap:6px; font-size:14px; color:#555; background:transparent;
                        border:none; cursor:pointer; width:100%; padding:10px;"
                 onmouseover="this.style.color='#1a1a1a'"
