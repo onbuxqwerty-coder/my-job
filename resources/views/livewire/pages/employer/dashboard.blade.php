@@ -201,28 +201,28 @@ new #[Layout('layouts.app')] class extends Component
             </div>
         @endif
     </div>
+
+    <style>
+    .vacancy-row {
+        transition: background .2s, box-shadow .2s, transform .2s;
+        cursor: pointer;
+    }
+    .vacancy-row:hover {
+        background: #f0f7ff;
+        box-shadow: 0 4px 16px rgba(37,99,235,.12), inset 0 0 0 2px #2563eb;
+        transform: translateY(-2px);
+    }
+    .vacancy-row:hover .vacancy-title { color: #2563eb; }
+
+    [data-theme="dark"] .vacancy-row:hover,
+    .dark .vacancy-row:hover {
+        background: transparent;
+        box-shadow: none;
+        transform: translateY(-2px);
+    }
+    [data-theme="dark"] .vacancy-row:hover .vacancy-title,
+    .dark .vacancy-row:hover .vacancy-title {
+        color: inherit;
+    }
+    </style>
 </div>
-
-<style>
-.vacancy-row {
-    transition: background .2s, box-shadow .2s, transform .2s;
-    cursor: pointer;
-}
-.vacancy-row:hover {
-    background: #f0f7ff;
-    box-shadow: 0 4px 16px rgba(37,99,235,.12), inset 0 0 0 2px #2563eb;
-    transform: translateY(-2px);
-}
-.vacancy-row:hover .vacancy-title { color: #2563eb; }
-
-[data-theme="dark"] .vacancy-row:hover,
-.dark .vacancy-row:hover {
-    background: transparent;
-    box-shadow: none;
-    transform: translateY(-2px);
-}
-[data-theme="dark"] .vacancy-row:hover .vacancy-title,
-.dark .vacancy-row:hover .vacancy-title {
-    color: inherit;
-}
-</style>
