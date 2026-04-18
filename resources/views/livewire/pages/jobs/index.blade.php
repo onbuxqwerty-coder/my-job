@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\DTOs\VacancySearchDTO;
-use App\Enums\EmploymentType;
 use App\Enums\Language;
 use App\Enums\Suitability;
 use App\Models\Category;
@@ -24,8 +23,9 @@ new #[Layout('layouts.app')] class extends Component
     #[Url(history: true)]
     public string $categoryId = '';
 
+    /** @var array<string> */
     #[Url(history: true)]
-    public string $employmentType = '';
+    public array $employmentType = [];
 
     #[Url(history: true)]
     public string $cityId = '';
@@ -72,7 +72,7 @@ new #[Layout('layouts.app')] class extends Component
         return app(VacancyService::class)->search(new VacancySearchDTO(
             search:         $this->search ?: null,
             categoryId:     $this->categoryId ? (int) $this->categoryId : null,
-            employmentType: $this->employmentType ? EmploymentType::from($this->employmentType) : null,
+            employmentTypes: $this->employmentType,
             salaryMin:      $this->salaryMin ? (int) $this->salaryMin : null,
             salaryMax:      $this->salaryMax ? (int) $this->salaryMax : null,
             languages:      $this->languages,
@@ -102,7 +102,7 @@ new #[Layout('layouts.app')] class extends Component
         return $this->search !== ''
             || $this->cityId !== ''
             || $this->categoryId !== ''
-            || $this->employmentType !== ''
+            || !empty($this->employmentType)
             || $this->salaryMin !== ''
             || $this->salaryMax !== ''
             || !empty($this->languages)
@@ -248,12 +248,12 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="radio-group">
                     @foreach($this->employmentTypes as $type)
                         <label class="radio-item">
-                            <input type="radio" wire:model.live="employmentType" value="{{ $type->value }}"/>
+                            <input type="checkbox" wire:model.live="employmentType" value="{{ $type->value }}"/>
                             <span>{{ $type->label() }}</span>
                         </label>
                     @endforeach
-                    @if($employmentType)
-                        <button wire:click="$set('employmentType', '')"
+                    @if(!empty($employmentType))
+                        <button wire:click="$set('employmentType', [])"
                                 style="font-size: 12px; color: var(--color-primary-blue); background: none; border: none; cursor: pointer; text-align: left;">
                             Скинути
                         </button>
