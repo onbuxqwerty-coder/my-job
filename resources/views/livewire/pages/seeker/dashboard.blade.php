@@ -168,20 +168,20 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         {{-- Recommended vacancies --}}
-        <div class="bg-white rounded-2xl border employer-card-border shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100">
-                <h2 class="text-base font-semibold text-gray-900">Рекомендовані вакансії</h2>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border employer-card-border dark:border-gray-700 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+                <h2 class="text-base font-semibold text-gray-900 dark:text-gray-100">Рекомендовані вакансії</h2>
             </div>
             @if($this->recommendedVacancies->isEmpty())
-                <div class="px-6 py-10 text-center text-gray-400 text-sm">Немає рекомендацій</div>
+                <div class="px-6 py-10 text-center text-gray-400 dark:text-gray-500 text-sm">Немає рекомендацій</div>
             @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-x divide-y divide-gray-100">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-x divide-y divide-gray-100 dark:divide-gray-700">
                     @foreach($this->recommendedVacancies as $vacancy)
                         <a href="{{ route('jobs.show', $vacancy->slug) }}"
-                           class="block p-5 hover:bg-gray-50 transition-colors">
-                            <p class="font-semibold text-gray-900 mb-1">{{ $vacancy->title }}</p>
-                            <p class="text-sm text-gray-500 mb-2">{{ $vacancy->company->name }}</p>
-                            <p class="text-xs text-gray-400">
+                           class="block p-5 transition-transform hover:-translate-y-1">
+                            <p class="font-semibold text-gray-900 dark:text-gray-100 mb-1">{{ $vacancy->title }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">{{ $vacancy->company->name }}</p>
+                            <p class="text-xs text-gray-400 dark:text-gray-500">
                                 {{ $vacancy->city?->name ?? 'Вся Україна' }}
                                 @if($vacancy->salary_from || $vacancy->salary_to)
                                     · {{ $vacancy->salary_from ? number_format($vacancy->salary_from, 0, '.', ' ') : '' }}
