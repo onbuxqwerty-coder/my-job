@@ -633,16 +633,67 @@ html[data-theme="dark"] .mj-filters {
   background: #1F2937 !important;
   border-color: #374151 !important;
 }
-html[data-theme="dark"] .mj-filters .et-dropdown-btn,
-html[data-theme="dark"] .mj-filters .lang-dropdown-btn {
-  background: #111827 !important;
+
+/* Labels / headings */
+html[data-theme="dark"] .mj-filters .filter-label {
+  color: #e2e8f0 !important;
+}
+
+/* Category select */
+html[data-theme="dark"] .mj-filters .filter-select {
+  background-color: #1F2937 !important;
   border-color: #374151 !important;
   color: #e2e8f0 !important;
 }
+html[data-theme="dark"] .mj-filters .filter-select:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.2) !important;
+}
+
+/* Salary inputs */
+html[data-theme="dark"] .mj-filters .salary-input {
+  background-color: #1F2937 !important;
+  border-color: #374151 !important;
+  color: #e2e8f0 !important;
+}
+html[data-theme="dark"] .mj-filters .salary-input::placeholder {
+  color: #6b7280 !important;
+}
+html[data-theme="dark"] .mj-filters .salary-input:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.2) !important;
+}
+
+/* Salary labels */
+html[data-theme="dark"] .mj-filters .salary-row label {
+  color: #9ca3af !important;
+}
+
+/* Checkboxes / radio items */
+html[data-theme="dark"] .mj-filters .radio-item {
+  color: #e2e8f0 !important;
+}
+html[data-theme="dark"] .mj-filters .radio-item span {
+  color: #e2e8f0 !important;
+}
+html[data-theme="dark"] .mj-filters .radio-item:hover {
+  background-color: #374151 !important;
+}
+
+/* Employment type & languages dropdowns — trigger button */
+html[data-theme="dark"] .mj-filters .et-dropdown-btn,
+html[data-theme="dark"] .mj-filters .lang-dropdown-btn {
+  background: #1F2937 !important;
+  border-color: #374151 !important;
+  color: #e2e8f0 !important;
+}
+
+/* Dropdown panels */
 html[data-theme="dark"] .mj-filters .et-dropdown-panel,
 html[data-theme="dark"] .mj-filters .lang-dropdown-panel {
-  background: #111827 !important;
+  background: #1F2937 !important;
   border-color: #374151 !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4) !important;
 }
 html[data-theme="dark"] .mj-filters .et-dropdown-panel label,
 html[data-theme="dark"] .mj-filters .lang-dropdown-panel label {
@@ -650,10 +701,15 @@ html[data-theme="dark"] .mj-filters .lang-dropdown-panel label {
 }
 html[data-theme="dark"] .mj-filters .et-dropdown-panel label:hover,
 html[data-theme="dark"] .mj-filters .lang-dropdown-panel label:hover {
-  background: rgba(255,255,255,.08) !important;
+  background: #374151 !important;
 }
 html[data-theme="dark"] .mj-filters .dropdown-reset-row {
   border-top-color: #374151 !important;
+}
+
+/* Reset filters button */
+html[data-theme="dark"] .mj-filters .filter-section button[wire\:click="clearFilters"] {
+  color: #818cf8 !important;
 }
 html[data-theme="dark"] .index-hero-bg {
   background: #1F2937 !important;
