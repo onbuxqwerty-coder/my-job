@@ -237,46 +237,46 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         {{-- Table --}}
-        <div class="bg-white rounded-2xl border employer-card-border overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border employer-card-border dark:border-gray-700 overflow-hidden">
             @if($this->applications->isEmpty())
-                <div class="p-16 text-center text-gray-400">
+                <div class="p-16 text-center text-gray-400 dark:text-gray-500">
                     {{ $this->hasActiveFilters ? 'Кандидатів за цими фільтрами не знайдено.' : 'Відгуків ще немає.' }}
                 </div>
             @else
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead class="bg-gray-50 border-b border-gray-100">
+                        <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-600">
                             <tr>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                                    <button wire:click="sort('users.name')" class="flex items-center gap-1 hover:text-gray-700">
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                    <button wire:click="sort('users.name')" class="flex items-center gap-1 hover:text-gray-700 dark:hover:text-gray-200">
                                         Кандидат
                                         @if($sortBy === 'users.name')
                                             <span>{{ $sortDir === 'asc' ? '↑' : '↓' }}</span>
                                         @endif
                                     </button>
                                 </th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Вакансія</th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Статус</th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                                    <button wire:click="sort('rating')" class="flex items-center gap-1 hover:text-gray-700">
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Вакансія</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Статус</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                    <button wire:click="sort('rating')" class="flex items-center gap-1 hover:text-gray-700 dark:hover:text-gray-200">
                                         Оцінка
                                         @if($sortBy === 'rating')
                                             <span>{{ $sortDir === 'asc' ? '↑' : '↓' }}</span>
                                         @endif
                                     </button>
                                 </th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                                    <button wire:click="sort('created_at')" class="flex items-center gap-1 hover:text-gray-700">
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                    <button wire:click="sort('created_at')" class="flex items-center gap-1 hover:text-gray-700 dark:hover:text-gray-200">
                                         Дата
                                         @if($sortBy === 'created_at')
                                             <span>{{ $sortDir === 'asc' ? '↑' : '↓' }}</span>
                                         @endif
                                     </button>
                                 </th>
-                                <th class="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Дії</th>
+                                <th class="text-right px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Дії</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                             @foreach($this->applications as $application)
                                 @php
                                     $statusColor = match($application->status->color()) {
@@ -288,14 +288,14 @@ new #[Layout('layouts.app')] class extends Component
                                         default  => 'bg-gray-100 text-gray-600',
                                     };
                                 @endphp
-                                <tr class="hover:bg-gray-50 transition-colors cursor-pointer"
+                                <tr class="candidate-row cursor-pointer"
                                     wire:click="$navigate('{{ route('employer.candidate.detail', $application->id) }}')">
                                     <td class="px-6 py-4">
-                                        <p class="font-medium text-gray-900">{{ $application->user->name }}</p>
-                                        <p class="text-xs text-gray-400">{{ $application->user->email }}</p>
+                                        <p class="font-medium text-gray-900 dark:text-gray-100">{{ $application->user->name }}</p>
+                                        <p class="text-xs text-gray-400 dark:text-gray-500">{{ $application->user->email }}</p>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <p class="text-gray-700">{{ Str::limit($application->vacancy->title, 35) }}</p>
+                                        <p class="text-gray-700 dark:text-gray-300">{{ Str::limit($application->vacancy->title, 35) }}</p>
                                     </td>
                                     <td class="px-6 py-4">
                                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $statusColor }}">
@@ -306,13 +306,13 @@ new #[Layout('layouts.app')] class extends Component
                                         <div class="flex items-center gap-0.5" wire:click.stop>
                                             @for($star = 1; $star <= 5; $star++)
                                                 <button wire:click="updateRating({{ $application->id }}, {{ $star }})"
-                                                        class="text-lg leading-none {{ $star <= ($application->rating ?? 0) ? 'text-amber-400' : 'text-gray-200' }} hover:text-amber-400 transition-colors">
+                                                        class="text-lg leading-none {{ $star <= ($application->rating ?? 0) ? 'text-amber-400' : 'text-gray-200 dark:text-gray-600' }} hover:text-amber-400 transition-colors">
                                                     ★
                                                 </button>
                                             @endfor
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 text-gray-400 text-xs">
+                                    <td class="px-6 py-4 text-gray-400 dark:text-gray-500 text-xs">
                                         {{ $application->created_at->format('d.m.Y') }}
                                     </td>
                                     <td class="px-6 py-4 text-right" wire:click.stop>
@@ -328,10 +328,25 @@ new #[Layout('layouts.app')] class extends Component
                 </div>
 
                 {{-- Pagination --}}
-                <div class="px-6 py-4 border-t border-gray-100">
+                <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700">
                     {{ $this->applications->links() }}
                 </div>
             @endif
         </div>
     </div>
+
+    <style>
+    .candidate-row {
+        transition: background .2s, transform .2s;
+    }
+    .candidate-row:hover {
+        background: #f0f7ff;
+        transform: translateY(-2px);
+    }
+    [data-theme="dark"] .candidate-row:hover,
+    .dark .candidate-row:hover {
+        background: transparent;
+        transform: translateY(-2px);
+    }
+    </style>
 </div>
