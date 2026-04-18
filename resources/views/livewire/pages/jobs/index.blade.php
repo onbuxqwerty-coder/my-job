@@ -271,18 +271,18 @@ new #[Layout('layouts.app')] class extends Component
                             : 'Оберіть...';
                     }
                 }" @click.outside="open = false" style="position:relative;">
-                    <button type="button" @click="open = !open" class="et-dropdown-btn"
-                            style="width:100%; border:1px solid #a7a7a7; border-radius:10px; padding:8px 12px; font-size:13px; background:#fff; display:flex; justify-content:space-between; align-items:center; cursor:pointer; color:#374151; text-align:left;">
+                    <button type="button" @click="open = !open" class="et-dropdown-btn filter-dropdown-btn"
+                            style="width:100%; border:1px solid #a7a7a7; border-radius:10px; padding:8px 12px; font-size:13px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; text-align:left;">
                         <span x-text="display" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:90%;"></span>
                         <svg style="width:14px; height:14px; flex-shrink:0; opacity:.6;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
-                    <div x-show="open" x-transition class="et-dropdown-panel"
-                         style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; background:#fff; border:1px solid #a7a7a7; border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.1); overflow:hidden;">
+                    <div x-show="open" x-transition class="et-dropdown-panel filter-dropdown-panel"
+                         style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; border:1px solid #a7a7a7; border-radius:10px; overflow:hidden;">
                         @foreach($this->employmentTypes as $type)
-                            <label style="display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; font-size:13px; color:#374151;"
-                                   onmouseover="this.style.background='#f0f7ff'" onmouseout="this.style.background=''">
+                            <label class="filter-dropdown-item"
+                                   style="display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; font-size:13px;">
                                 <input type="checkbox" x-model="selected" value="{{ $type->value }}"
                                        wire:ignore
                                        style="width:15px; height:15px; accent-color:#3b82f6; cursor:pointer; flex-shrink:0;"/>
@@ -314,18 +314,18 @@ new #[Layout('layouts.app')] class extends Component
                             : 'Оберіть...';
                     }
                 }" @click.outside="open = false" style="position:relative;">
-                    <button type="button" @click="open = !open" class="lang-dropdown-btn"
-                            style="width:100%; border:1px solid #a7a7a7; border-radius:10px; padding:8px 12px; font-size:13px; background:#fff; display:flex; justify-content:space-between; align-items:center; cursor:pointer; color:#374151; text-align:left;">
+                    <button type="button" @click="open = !open" class="lang-dropdown-btn filter-dropdown-btn"
+                            style="width:100%; border:1px solid #a7a7a7; border-radius:10px; padding:8px 12px; font-size:13px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; text-align:left;">
                         <span x-text="display" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:90%;"></span>
                         <svg style="width:14px; height:14px; flex-shrink:0; opacity:.6;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
-                    <div x-show="open" x-transition class="lang-dropdown-panel"
-                         style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; background:#fff; border:1px solid #a7a7a7; border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.1); overflow:hidden;">
+                    <div x-show="open" x-transition class="lang-dropdown-panel filter-dropdown-panel"
+                         style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; border:1px solid #a7a7a7; border-radius:10px; overflow:hidden;">
                         @foreach($this->languageOptions as $lang)
-                            <label style="display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; font-size:13px; color:#374151;"
-                                   onmouseover="this.style.background='#f0f7ff'" onmouseout="this.style.background=''">
+                            <label class="filter-dropdown-item"
+                                   style="display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; font-size:13px;">
                                 <input type="checkbox" x-model="selected" value="{{ $lang->value }}"
                                        wire:ignore
                                        style="width:15px; height:15px; accent-color:#3b82f6; cursor:pointer; flex-shrink:0;"/>
