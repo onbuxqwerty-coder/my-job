@@ -133,7 +133,7 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         {{-- Variables hint --}}
-        <div class="vars-hint bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 text-xs text-blue-700 dark:bg-[#1F2937] dark:border-[#4B5563] dark:text-gray-300">
+        <div class="vars-hint bg-blue-50 border border-[#A7A7A7] rounded-xl p-4 mb-6 text-xs text-blue-700 dark:bg-[#1F2937] dark:border-[#4B5563] dark:text-gray-300">
             <p class="font-semibold mb-1">Доступні змінні в шаблонах:</p>
             <div class="flex flex-wrap gap-2">
                 @foreach($this->availableVars as $var => $desc)
