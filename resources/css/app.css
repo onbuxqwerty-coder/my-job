@@ -916,7 +916,6 @@ html[data-theme="dark"] .employer-heading {
 .seeker-dashboard-bg {
     background-image: url('/img/bg-main.webp');
     background-size: auto;
-    background-attachment: fixed;
     background-repeat: repeat;
     border: 1px solid #a7a7a7;
 }
