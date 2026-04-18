@@ -77,39 +77,37 @@ new #[Layout('layouts.app')] class extends Component
         @else
 
             {{-- Vacancies table --}}
-            <div class="bg-white rounded-2xl border employer-card-border overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-100">
-                    <h2 class="text-base font-semibold text-gray-900">Мої вакансії</h2>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl border employer-card-border dark:border-gray-700 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+                    <h2 class="text-base font-semibold text-gray-900 dark:text-gray-100">Мої вакансії</h2>
                 </div>
 
                 @if($this->vacancies->isEmpty())
-                    <div class="p-12 text-center text-gray-400">
+                    <div class="p-12 text-center text-gray-400 dark:text-gray-500">
                         <p>Вакансій ще немає. <a href="{{ route('employer.vacancies.create') }}" class="text-blue-600 hover:underline">Додати першу вакансію →</a></p>
                     </div>
                 @else
                     <table class="w-full text-sm">
-                        <thead class="bg-gray-50 border-b border-gray-100">
+                        <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-600">
                             <tr>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Назва</th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Зарплата</th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Місто</th>
-                                <th class="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">HOT</th>
-                                <th class="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">TOP</th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Відгуки</th>
-                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Опубліковано</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Назва</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Зарплата</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Місто</th>
+                                <th class="text-center px-4 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">HOT</th>
+                                <th class="text-center px-4 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">TOP</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Відгуки</th>
+                                <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Опубліковано</th>
                                 <th class="text-right px-6 py-3 w-8"></th>
                             </tr>
                         </thead>
                         @foreach($this->vacancies as $vacancy)
-                                <tbody class="divide-y divide-gray-100">
-                                <tr style="transition: background .2s, box-shadow .2s, transform .2s;"
-                                    onmouseover="this.style.background='#f0f7ff'; this.style.boxShadow='0 4px 16px rgba(37,99,235,.12), inset 0 0 0 2px #2563eb'; this.style.transform='translateY(-2px)'; this.querySelector('.vacancy-title').style.color='#2563eb'"
-                                    onmouseout="this.style.background=''; this.style.boxShadow=''; this.style.transform=''; this.querySelector('.vacancy-title').style.color=''">
+                                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                                <tr class="vacancy-row">
                                     <td class="px-6 py-4">
-                                        <p class="vacancy-title font-medium text-gray-900" style="transition: color .2s;">{{ $vacancy->title }}</p>
+                                        <p class="vacancy-title font-medium text-gray-900 dark:text-gray-100" style="transition: color .2s, transform .2s;">{{ $vacancy->title }}</p>
                                         <p class="text-xs text-gray-400">{{ implode(', ', array_map(fn($t) => \App\Enums\EmploymentType::from($t)->label(), (array) $vacancy->employment_type)) }}</p>
                                     </td>
-                                    <td class="px-6 py-4 text-gray-700">
+                                    <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
                                         @if($vacancy->salary_from || $vacancy->salary_to)
                                             <span class="font-medium">
                                                 @if($vacancy->salary_from && $vacancy->salary_to)
@@ -120,12 +118,12 @@ new #[Layout('layouts.app')] class extends Component
                                                     до {{ number_format($vacancy->salary_to, 0, '.', ' ') }}
                                                 @endif
                                             </span>
-                                            <span class="text-xs text-gray-400">{{ $vacancy->currency }}</span>
+                                            <span class="text-xs text-gray-400 dark:text-gray-500">{{ $vacancy->currency }}</span>
                                         @else
-                                            <span class="text-gray-400">—</span>
+                                            <span class="text-gray-400 dark:text-gray-500">—</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 text-gray-700">
+                                    <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
                                         {{ $vacancy->city?->name ?? '—' }}
                                     </td>
                                     <td class="px-4 py-4 text-center">
@@ -204,3 +202,27 @@ new #[Layout('layouts.app')] class extends Component
         @endif
     </div>
 </div>
+
+<style>
+.vacancy-row {
+    transition: background .2s, box-shadow .2s, transform .2s;
+    cursor: pointer;
+}
+.vacancy-row:hover {
+    background: #f0f7ff;
+    box-shadow: 0 4px 16px rgba(37,99,235,.12), inset 0 0 0 2px #2563eb;
+    transform: translateY(-2px);
+}
+.vacancy-row:hover .vacancy-title { color: #2563eb; }
+
+[data-theme="dark"] .vacancy-row:hover,
+.dark .vacancy-row:hover {
+    background: transparent;
+    box-shadow: none;
+    transform: translateY(-2px);
+}
+[data-theme="dark"] .vacancy-row:hover .vacancy-title,
+.dark .vacancy-row:hover .vacancy-title {
+    color: inherit;
+}
+</style>
