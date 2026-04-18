@@ -263,7 +263,7 @@ new #[Layout('layouts.app')] class extends Component
                 @endphp
                 <div x-data="{
                     open: false,
-                    selected: $wire.entangle('employmentType'),
+                    selected: $wire.entangle('employmentType').live,
                     labels: {{ json_encode($etLabels) }},
                     get display() {
                         return this.selected.length
@@ -306,7 +306,7 @@ new #[Layout('layouts.app')] class extends Component
                 @endphp
                 <div x-data="{
                     open: false,
-                    selected: $wire.entangle('languages'),
+                    selected: $wire.entangle('languages').live,
                     labels: {{ json_encode($langLabels) }},
                     get display() {
                         return this.selected.length
