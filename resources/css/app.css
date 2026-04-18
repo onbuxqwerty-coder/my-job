@@ -107,7 +107,10 @@ aside.mj-filters {
 }
 
 @media (max-width: 1023px) {
-  aside.mj-filters { display: none; }
+  aside.mj-filters {
+    position: static;
+    width: 100%;
+  }
 }
 
 .filter-section {
@@ -537,7 +540,8 @@ aside.mj-filters {
 .mj-hamburger:hover { background-color: #2563EB; box-shadow: var(--shadow-md); }
 
 @media (max-width: 1023px) {
-  .mj-hamburger { display: flex; }
+  .mj-hamburger { display: none; }
+  .filters-modal-overlay { display: none !important; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
