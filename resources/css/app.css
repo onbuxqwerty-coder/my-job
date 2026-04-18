@@ -625,6 +625,28 @@ html[data-theme="dark"] .mj-filters {
   background: #1F2937 !important;
   border-color: #374151 !important;
 }
+html[data-theme="dark"] .mj-filters .et-dropdown-btn,
+html[data-theme="dark"] .mj-filters .lang-dropdown-btn {
+  background: #111827 !important;
+  border-color: #374151 !important;
+  color: #e2e8f0 !important;
+}
+html[data-theme="dark"] .mj-filters .et-dropdown-panel,
+html[data-theme="dark"] .mj-filters .lang-dropdown-panel {
+  background: #111827 !important;
+  border-color: #374151 !important;
+}
+html[data-theme="dark"] .mj-filters .et-dropdown-panel label,
+html[data-theme="dark"] .mj-filters .lang-dropdown-panel label {
+  color: #e2e8f0 !important;
+}
+html[data-theme="dark"] .mj-filters .et-dropdown-panel label:hover,
+html[data-theme="dark"] .mj-filters .lang-dropdown-panel label:hover {
+  background: rgba(255,255,255,.08) !important;
+}
+html[data-theme="dark"] .mj-filters .dropdown-reset-row {
+  border-top-color: #374151 !important;
+}
 html[data-theme="dark"] .index-hero-bg {
   background: #1F2937 !important;
 }

@@ -271,14 +271,14 @@ new #[Layout('layouts.app')] class extends Component
                             : 'Оберіть...';
                     }
                 }" @click.outside="open = false" style="position:relative;">
-                    <button type="button" @click="open = !open"
+                    <button type="button" @click="open = !open" class="et-dropdown-btn"
                             style="width:100%; border:1px solid #a7a7a7; border-radius:10px; padding:8px 12px; font-size:13px; background:#fff; display:flex; justify-content:space-between; align-items:center; cursor:pointer; color:#374151; text-align:left;">
                         <span x-text="display" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:90%;"></span>
                         <svg style="width:14px; height:14px; flex-shrink:0; opacity:.6;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
-                    <div x-show="open" x-transition
+                    <div x-show="open" x-transition class="et-dropdown-panel"
                          style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; background:#fff; border:1px solid #a7a7a7; border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.1); overflow:hidden;">
                         @foreach($this->employmentTypes as $type)
                             <label style="display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; font-size:13px; color:#374151;"
@@ -289,7 +289,7 @@ new #[Layout('layouts.app')] class extends Component
                                 {{ $type->label() }}
                             </label>
                         @endforeach
-                        <div x-show="selected.length" style="padding:6px 12px; border-top:1px solid #a7a7a7;">
+                        <div x-show="selected.length" class="dropdown-reset-row" style="padding:6px 12px; border-top:1px solid #a7a7a7;">
                             <button type="button" @click="selected = []"
                                     style="font-size:12px; color:var(--color-primary-blue); background:none; border:none; cursor:pointer; padding:0;">
                                 Скинути
@@ -314,14 +314,14 @@ new #[Layout('layouts.app')] class extends Component
                             : 'Оберіть...';
                     }
                 }" @click.outside="open = false" style="position:relative;">
-                    <button type="button" @click="open = !open"
+                    <button type="button" @click="open = !open" class="lang-dropdown-btn"
                             style="width:100%; border:1px solid #a7a7a7; border-radius:10px; padding:8px 12px; font-size:13px; background:#fff; display:flex; justify-content:space-between; align-items:center; cursor:pointer; color:#374151; text-align:left;">
                         <span x-text="display" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:90%;"></span>
                         <svg style="width:14px; height:14px; flex-shrink:0; opacity:.6;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
-                    <div x-show="open" x-transition
+                    <div x-show="open" x-transition class="lang-dropdown-panel"
                          style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; background:#fff; border:1px solid #a7a7a7; border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.1); overflow:hidden;">
                         @foreach($this->languageOptions as $lang)
                             <label style="display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; font-size:13px; color:#374151;"
@@ -332,7 +332,7 @@ new #[Layout('layouts.app')] class extends Component
                                 {{ $lang->label() }}
                             </label>
                         @endforeach
-                        <div x-show="selected.length" style="padding:6px 12px; border-top:1px solid #a7a7a7;">
+                        <div x-show="selected.length" class="dropdown-reset-row" style="padding:6px 12px; border-top:1px solid #a7a7a7;">
                             <button type="button" @click="selected = []"
                                     style="font-size:12px; color:var(--color-primary-blue); background:none; border:none; cursor:pointer; padding:0;">
                                 Скинути
