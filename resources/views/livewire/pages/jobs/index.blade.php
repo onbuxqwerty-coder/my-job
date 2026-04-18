@@ -242,6 +242,18 @@ new #[Layout('layouts.app')] class extends Component
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
+                <div class="salary-row" style="margin-top:10px;">
+                    <div>
+                        <label style="font-size: 11px; color: var(--color-text-gray); display: block; margin-bottom: 4px;">Від (UAH)</label>
+                        <input type="number" wire:model.live.debounce.600ms="salaryMin"
+                               placeholder="0" min="0" class="salary-input"/>
+                    </div>
+                    <div>
+                        <label style="font-size: 11px; color: var(--color-text-gray); display: block; margin-bottom: 4px;">До (UAH)</label>
+                        <input type="number" wire:model.live.debounce.600ms="salaryMax"
+                               placeholder="Будь-яка" min="0" class="salary-input"/>
+                    </div>
+                </div>
             </div>
 
             <div class="filter-section">
@@ -343,21 +355,6 @@ new #[Layout('layouts.app')] class extends Component
                 </div>
             </div>
 
-            <div class="filter-section">
-                <p class="filter-label">Зарплата (UAH)</p>
-                <div class="salary-row">
-                    <div>
-                        <label style="font-size: 11px; color: var(--color-text-gray); display: block; margin-bottom: 4px;">Від</label>
-                        <input type="number" wire:model.live.debounce.600ms="salaryMin"
-                               placeholder="0" min="0" class="salary-input"/>
-                    </div>
-                    <div>
-                        <label style="font-size: 11px; color: var(--color-text-gray); display: block; margin-bottom: 4px;">До</label>
-                        <input type="number" wire:model.live.debounce.600ms="salaryMax"
-                               placeholder="Будь-яка" min="0" class="salary-input"/>
-                    </div>
-                </div>
-            </div>
         </aside>
 
         {{-- Jobs area --}}
