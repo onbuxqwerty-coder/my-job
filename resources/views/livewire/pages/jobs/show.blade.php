@@ -180,14 +180,15 @@ new #[Layout('layouts.app')] class extends Component
                             'hybrid'    => 'mj-tag--orange',
                             'contract'  => 'mj-tag--gray',
                         ];
-                        $typeColor = $typeColors[$vacancy->employment_type->value] ?? 'mj-tag--gray';
                     @endphp
-                    <span class="mj-tag {{ $typeColor }}">
+                    @foreach((array) $vacancy->employment_type as $et)
+                    <span class="mj-tag {{ $typeColors[$et] ?? 'mj-tag--gray' }}">
                         <svg class="mj-tag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
-                        {{ $vacancy->employment_type->label() }}
+                        {{ \App\Enums\EmploymentType::from($et)->label() }}
                     </span>
+                    @endforeach
 
                     @if($vacancy->city)
                         <span class="mj-tag mj-tag--gray">
@@ -493,7 +494,6 @@ new #[Layout('layouts.app')] class extends Component
                                 'hybrid'    => 'mj-tag--orange',
                                 'contract'  => 'mj-tag--gray',
                             ];
-                            $relColor = $relBadgeColors[$related->employment_type->value] ?? 'mj-tag--gray';
                         @endphp
                         <a href="{{ route('jobs.show', $related) }}" class="mj-related-card">
                             <div class="mj-related-card-top">
@@ -510,7 +510,9 @@ new #[Layout('layouts.app')] class extends Component
                                 </div>
                             </div>
                             <div class="mj-related-card-footer">
-                                <span class="mj-tag mj-tag--sm {{ $relColor }}">{{ $related->employment_type->label() }}</span>
+                                @foreach((array) $related->employment_type as $ret)
+                                <span class="mj-tag mj-tag--sm {{ $relBadgeColors[$ret] ?? 'mj-tag--gray' }}">{{ \App\Enums\EmploymentType::from($ret)->label() }}</span>
+                                @endforeach
                                 @if($related->salary_from)
                                     <span class="mj-related-card-salary">
                                         від {{ number_format($related->salary_from, 0, '.', ' ') }} {{ $related->currency }}

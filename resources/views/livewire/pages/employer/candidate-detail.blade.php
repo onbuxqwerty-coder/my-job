@@ -786,7 +786,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="bg-white rounded-2xl border border-gray-200 p-5">
                     <h2 class="text-sm font-semibold text-gray-900 mb-2">Вакансія</h2>
                     <p class="text-sm font-medium text-gray-800">{{ $application->vacancy->title }}</p>
-                    <p class="text-xs text-gray-400 mt-1 capitalize">{{ str_replace('-', ' ', $application->vacancy->employment_type->value) }}</p>
+                    <p class="text-xs text-gray-400 mt-1 capitalize">{{ implode(', ', array_map(fn($t) => \App\Enums\EmploymentType::from($t)->label(), (array) $application->vacancy->employment_type)) }}</p>
                     <a href="{{ route('employer.vacancies.edit', $application->vacancy->id) }}"
                        class="inline-block mt-3 text-xs text-blue-600 hover:underline">
                         Редагувати вакансію →

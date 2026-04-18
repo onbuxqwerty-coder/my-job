@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\EmploymentType;
 use Database\Factories\VacancyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +39,7 @@ class Vacancy extends Model
     protected function casts(): array
     {
         return [
-            'employment_type' => EmploymentType::class,
+            'employment_type' => 'array',
             'is_active'       => 'boolean',
             'is_featured'     => 'boolean',
             'is_top'          => 'boolean',

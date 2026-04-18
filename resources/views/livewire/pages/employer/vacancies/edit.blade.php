@@ -18,7 +18,8 @@ new #[Layout('layouts.app')] class extends Component
 
     public string $title          = '';
     public string $description    = '';
-    public string $employmentType = '';
+    /** @var array<string> */
+    public array $employmentType = [];
     public string $categoryId     = '';
     public string $cityId         = '';
     public string $cityName       = '';
@@ -46,7 +47,7 @@ new #[Layout('layouts.app')] class extends Component
 
             $this->title          = $vacancy->title;
             $this->description    = $vacancy->description;
-            $this->employmentType = $vacancy->employment_type->value;
+            $this->employmentType = $vacancy->employment_type ?? [];
             $this->categoryId     = (string) $vacancy->category_id;
             $this->cityId         = (string) ($vacancy->city_id ?? '');
             $this->cityName       = $vacancy->city?->name ?? '';
@@ -66,7 +67,8 @@ new #[Layout('layouts.app')] class extends Component
         $this->validate([
             'title'          => 'required|string|max:255',
             'description'    => 'required|string|min:50',
-            'employmentType' => 'required|in:' . implode(',', array_column(EmploymentType::cases(), 'value')),
+            'employmentType'   => 'required|array|min:1',
+            'employmentType.*' => 'in:' . implode(',', array_column(EmploymentType::cases(), 'value')),
             'categoryId'     => 'required|exists:categories,id',
             'cityId'         => 'nullable|exists:cities,id',
             'salaryFrom'     => 'nullable|integer|min:0',
@@ -179,14 +181,18 @@ new #[Layout('layouts.app')] class extends Component
                         @error('categoryId') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Тип зайнятості <span class="text-red-500">*</span></label>
-                        <select wire:model="employmentType" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Оберіть...</option>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Тип зайнятості <span class="text-red-500">*</span></label>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
                             @foreach($this->employmentTypes as $type)
-                                <option value="{{ $type->value }}">{{ $type->label() }}</option>
+                                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:#374151;">
+                                    <input type="checkbox" wire:model="employmentType" value="{{ $type->value }}"
+                                           style="width:16px; height:16px; accent-color:#2563eb; cursor:pointer;"/>
+                                    {{ $type->label() }}
+                                </label>
                             @endforeach
-                        </select>
+                        </div>
                         @error('employmentType') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        @error('employmentType.*') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 

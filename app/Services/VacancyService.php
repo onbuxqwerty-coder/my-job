@@ -27,7 +27,7 @@ final class VacancyService
                 });
             })
             ->when($dto->categoryId, fn(Builder $q, int $id): Builder => $q->where('category_id', $id))
-            ->when($dto->employmentType, fn(Builder $q, $type): Builder => $q->where('employment_type', $type))
+            ->when($dto->employmentType, fn(Builder $q, $type): Builder => $q->whereJsonContains('employment_type', $type->value))
             ->when($dto->salaryMin, fn(Builder $q, int $min): Builder => $q->where('salary_from', '>=', $min))
             ->when($dto->salaryMax, fn(Builder $q, int $max): Builder => $q->where('salary_to', '<=', $max))
             ->when($dto->languages, function (Builder $q, array $languages): void {

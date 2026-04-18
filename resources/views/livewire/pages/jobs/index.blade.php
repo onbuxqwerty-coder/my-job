@@ -321,14 +321,13 @@ new #[Layout('layouts.app')] class extends Component
             {{-- Vacancy cards --}}
             @forelse($this->vacancies as $vacancy)
                 @php
-                    $badgeClass = match($vacancy->employment_type->value) {
+                    $badgeClassMap = [
                         'full-time' => 'badge--full-time',
                         'part-time' => 'badge--part-time',
                         'contract'  => 'badge--contract',
                         'remote'    => 'badge--remote',
                         'hybrid'    => 'badge--hybrid',
-                        default     => 'badge--category',
-                    };
+                    ];
                 @endphp
 
                 <a href="{{ route('jobs.show', $vacancy) }}" wire:navigate class="job-card {{ $vacancy->is_featured && $vacancy->is_top ? 'job-card--hot-top' : ($vacancy->is_featured ? 'job-card--featured' : '') }}">
@@ -370,9 +369,11 @@ new #[Layout('layouts.app')] class extends Component
                         </div>
 
                         <div class="job-badges">
-                            <span class="badge {{ $badgeClass }}">
-                                {{ $vacancy->employment_type->label() }}
-                            </span>
+                            @foreach((array) $vacancy->employment_type as $et)
+                                <span class="badge {{ $badgeClassMap[$et] ?? 'badge--category' }}">
+                                    {{ \App\Enums\EmploymentType::from($et)->label() }}
+                                </span>
+                            @endforeach
                             <span class="badge badge--category">{{ $vacancy->category->name }}</span>
                             @if($vacancy->is_top)
                                 <span class="badge badge--featured">⭐ Топ</span>

@@ -107,7 +107,7 @@ new #[Layout('layouts.app')] class extends Component
                                     onmouseout="this.style.background=''; this.style.boxShadow=''; this.style.transform=''; this.querySelector('.vacancy-title').style.color=''">
                                     <td class="px-6 py-4">
                                         <p class="vacancy-title font-medium text-gray-900" style="transition: color .2s;">{{ $vacancy->title }}</p>
-                                        <p class="text-xs text-gray-400">{{ $vacancy->employment_type->label() }}</p>
+                                        <p class="text-xs text-gray-400">{{ implode(', ', array_map(fn($t) => \App\Enums\EmploymentType::from($t)->label(), (array) $vacancy->employment_type)) }}</p>
                                     </td>
                                     <td class="px-6 py-4 text-gray-700">
                                         @if($vacancy->salary_from || $vacancy->salary_to)

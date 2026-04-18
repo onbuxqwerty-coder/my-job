@@ -47,6 +47,7 @@ class VacancyForm
                 Select::make('employment_type')
                     ->label('Тип зайнятості')
                     ->options(EmploymentType::class)
+                    ->multiple()
                     ->required(),
                 Toggle::make('is_active')
                     ->label('Активна')
