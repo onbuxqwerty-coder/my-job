@@ -252,7 +252,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div x-data="{
                     open: false,
                     selected: $wire.entangle('employmentType'),
-                    labels: {{ Js::from($etLabels) }},
+                    labels: {{ json_encode($etLabels) }},
                     get display() {
                         return this.selected.length
                             ? this.selected.map(v => this.labels[v]).join('; ')
