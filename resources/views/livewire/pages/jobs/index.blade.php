@@ -246,19 +246,44 @@ new #[Layout('layouts.app')] class extends Component
 
             <div class="filter-section">
                 <p class="filter-label">Тип зайнятості</p>
-                <div class="radio-group">
-                    @foreach($this->employmentTypes as $type)
-                        <label class="radio-item">
-                            <input type="checkbox" wire:model.live="employmentType" value="{{ $type->value }}"/>
-                            <span>{{ $type->label() }}</span>
-                        </label>
-                    @endforeach
-                    @if(!empty($employmentType))
-                        <button wire:click="$set('employmentType', [])"
-                                style="font-size: 12px; color: var(--color-primary-blue); background: none; border: none; cursor: pointer; text-align: left;">
-                            Скинути
-                        </button>
-                    @endif
+                @php
+                    $etLabels = collect($this->employmentTypes)->mapWithKeys(fn($t) => [$t->value => $t->label()])->all();
+                @endphp
+                <div x-data="{
+                    open: false,
+                    selected: $wire.entangle('employmentType'),
+                    labels: {{ Js::from($etLabels) }},
+                    get display() {
+                        return this.selected.length
+                            ? this.selected.map(v => this.labels[v]).join('; ')
+                            : 'Оберіть...';
+                    }
+                }" @click.outside="open = false" style="position:relative;">
+                    <button type="button" @click="open = !open"
+                            style="width:100%; border:1px solid rgba(255,255,255,.15); border-radius:10px; padding:8px 12px; font-size:13px; background:rgba(255,255,255,.07); display:flex; justify-content:space-between; align-items:center; cursor:pointer; color:#e2e8f0; text-align:left;">
+                        <span x-text="display" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:90%;"></span>
+                        <svg style="width:14px; height:14px; flex-shrink:0; opacity:.6;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div x-show="open" x-transition
+                         style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; background:#1e293b; border:1px solid rgba(255,255,255,.12); border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,.3); overflow:hidden;">
+                        @foreach($this->employmentTypes as $type)
+                            <label style="display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; font-size:13px; color:#e2e8f0;"
+                                   onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background=''">
+                                <input type="checkbox" x-model="selected" value="{{ $type->value }}"
+                                       wire:ignore
+                                       style="width:15px; height:15px; accent-color:#3b82f6; cursor:pointer; flex-shrink:0;"/>
+                                {{ $type->label() }}
+                            </label>
+                        @endforeach
+                        <div x-show="selected.length" style="padding:6px 12px; border-top:1px solid rgba(255,255,255,.08);">
+                            <button type="button" @click="selected = []"
+                                    style="font-size:12px; color:#60a5fa; background:none; border:none; cursor:pointer; padding:0;">
+                                Скинути
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
