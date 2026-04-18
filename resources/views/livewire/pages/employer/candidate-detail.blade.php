@@ -345,14 +345,14 @@ new #[Layout('layouts.app')] class extends Component
                 @endif
 
                 {{-- Resume --}}
-                <div class="bg-white rounded-2xl border border-gray-200 p-6">
-                    <h2 class="text-sm font-semibold text-gray-900 mb-3">Резюме</h2>
+                <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Резюме</h2>
                     <a href="{{ $application->resume_url }}" target="_blank"
-                       class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-sm font-medium hover:bg-blue-100 transition-colors">
+                       class="resume-btn inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-sm font-medium hover:bg-blue-100 transition-colors dark:bg-[#1F2937] dark:text-gray-200 dark:border dark:border-[#4B5563] dark:hover:bg-gray-700">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
                         </svg>
-                        Переглянути / Завантажити
+                        Завантажити
                     </a>
                 </div>
 
