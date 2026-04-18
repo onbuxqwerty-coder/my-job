@@ -108,8 +108,12 @@ aside.mj-filters {
 
 @media (max-width: 1023px) {
   aside.mj-filters {
+    display: none;
     position: static;
     width: 100%;
+  }
+  aside.mj-filters.is-open {
+    display: block;
   }
 }
 

@@ -70,6 +70,33 @@
         background-color: rgba(255,255,255,0.1);
     }
 
+    .header-burger {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: #2d323b;
+        border: 2px solid #a7a7a7;
+        border-radius: 6px;
+        cursor: pointer;
+        flex-shrink: 0;
+        gap: 0;
+        flex-direction: column;
+        padding: 6px 7px;
+    }
+    .header-burger__bar {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: #a7a7a7;
+        border-radius: 2px;
+        margin: 2px 0;
+    }
+    @media (max-width: 1023px) {
+        .header-burger { display: flex; }
+    }
+
     @media (max-width: 767px) {
         .site-header {
             height: 64px;
@@ -101,6 +128,13 @@
                  alt="My Job"
                  style="height:100px; width:auto; display:block;">
         </a>
+
+        {{-- Burger (mobile only) --}}
+        <button class="header-burger" onclick="window.toggleMobileFilters()" aria-label="Фільтри">
+            <span class="header-burger__bar"></span>
+            <span class="header-burger__bar"></span>
+            <span class="header-burger__bar"></span>
+        </button>
 
         {{-- Nav links --}}
         <div class="site-header__nav">
@@ -203,4 +237,9 @@
 
     document.addEventListener('DOMContentLoaded', syncDarkIcon);
     document.addEventListener('livewire:navigated', syncDarkIcon);
+
+    window.toggleMobileFilters = function() {
+        const aside = document.querySelector('aside.mj-filters');
+        if (aside) aside.classList.toggle('is-open');
+    };
 </script>
