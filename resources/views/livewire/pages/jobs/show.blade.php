@@ -535,7 +535,6 @@ new #[Layout('layouts.app')] class extends Component
     background-color: var(--color-bg-light);
     min-height: 100vh;
     padding: 24px 0 60px;
-    border: 1px solid #a7a7a7;
 }
 
 .mj-show-wrap {
@@ -582,7 +581,7 @@ new #[Layout('layouts.app')] class extends Component
 /* Main Article */
 .mj-show-main {
     background: var(--color-bg-white);
-    border: 1px solid var(--color-border);
+    border: 1px solid #a7a7a7;
     border-radius: 12px;
     padding: 32px;
 }
@@ -721,7 +720,7 @@ new #[Layout('layouts.app')] class extends Component
     padding: 12px 16px;
     background: #fafafa;
     border-radius: 8px;
-    border: 1px solid var(--color-border);
+    border: 1px solid #a7a7a7;
 }
 .mj-suit-label {
     font-size: 14px;
@@ -773,6 +772,9 @@ new #[Layout('layouts.app')] class extends Component
     display: flex;
     gap: 16px;
     align-items: flex-start;
+    border: 1px solid #a7a7a7;
+    border-radius: 12px;
+    padding: 16px;
 }
 .mj-company-block-logo {
     width: 56px;
@@ -848,7 +850,7 @@ new #[Layout('layouts.app')] class extends Component
 /* Apply Card */
 .mj-apply-card {
     background: var(--color-bg-white);
-    border: 1px solid var(--color-border);
+    border: 1px solid #a7a7a7;
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -979,7 +981,7 @@ new #[Layout('layouts.app')] class extends Component
 /* Stats Card */
 .mj-stats-card {
     background: var(--color-bg-white);
-    border: 1px solid var(--color-border);
+    border: 1px solid #a7a7a7;
     border-radius: 12px;
     padding: 20px;
 }
@@ -1094,7 +1096,7 @@ new #[Layout('layouts.app')] class extends Component
 
 .mj-related-card {
     background: var(--color-bg-white);
-    border: 1px solid var(--color-border);
+    border: 1px solid #a7a7a7;
     border-radius: 10px;
     padding: 16px;
     text-decoration: none;
