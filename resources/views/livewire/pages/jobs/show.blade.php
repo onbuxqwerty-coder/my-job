@@ -535,6 +535,7 @@ new #[Layout('layouts.app')] class extends Component
     background-color: var(--color-bg-light);
     min-height: 100vh;
     padding: 24px 0 60px;
+    border: 1px solid #a7a7a7;
 }
 
 .mj-show-wrap {
