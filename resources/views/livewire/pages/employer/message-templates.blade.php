@@ -133,11 +133,11 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         {{-- Variables hint --}}
-        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 text-xs text-blue-700">
+        <div class="vars-hint bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 text-xs text-blue-700 dark:bg-[#1F2937] dark:border-[#4B5563] dark:text-gray-300">
             <p class="font-semibold mb-1">Доступні змінні в шаблонах:</p>
             <div class="flex flex-wrap gap-2">
                 @foreach($this->availableVars as $var => $desc)
-                    <span class="font-mono bg-white border border-blue-200 rounded px-1.5 py-0.5" title="{{ $desc }}">{{ $var }}</span>
+                    <span class="font-mono bg-white dark:bg-gray-700 dark:text-gray-200 border border-blue-200 dark:border-[#4B5563] rounded px-1.5 py-0.5" title="{{ $desc }}">{{ $var }}</span>
                 @endforeach
             </div>
         </div>
@@ -260,5 +260,8 @@ new #[Layout('layouts.app')] class extends Component
     .template-row:hover { background: #f0f7ff; transform: translateY(-2px); }
     [data-theme="dark"] .template-row:hover,
     .dark .template-row:hover { background: transparent; transform: translateY(-2px); }
+
+    .vars-hint { transition: transform .2s; }
+    .vars-hint:hover { transform: translateY(-2px); }
     </style>
 </div>
