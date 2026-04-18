@@ -187,7 +187,7 @@ new #[Layout('layouts.app')] class extends Component
                         @endphp
                         <div x-data="{
                             open: false,
-                            selected: @entangle('employmentType'),
+                            selected: $wire.entangle('employmentType'),
                             labels: {{ Js::from($etLabels) }},
                             get display() {
                                 return this.selected.length
