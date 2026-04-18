@@ -914,13 +914,16 @@ html[data-theme="dark"] .employer-heading {
 }
 
 .seeker-dashboard-bg {
-    background-image: url('/img/bg-main.webp?v=3');
+    background-image: url('/img/bg-main.webp');
     background-size: auto;
     background-attachment: fixed;
     background-repeat: repeat;
+    border: 1px solid #a7a7a7;
 }
+[data-theme="dark"] .seeker-dashboard-bg,
 .dark .seeker-dashboard-bg {
     background-image: none;
+    border-color: transparent;
 }
 
 /* Card border — light theme */
