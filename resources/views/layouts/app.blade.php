@@ -26,7 +26,7 @@
             })();
         </script>
     </head>
-    <body class="font-sans antialiased bg-slate-50 text-slate-900 seeker-dashboard-bg">
+    <body class="font-sans antialiased bg-slate-50 text-slate-900">
 
         <x-header />
 

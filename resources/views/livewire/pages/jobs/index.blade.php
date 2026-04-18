@@ -111,7 +111,7 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div x-data="{ filtersOpen: false }" class="seeker-dashboard-bg dark:bg-gray-900">
+<div x-data="{ filtersOpen: false }" class="seeker-dashboard-bg dark:bg-gray-900" style="min-height: 100vh;">
 
     {{-- Hero / Search --}}
     <div class="index-hero-bg" style="border-bottom: 1px solid var(--color-border); padding: var(--spacing-3xl) var(--spacing-lg);">
