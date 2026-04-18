@@ -223,7 +223,7 @@ new #[Layout('layouts.app')] class extends Component
     <div class="mj-main">
 
         {{-- Filters sidebar (desktop) --}}
-        <aside class="mj-filters" style="background: #d2d2d2; border: 1px solid #a7a7a7;">
+        <aside class="mj-filters">
             @if($this->hasActiveFilters())
                 <div class="filter-section">
                     <button wire:click="clearFilters"

@@ -28,6 +28,17 @@
   --color-border:          #E5E7EB;
   --color-border-dark:     #D1D5DB;
 
+  /* Sidebar / hero */
+  --color-sidebar-bg:      #d2d2d2;
+  --color-sidebar-border:  #a7a7a7;
+  --color-hero-bg:         #d2d2d2;
+
+  /* Input / dropdown */
+  --color-input-bg:        #FFFFFF;
+  --color-input-text:      #374151;
+  --color-input-border:    #a7a7a7;
+  --color-dropdown-hover:  #f0f7ff;
+
   /* Spacing */
   --spacing-xs:   4px;
   --spacing-sm:   8px;
@@ -98,7 +109,8 @@ body {
    STEP 6: FILTERS SIDEBAR
    ═══════════════════════════════════════════════════════════════════ */
 aside.mj-filters {
-  background-color: var(--color-bg-gray);
+  background-color: var(--color-sidebar-bg);
+  border: 1px solid var(--color-sidebar-border) !important;
   padding: var(--spacing-xl);
   border-radius: var(--radius-lg);
   height: fit-content;
@@ -166,27 +178,29 @@ aside.mj-filters {
 
 .mj-filters .filter-select,
 .mj-filters .salary-input {
-  border-color: #a7a7a7;
+  border-color: var(--color-input-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
-/* Dropdown trigger buttons — light theme */
+/* Dropdown trigger buttons */
 .filter-dropdown-btn {
-  background: #fff;
-  color: #374151;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
-/* Dropdown panels — light theme */
+/* Dropdown panels */
 .filter-dropdown-panel {
-  background: #fff;
+  background: var(--color-input-bg);
   box-shadow: 0 4px 16px rgba(0,0,0,.1);
 }
 
-/* Dropdown items — light theme */
+/* Dropdown items */
 .filter-dropdown-item {
-  color: #374151;
+  color: var(--color-input-text);
 }
 .filter-dropdown-item:hover {
-  background: #f0f7ff;
+  background: var(--color-dropdown-hover);
 }
 
 .radio-group { display: flex; flex-direction: column; gap: var(--spacing-sm); }
@@ -593,6 +607,17 @@ aside.mj-filters {
   --color-bg-gray:         #1F2937;
   --color-border:          #374151;
   --color-border-dark:     #4B5563;
+
+  /* Sidebar / hero */
+  --color-sidebar-bg:      #1F2937;
+  --color-sidebar-border:  #374151;
+  --color-hero-bg:         #1F2937;
+
+  /* Input / dropdown */
+  --color-input-bg:        #1F2937;
+  --color-input-text:      #e2e8f0;
+  --color-input-border:    #374151;
+  --color-dropdown-hover:  #374151;
 }
 
 html[data-theme="dark"],
@@ -627,10 +652,7 @@ html[data-theme="dark"] .job-card--featured {
 
 /* Seeker tabs header */
 .seeker-tabs-header {
-  background: #d2d2d2;
-}
-html[data-theme="dark"] .seeker-tabs-header {
-  background: #1F2937 !important;
+  background: var(--color-sidebar-bg);
 }
 
 /* Seeker dashboard header title */
@@ -643,105 +665,41 @@ html[data-theme="dark"] .job-card--hot-top {
   background-color: #1F2937 !important;
 }
 
-/* Index page — light theme backgrounds */
+/* Index page hero */
 .index-hero-bg {
-  background: #d2d2d2;
-}
-
-/* Index page — dark theme overrides */
-html[data-theme="dark"] .mj-filters {
-  background: #1F2937 !important;
-  border-color: #374151 !important;
-}
-
-/* Labels / headings */
-html[data-theme="dark"] .mj-filters .filter-label {
-  color: #e2e8f0 !important;
-}
-
-/* Category select */
-html[data-theme="dark"] .mj-filters .filter-select {
-  background-color: #1F2937 !important;
-  border-color: #374151 !important;
-  color: #e2e8f0 !important;
-}
-html[data-theme="dark"] .mj-filters .filter-select:focus {
-  border-color: #6366f1 !important;
-  box-shadow: 0 0 0 3px rgba(99,102,241,.2) !important;
-}
-html[data-theme="dark"] .mj-filters .filter-select option {
-  background-color: #1F2937;
-  color: #e2e8f0;
-}
-
-/* Salary inputs */
-html[data-theme="dark"] .mj-filters .salary-input {
-  background-color: #1F2937 !important;
-  border-color: #374151 !important;
-  color: #e2e8f0 !important;
-}
-html[data-theme="dark"] .mj-filters .salary-input::placeholder {
-  color: #6b7280 !important;
-}
-html[data-theme="dark"] .mj-filters .salary-input:focus {
-  border-color: #6366f1 !important;
-  box-shadow: 0 0 0 3px rgba(99,102,241,.2) !important;
-}
-
-/* Salary labels */
-html[data-theme="dark"] .mj-filters .salary-row label {
-  color: #9ca3af !important;
-}
-
-/* Checkboxes / radio items */
-html[data-theme="dark"] .mj-filters .radio-item {
-  color: #e2e8f0 !important;
-}
-html[data-theme="dark"] .mj-filters .radio-item span {
-  color: #e2e8f0 !important;
-}
-html[data-theme="dark"] .mj-filters .radio-item:hover {
-  background-color: #374151 !important;
-}
-
-/* Employment type & languages dropdowns — trigger button */
-html[data-theme="dark"] .mj-filters .filter-dropdown-btn {
-  background: #1F2937 !important;
-  border-color: #374151 !important;
-  color: #e2e8f0 !important;
-}
-
-/* Dropdown panels */
-html[data-theme="dark"] .mj-filters .filter-dropdown-panel {
-  background: #1F2937 !important;
-  border-color: #374151 !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,.4) !important;
-}
-html[data-theme="dark"] .mj-filters .filter-dropdown-item {
-  color: #e2e8f0 !important;
-}
-html[data-theme="dark"] .mj-filters .filter-dropdown-item:hover {
-  background: #374151 !important;
-}
-html[data-theme="dark"] .mj-filters .dropdown-reset-row {
-  border-top-color: #374151 !important;
-}
-
-/* Reset filters button */
-html[data-theme="dark"] .mj-filters .filter-section button[wire\:click="clearFilters"] {
-  color: #818cf8 !important;
-}
-html[data-theme="dark"] .index-hero-bg {
-  background: #1F2937 !important;
-}
-html[data-theme="dark"] .hero-search-input {
-  background: #1F2937 !important;
-  color: #F1F5F9 !important;
+  background: var(--color-hero-bg);
 }
 
 /* Radio hover */
 html[data-theme="dark"] .radio-item:hover {
-  background-color: #374151 !important;
+  background-color: var(--color-dropdown-hover) !important;
+}
+
+/* filter-label color follows text variable */
+.filter-label {
+  color: var(--color-text-dark);
+}
+
+/* radio-item color follows text variable */
+.radio-item {
+  color: var(--color-text-dark);
+}
+
+/* Dropdown reset row border */
+.dropdown-reset-row {
+  border-top-color: var(--color-input-border);
+}
+
+/* Hero search input */
+html[data-theme="dark"] .hero-search-input {
+  background: var(--color-input-bg) !important;
+  color: var(--color-input-text) !important;
+}
+
+/* filter-select option */
+.mj-filters .filter-select option {
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
 /* ── Dark theme: Login page ──────────────────────────────────────── */
