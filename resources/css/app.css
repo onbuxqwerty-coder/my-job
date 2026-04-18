@@ -669,6 +669,10 @@ html[data-theme="dark"] .mj-filters .filter-select:focus {
   border-color: #6366f1 !important;
   box-shadow: 0 0 0 3px rgba(99,102,241,.2) !important;
 }
+html[data-theme="dark"] .mj-filters .filter-select option {
+  background-color: #1F2937;
+  color: #e2e8f0;
+}
 
 /* Salary inputs */
 html[data-theme="dark"] .mj-filters .salary-input {
