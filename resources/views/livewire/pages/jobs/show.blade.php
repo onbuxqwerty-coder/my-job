@@ -102,7 +102,7 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="mj-show-bg">
+<div class="mj-show-bg seeker-dashboard-bg dark:bg-gray-900" style="min-height: 100vh;">
     <div class="mj-show-wrap">
 
         {{-- Breadcrumb --}}
