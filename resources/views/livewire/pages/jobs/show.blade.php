@@ -532,7 +532,7 @@ new #[Layout('layouts.app')] class extends Component
    JOB SHOW PAGE STYLES
 ════════════════════════════════════════════ */
 .mj-show-bg {
-    background: var(--color-bg-light);
+    background-color: var(--color-bg-light);
     min-height: 100vh;
     padding: 24px 0 60px;
 }
