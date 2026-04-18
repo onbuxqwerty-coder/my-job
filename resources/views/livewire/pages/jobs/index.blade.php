@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\DTOs\VacancySearchDTO;
+use App\Enums\EmploymentType;
 use App\Enums\Language;
 use App\Enums\Suitability;
 use App\Models\Category;
