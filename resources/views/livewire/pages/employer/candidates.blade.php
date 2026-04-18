@@ -289,7 +289,7 @@ new #[Layout('layouts.app')] class extends Component
                                     };
                                 @endphp
                                 <tr class="candidate-row cursor-pointer"
-                                    wire:click="$navigate('{{ route('employer.candidate.detail', $application->id) }}')">
+                                    @click="window.location='{{ route('employer.candidate.detail', $application->id) }}'">`
                                     <td class="px-6 py-4">
                                         <p class="font-medium text-gray-900 dark:text-gray-100">{{ $application->user->name }}</p>
                                         <p class="text-xs text-gray-400 dark:text-gray-500">{{ $application->user->email }}</p>
