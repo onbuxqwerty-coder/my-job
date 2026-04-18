@@ -201,9 +201,9 @@ new #[Layout('layouts.app')] class extends Component
         @endif
 
         {{-- Templates list --}}
-        <div class="bg-white rounded-2xl border employer-card-border overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border employer-card-border dark:border-gray-700 overflow-hidden">
             @if($this->templates->isEmpty())
-                <div class="p-12 text-center text-gray-400">
+                <div class="p-12 text-center text-gray-400 dark:text-gray-500">
                     <p>Шаблонів ще немає.</p>
                     <button wire:click="openCreate" class="mt-3 text-sm text-blue-600 hover:underline">
                         Створити перший шаблон →
@@ -211,22 +211,22 @@ new #[Layout('layouts.app')] class extends Component
                 </div>
             @else
                 <table class="w-full text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100">
+                    <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-600">
                         <tr>
-                            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Шаблон</th>
-                            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Тип</th>
-                            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Статус</th>
-                            <th class="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Дії</th>
+                            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Шаблон</th>
+                            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Тип</th>
+                            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Статус</th>
+                            <th class="text-right px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Дії</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                         @foreach($this->templates as $tpl)
-                            <tr class="hover:bg-gray-50">
+                            <tr class="template-row">
                                 <td class="px-6 py-4">
-                                    <p class="font-medium text-gray-900">{{ $tpl->name }}</p>
-                                    <p class="text-xs text-gray-400 mt-0.5">{{ Str::limit($tpl->subject, 60) }}</p>
+                                    <p class="font-medium text-gray-900 dark:text-gray-100">{{ $tpl->name }}</p>
+                                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{{ Str::limit($tpl->subject, 60) }}</p>
                                 </td>
-                                <td class="px-6 py-4 text-gray-500">{{ $tpl->type->label() }}</td>
+                                <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ $tpl->type->label() }}</td>
                                 <td class="px-6 py-4">
                                     @if($tpl->is_active)
                                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Активний</span>
@@ -237,9 +237,9 @@ new #[Layout('layouts.app')] class extends Component
                                 <td class="px-6 py-4">
                                     <div class="flex items-center justify-end gap-3">
                                         <button wire:click="openEdit({{ $tpl->id }})"
-                                                class="text-xs text-gray-500 hover:text-blue-600 font-medium">Редагувати</button>
+                                                class="text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 font-medium">Редагувати</button>
                                         <button wire:click="toggle({{ $tpl->id }})"
-                                                class="text-xs text-gray-500 hover:text-gray-800 font-medium">
+                                                class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium">
                                             {{ $tpl->is_active ? 'Вимкнути' : 'Увімкнути' }}
                                         </button>
                                         <button wire:click="delete({{ $tpl->id }})"
@@ -254,4 +254,11 @@ new #[Layout('layouts.app')] class extends Component
             @endif
         </div>
     </div>
+
+    <style>
+    .template-row { transition: background .2s, transform .2s; }
+    .template-row:hover { background: #f0f7ff; transform: translateY(-2px); }
+    [data-theme="dark"] .template-row:hover,
+    .dark .template-row:hover { background: transparent; transform: translateY(-2px); }
+    </style>
 </div>
