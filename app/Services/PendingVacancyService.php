@@ -57,6 +57,7 @@ final class PendingVacancyService
             'user_id'     => $user->id,
             'name'        => 'Компанія',
             'slug'        => $slug,
+            'description' => '',
             'is_verified' => false,
         ]);
     }
