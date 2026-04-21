@@ -6,6 +6,7 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TelegramAuthController;
 use App\Models\Category;
 use App\Models\Interview;
+use App\Models\Resume;
 use App\Models\Vacancy;
 use App\Services\InterviewService;
 use App\Services\PaymentService;
@@ -90,6 +91,25 @@ Route::middleware(['auth', 'role:employer'])
         Route::get('/vacancies/{vacancy}/promote', function (Vacancy $vacancy, PaymentService $payment) {
             return redirect($payment->createVacancyPromoCheckout($vacancy));
         })->name('vacancies.promote');
+    });
+
+// ── Resume Wizard ───────────────────────────────────────────────────────────
+Route::middleware(['auth', 'role:candidate'])
+    ->prefix('resumes')
+    ->name('resumes.')
+    ->group(function () {
+        Route::get('/create', function () {
+            $resume = auth()->user()->resumes()->create([
+                'title'  => 'Нове резюме',
+                'status' => 'draft',
+            ]);
+            return view('resumes.create', compact('resume'));
+        })->name('create');
+
+        Route::get('/{resume}/edit', function (Resume $resume) {
+            abort_unless(auth()->id() === $resume->user_id, 403);
+            return view('resumes.edit', compact('resume'));
+        })->name('edit');
     });
 
 // ── Seeker Dashboard ────────────────────────────────────────────────────────
