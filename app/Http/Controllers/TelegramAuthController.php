@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
+use App\Models\User;
+use App\Models\Vacancy;
 use App\Services\TelegramAuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class TelegramAuthController extends Controller
 {
@@ -58,6 +62,10 @@ class TelegramAuthController extends Controller
         Auth::login($user, remember: true);
         Session::regenerate();
 
+        if ($vacancyRedirect = $this->handlePendingVacancy($user)) {
+            return $vacancyRedirect;
+        }
+
         $redirect = match($user->role->value) {
             'employer'  => route('employer.dashboard'),
             'candidate' => route('seeker.dashboard'),
@@ -65,5 +73,38 @@ class TelegramAuthController extends Controller
         };
 
         return redirect()->intended($redirect);
+    }
+
+    private function handlePendingVacancy(User $user): ?RedirectResponse
+    {
+        if (
+            ! session()->has('pending_vacancy')
+            || $user->role !== UserRole::Employer
+            || $user->company === null
+        ) {
+            return null;
+        }
+
+        $data    = session()->pull('pending_vacancy');
+        $company = $user->company;
+
+        $vacancy = Vacancy::create([
+            'company_id'      => $company->id,
+            'category_id'     => $data['category_id'],
+            'city_id'         => $data['city_id'],
+            'title'           => $data['title'],
+            'slug'            => Str::slug($data['title']) . '-' . Str::random(6),
+            'salary_from'     => $data['salary_from'] ?? null,
+            'salary_to'       => null,
+            'currency'        => 'UAH',
+            'employment_type' => ['full-time'],
+            'is_active'       => false,
+            'is_featured'     => false,
+            'is_top'          => false,
+            'languages'       => [],
+            'suitability'     => [],
+        ]);
+
+        return redirect()->route('employer.vacancies.edit', ['vacancyId' => $vacancy->id]);
     }
 }
