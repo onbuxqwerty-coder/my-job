@@ -118,6 +118,11 @@ Route::middleware(['auth'])
         })->name('export.pdf');
     });
 
+Route::get('/resumes/{resume}', function (Resume $resume) {
+    abort_if($resume->status !== 'published', 404);
+    return view('resumes.show', compact('resume'));
+})->name('resumes.show');
+
 // ── Seeker Dashboard ────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:candidate'])
     ->prefix('dashboard/seeker')
