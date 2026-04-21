@@ -110,6 +110,12 @@ Route::middleware(['auth'])
             abort_unless(auth()->id() === $resume->user_id, 403);
             return view('resumes.edit', compact('resume'));
         })->name('edit');
+
+        Route::get('/{resume}/export/pdf', function (Resume $resume) {
+            abort_unless(auth()->id() === $resume->user_id, 403);
+            // PDF export — підключити бібліотеку (наприклад, barryvdh/laravel-dompdf) у майбутньому
+            abort(501, 'Експорт PDF ще не реалізовано');
+        })->name('export.pdf');
     });
 
 // ── Seeker Dashboard ────────────────────────────────────────────────────────
@@ -118,6 +124,7 @@ Route::middleware(['auth', 'role:candidate'])
     ->name('seeker.')
     ->group(function () {
         Volt::route('/', 'pages.seeker.dashboard')->name('dashboard');
+        Volt::route('/resumes', 'pages.seeker.resumes')->name('resumes');
         Volt::route('/applications', 'pages.seeker.applications')->name('applications');
         Volt::route('/applications/{applicationId}', 'pages.seeker.application-detail')->name('application.detail');
         Volt::route('/interviews', 'pages.seeker.interviews')->name('interviews');

@@ -3,6 +3,7 @@
 
     $tabs = [
         ['route' => 'seeker.dashboard',    'label' => 'Огляд'],
+        ['route' => 'seeker.resumes',      'label' => 'Мої резюме'],
         ['route' => 'seeker.applications', 'label' => 'Мої заявки'],
         ['route' => 'seeker.interviews',   'label' => 'Співбесіди'],
         ['route' => 'seeker.profile',      'label' => 'Мій профіль'],

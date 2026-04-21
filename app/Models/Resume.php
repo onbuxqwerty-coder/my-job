@@ -21,6 +21,7 @@ class Resume extends Model
         'user_id',
         'title',
         'status',
+        'views_count',
         'personal_info',
         'location',
         'notifications',

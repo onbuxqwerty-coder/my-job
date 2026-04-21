@@ -165,10 +165,7 @@ class ResumeWizard extends Component
 
         try {
             $this->resume->update(['status' => 'published']);
-            $this->resume->refresh();
-            $this->saveMessage        = 'Резюме опубліковано!';
-            $this->saveMessageVisible = true;
-            $this->dispatch('resume-published');
+            $this->redirect(route('seeker.resumes'), navigate: true);
         } catch (\Exception $e) {
             $this->validationErrors['publish'] = 'Помилка при публікації';
         }
