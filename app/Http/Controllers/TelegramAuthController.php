@@ -77,12 +77,13 @@ class TelegramAuthController extends Controller
 
     private function handlePendingVacancy(User $user): ?RedirectResponse
     {
-        if (
-            ! session()->has('pending_vacancy')
-            || $user->role !== UserRole::Employer
-            || $user->company === null
-        ) {
+        if (! session()->has('pending_vacancy') || $user->role !== UserRole::Employer) {
             return null;
+        }
+
+        if ($user->company === null) {
+            return redirect()->route('employer.profile')
+                ->with('info', 'Спочатку налаштуйте профіль компанії — після цього вакансія буде створена автоматично.');
         }
 
         $data    = session()->pull('pending_vacancy');

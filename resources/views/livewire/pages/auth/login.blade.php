@@ -55,11 +55,13 @@ new #[Layout('layouts.guest')] class extends Component
 
         $user = Auth::user();
 
-        if (
-            session()->has('pending_vacancy')
-            && $user->role === UserRole::Employer
-            && $user->company !== null
-        ) {
+        if (session()->has('pending_vacancy') && $user->role === UserRole::Employer) {
+            if ($user->company === null) {
+                session()->flash('info', 'Спочатку налаштуйте профіль компанії — після цього вакансія буде створена автоматично.');
+                $this->redirect(route('employer.profile'), navigate: true);
+                return;
+            }
+
             $data    = session()->pull('pending_vacancy');
             $company = $user->company;
 
