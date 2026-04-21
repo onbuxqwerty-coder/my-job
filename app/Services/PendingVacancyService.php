@@ -38,6 +38,7 @@ final class PendingVacancyService
             'title'           => $data['title'],
             'slug'            => Str::slug($data['title']) . '-' . Str::random(6),
             'salary_from'     => $data['salary_from'] ?? null,
+            'description'     => '',
             'salary_to'       => null,
             'currency'        => 'UAH',
             'employment_type' => ['full-time'],
