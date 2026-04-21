@@ -94,7 +94,7 @@ Route::middleware(['auth', 'role:employer'])
     });
 
 // ── Resume Wizard ───────────────────────────────────────────────────────────
-Route::middleware(['auth', 'role:candidate'])
+Route::middleware(['auth'])
     ->prefix('resumes')
     ->name('resumes.')
     ->group(function () {
