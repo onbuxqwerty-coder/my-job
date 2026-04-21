@@ -13,6 +13,28 @@
 
     <div class="max-w-3xl mx-auto px-4 py-10 sm:px-6">
 
+        {{-- Owner actions --}}
+        @auth
+            @if (auth()->id() === $resume->user_id)
+                <div class="flex items-center gap-3 mb-6">
+                    <a href="{{ route('seeker.resumes') }}"
+                       class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm transition">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Мої резюме
+                    </a>
+                    <a href="{{ route('resumes.edit', $resume->id) }}"
+                       class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Редагувати
+                    </a>
+                </div>
+            @endif
+        @endauth
+
         {{-- Header --}}
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm px-8 py-8 mb-6">
             <div class="flex items-start gap-6">
