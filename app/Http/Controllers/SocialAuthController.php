@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
 use App\Models\User;
-use App\Models\Vacancy;
+use App\Services\PendingVacancyService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -98,8 +98,11 @@ class SocialAuthController extends Controller
 
         Auth::login($user, remember: true);
 
-        if ($vacancyRedirect = $this->handlePendingVacancy($user)) {
-            return $vacancyRedirect;
+        $vacancy = app(PendingVacancyService::class)->createFromSession($user);
+
+        if ($vacancy) {
+            return redirect()->route('employer.dashboard')
+                ->with('vacancy_published_id', $vacancy->id);
         }
 
         $redirect = $user->role === UserRole::Employer
@@ -107,39 +110,5 @@ class SocialAuthController extends Controller
             : route('home');
 
         return redirect()->intended($redirect);
-    }
-
-    private function handlePendingVacancy(User $user): ?RedirectResponse
-    {
-        if (! session()->has('pending_vacancy') || $user->role !== UserRole::Employer) {
-            return null;
-        }
-
-        if ($user->company === null) {
-            return redirect()->route('employer.profile')
-                ->with('info', 'Спочатку налаштуйте профіль компанії — після цього вакансія буде створена автоматично.');
-        }
-
-        $data    = session()->pull('pending_vacancy');
-        $company = $user->company;
-
-        $vacancy = Vacancy::create([
-            'company_id'      => $company->id,
-            'category_id'     => $data['category_id'],
-            'city_id'         => $data['city_id'],
-            'title'           => $data['title'],
-            'slug'            => Str::slug($data['title']) . '-' . Str::random(6),
-            'salary_from'     => $data['salary_from'] ?? null,
-            'salary_to'       => null,
-            'currency'        => 'UAH',
-            'employment_type' => ['full-time'],
-            'is_active'       => false,
-            'is_featured'     => false,
-            'is_top'          => false,
-            'languages'       => [],
-            'suitability'     => [],
-        ]);
-
-        return redirect()->route('employer.vacancies.edit', ['vacancyId' => $vacancy->id]);
     }
 }

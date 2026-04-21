@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Enums\UserRole;
 use App\Livewire\Forms\LoginForm;
-use App\Models\Vacancy;
+use App\Services\PendingVacancyService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -55,34 +53,11 @@ new #[Layout('layouts.guest')] class extends Component
 
         $user = Auth::user();
 
-        if (session()->has('pending_vacancy') && $user->role === UserRole::Employer) {
-            if ($user->company === null) {
-                session()->flash('info', 'Спочатку налаштуйте профіль компанії — після цього вакансія буде створена автоматично.');
-                $this->redirect(route('employer.profile'), navigate: true);
-                return;
-            }
+        $vacancy = app(PendingVacancyService::class)->createFromSession($user);
 
-            $data    = session()->pull('pending_vacancy');
-            $company = $user->company;
-
-            $vacancy = Vacancy::create([
-                'company_id'      => $company->id,
-                'category_id'     => $data['category_id'],
-                'city_id'         => $data['city_id'],
-                'title'           => $data['title'],
-                'slug'            => Str::slug($data['title']) . '-' . Str::random(6),
-                'salary_from'     => $data['salary_from'] ?? null,
-                'salary_to'       => null,
-                'currency'        => 'UAH',
-                'employment_type' => ['full-time'],
-                'is_active'       => false,
-                'is_featured'     => false,
-                'is_top'          => false,
-                'languages'       => [],
-                'suitability'     => [],
-            ]);
-
-            $this->redirect(route('employer.vacancies.edit', ['vacancyId' => $vacancy->id]), navigate: true);
+        if ($vacancy) {
+            session()->flash('vacancy_published_id', $vacancy->id);
+            $this->redirect(route('employer.dashboard'), navigate: true);
             return;
         }
 
