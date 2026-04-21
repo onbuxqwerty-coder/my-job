@@ -22,6 +22,13 @@ new #[Layout('layouts.guest')] class extends Component
     // Email flow
     public LoginForm $form;
 
+    public function mount(): void
+    {
+        if (session()->has('pending_vacancy')) {
+            $this->role = 'employer';
+        }
+    }
+
     public function setRole(string $role): void
     {
         $this->role = $role;
