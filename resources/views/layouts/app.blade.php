@@ -36,5 +36,7 @@
 
         <x-footer />
 
+        <livewire:employer.quick-publish-form />
+
     </body>
 </html>

@@ -68,7 +68,15 @@
             <span>•</span>
             <a href="{{ route('home') }}">Категорії</a>
             <span>•</span>
-            <a href="{{ route('register') }}">Розмістити вакансію</a>
+            <button
+                onclick="Livewire.dispatch('open-quick-publish')"
+                style="background:none; border:none; cursor:pointer; font-size:14px;
+                       color:#D1D5DB; padding:0; transition:color 0.2s;"
+                onmouseover="this.style.color='#ffffff'"
+                onmouseout="this.style.color='#D1D5DB'"
+            >
+                Розмістити вакансію
+            </button>
             <span>•</span>
             <a href="{{ route('login') }}">Увійти</a>
         </nav>

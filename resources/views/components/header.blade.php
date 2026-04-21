@@ -142,7 +142,15 @@
                 Знайти вакансії
             </a>
             <a href="{{ route('home') }}">Розмістити Резюме</a>
-            <a href="{{ route('home') }}">Роботодавцю</a>
+            <button
+                onclick="Livewire.dispatch('open-quick-publish')"
+                style="background:none; border:none; cursor:pointer; font-size:inherit; font-weight:600;
+                       color:#ffffff; padding:0; transition:opacity 0.2s; white-space:nowrap;"
+                onmouseover="this.style.opacity='0.75'"
+                onmouseout="this.style.opacity='1'"
+            >
+                Розмістити вакансію
+            </button>
 
             @auth
                 @if(auth()->user()->role === \App\Enums\UserRole::Employer)
@@ -171,6 +179,18 @@
         {{-- Auth --}}
         <div class="site-header__auth">
             @auth
+                @if(auth()->user()->role === \App\Enums\UserRole::Employer)
+                    <button
+                        onclick="Livewire.dispatch('open-quick-publish')"
+                        style="padding:8px 18px; font-size:1rem; font-weight:700; color:#fff;
+                               background:#1a73e8; border:none; border-radius:8px; cursor:pointer;
+                               white-space:nowrap; transition:background-color 0.2s; flex-shrink:0;"
+                        onmouseover="this.style.background='#1557b0'"
+                        onmouseout="this.style.background='#1a73e8'"
+                    >
+                        🚀 Опублікувати
+                    </button>
+                @endif
                 <span style="color:#ffffff; font-weight:600;">
                     {{ auth()->user()->name }}
                 </span>

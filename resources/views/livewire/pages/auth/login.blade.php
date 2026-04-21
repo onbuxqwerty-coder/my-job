@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Enums\UserRole;
 use App\Livewire\Forms\LoginForm;
+use App\Models\Vacancy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -43,7 +46,37 @@ new #[Layout('layouts.guest')] class extends Component
         $this->form->authenticate();
         Session::regenerate();
 
-        $user    = Auth::user();
+        $user = Auth::user();
+
+        if (
+            session()->has('pending_vacancy')
+            && $user->role === UserRole::Employer
+            && $user->company !== null
+        ) {
+            $data    = session()->pull('pending_vacancy');
+            $company = $user->company;
+
+            $vacancy = Vacancy::create([
+                'company_id'      => $company->id,
+                'category_id'     => $data['category_id'],
+                'city_id'         => $data['city_id'],
+                'title'           => $data['title'],
+                'slug'            => Str::slug($data['title']) . '-' . Str::random(6),
+                'salary_from'     => $data['salary_from'] ?? null,
+                'salary_to'       => null,
+                'currency'        => 'UAH',
+                'employment_type' => ['full-time'],
+                'is_active'       => false,
+                'is_featured'     => false,
+                'is_top'          => false,
+                'languages'       => [],
+                'suitability'     => [],
+            ]);
+
+            $this->redirect(route('employer.vacancies.edit', ['vacancyId' => $vacancy->id]), navigate: true);
+            return;
+        }
+
         $default = match($user->role->value) {
             'employer'  => route('employer.dashboard', absolute: false),
             'candidate' => route('seeker.dashboard', absolute: false),
