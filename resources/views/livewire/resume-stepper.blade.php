@@ -95,11 +95,10 @@
     <div class="px-4 py-4 border-t border-gray-200 space-y-2">
         <button
             wire:click="$parent.publishResume"
-            @disabled(!$isPublishable)
             class="w-full px-4 py-2 rounded-lg font-medium transition-colors
                 {{ $isPublishable
                     ? 'bg-green-600 text-white hover:bg-green-700'
-                    : 'bg-gray-200 text-gray-500 cursor-not-allowed' }}"
+                    : 'bg-blue-600 text-white hover:bg-blue-700' }}"
         >
             Опублікувати
         </button>
