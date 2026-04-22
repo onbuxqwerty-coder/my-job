@@ -6,17 +6,17 @@
 
     @if ($isVerified)
         {{-- Verified state --}}
-        <div class="p-4 rounded-lg" style="background-color: #1F2937; border: 1px solid #4B5563;">
+        <div class="p-4 rounded-lg" style="background-color: #FFFFFF; border: 1px solid #A7A7A7;">
             <div class="flex items-start gap-3">
-                <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color: #34D399;" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
                 <div>
-                    <p class="font-semibold" style="color: #D1FAE5;">Email верифіковано</p>
-                    <p class="text-sm" style="color: #A7F3D0;">{{ $email }}</p>
+                    <p class="font-semibold text-green-900">Email верифіковано</p>
+                    <p class="text-sm text-green-800">{{ $email }}</p>
                 </div>
             </div>
-            <button wire:click="changeEmail" class="mt-3 text-sm font-semibold underline" style="color: #6EE7B7;" onmouseover="this.style.color='#D1FAE5'" onmouseout="this.style.color='#6EE7B7'">
+            <button wire:click="changeEmail" class="mt-3 text-sm text-green-700 hover:text-green-900 font-semibold underline">
                 Змінити email
             </button>
         </div>
