@@ -301,8 +301,10 @@ new #[Layout('layouts.guest')] class extends Component
     </style>
 
     <script>
-    let _tgPollInterval = null;
-    let _tgToken = null;
+    let _tgPollInterval  = null;
+    let _tgToken         = null;
+    let _tgPolling       = false;
+    let _visibilityTimer = null;
 
     async function telegramLogin(role) {
         const btn = document.getElementById('tg-login-btn');
@@ -328,8 +330,8 @@ new #[Layout('layouts.guest')] class extends Component
             document.getElementById('tg-modal-text').textContent = 'Натисніть "Start" у боті та поділіться своїм номером телефону. Сторінка оновиться автоматично.';
             document.getElementById('tg-spinner').style.display = 'block';
 
-            _tgPollInterval = setInterval(() => pollTgStatus(token), 2000);
-            setTimeout(() => { clearInterval(_tgPollInterval); _tgToken = null; closeTgModal(); }, 300000);
+            startPolling(token);
+            setTimeout(() => { stopPolling(); closeTgModal(); }, 300000);
 
         } catch {
             alert('Помилка. Спробуйте ще раз.');
@@ -341,40 +343,65 @@ new #[Layout('layouts.guest')] class extends Component
         }
     }
 
+    function startPolling(token) {
+        stopPolling();
+        _tgPollInterval = setInterval(() => pollTgStatus(token), 3000);
+    }
+
+    function stopPolling() {
+        clearInterval(_tgPollInterval);
+        _tgPollInterval = null;
+    }
+
     async function pollTgStatus(token) {
+        if (_tgPolling) return;
+        _tgPolling = true;
         try {
             const res = await fetch(`/api/telegram/auth/status/${token}`);
+
+            if (res.status === 429) {
+                stopPolling();
+                setTimeout(() => startPolling(token), 10000);
+                return;
+            }
+
             if (!res.ok) return;
             const data = await res.json();
 
             if (data.status === 'authorized' && data.login_url) {
-                clearInterval(_tgPollInterval);
+                stopPolling();
                 _tgToken = null;
                 document.getElementById('tg-modal-title').textContent = '✅ Авторизовано!';
                 document.getElementById('tg-modal-text').textContent = 'Перенаправляємо...';
                 document.getElementById('tg-spinner').style.display = 'none';
                 setTimeout(() => { window.location.href = data.login_url; }, 500);
             } else if (data.status === 'expired' || data.status === 'not_found') {
-                clearInterval(_tgPollInterval);
+                stopPolling();
                 _tgToken = null;
                 closeTgModal();
                 alert('Сесія прострочена. Спробуйте ще раз.');
             }
-        } catch {}
+        } catch {
+        } finally {
+            _tgPolling = false;
+        }
     }
 
     function closeTgModal() {
-        clearInterval(_tgPollInterval);
+        stopPolling();
         _tgToken = null;
         document.getElementById('tg-modal').style.display = 'none';
     }
 
-    // На мобільних: відновити polling коли повертаємось з Telegram
+    // На мобільних: debounce щоб уникнути множинних спрацювань
     document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'visible' && _tgToken) {
-            clearInterval(_tgPollInterval);
-            pollTgStatus(_tgToken);
-            _tgPollInterval = setInterval(() => pollTgStatus(_tgToken), 2000);
+            clearTimeout(_visibilityTimer);
+            _visibilityTimer = setTimeout(() => {
+                startPolling(_tgToken);
+            }, 300);
+        } else if (document.visibilityState === 'hidden') {
+            stopPolling();
         }
     });
     </script>

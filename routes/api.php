@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('telegram/auth')->group(function (): void {
     Route::post('/init', [TelegramAuthController::class, 'init'])->middleware('throttle:20,1');
-    Route::get('/status/{token}', [TelegramAuthController::class, 'status'])->middleware('throttle:60,1');
+    Route::get('/status/{token}', [TelegramAuthController::class, 'status'])->middleware('throttle:120,1');
 });
 
 Route::prefix('cities')->group(function (): void {
