@@ -221,20 +221,18 @@ class ResumeWizard extends Component
 
     private function validatePersonalInfo(): bool
     {
-        $errors    = [];
         $firstName = $this->formData['personal_info']['first_name'] ?? '';
         $lastName  = $this->formData['personal_info']['last_name']  ?? '';
 
-        if (empty($firstName)) {
-            $errors['personal_info.first_name'] = "Ім'я обов'язкове";
-        }
-        if (empty($lastName)) {
-            $errors['personal_info.last_name'] = "Прізвище обов'язкове";
+        $this->dispatch('validate-personal-info');
+
+        if (empty($firstName) || empty($lastName)) {
+            $this->validationErrors = [];
+            return false;
         }
 
-        $this->validationErrors = $errors;
-
-        return empty($errors);
+        $this->validationErrors = [];
+        return true;
     }
 
     private function validateAuth(): bool

@@ -10,7 +10,6 @@
         <input
             type="text"
             wire:model.live.debounce.2500ms="formData.personal_info.first_name"
-            wire:blur="onBlur"
             placeholder="Наприклад: Іван"
             class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
                 {{ isset($errors['first_name']) ? 'border-red-500' : 'border-gray-300' }}"
@@ -26,7 +25,6 @@
         <input
             type="text"
             wire:model.live.debounce.2500ms="formData.personal_info.last_name"
-            wire:blur="onBlur"
             placeholder="Наприклад: Петренко"
             class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
                 {{ isset($errors['last_name']) ? 'border-red-500' : 'border-gray-300' }}"

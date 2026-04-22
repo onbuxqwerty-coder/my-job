@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\ResumeSteps;
 
 use App\Models\Resume;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CardStep extends Component
@@ -36,16 +37,18 @@ class CardStep extends Component
         $this->syncToParent('transparency', $value);
     }
 
-    public function onBlur(): void
+    #[On('validate-personal-info')]
+    public function onValidate(): void
     {
         $this->validateFields();
+    }
 
-        if (empty($this->errors)) {
-            $this->dispatch('step-updated',
-                section: 'personal_info',
-                data: $this->formData['personal_info'] ?? [],
-            );
-        }
+    public function onBlur(): void
+    {
+        $this->dispatch('step-updated',
+            section: 'personal_info',
+            data: $this->formData['personal_info'] ?? [],
+        );
     }
 
     private function validateFields(): void
