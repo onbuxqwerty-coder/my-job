@@ -38,7 +38,7 @@
 
         {{-- Dropdown --}}
         @if ($showSearchResults && !empty($searchResults))
-            <div class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+            <div class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 mj-skill-dropdown">
                 @foreach ($searchResults as $result)
                     <button wire:mousedown="addSkill('{{ $result }}')"
                         class="w-full text-left px-4 py-2.5 hover:bg-blue-50 text-sm border-b border-gray-100 last:border-b-0">
