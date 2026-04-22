@@ -42,6 +42,11 @@ class LocationStep extends Component
         return view('livewire.resume-steps.location-step');
     }
 
+    public function updatedCity(string $value): void
+    {
+        $this->searchCities($value);
+    }
+
     public function searchCities(string $query): void
     {
         if (strlen($query) < 2) {

@@ -25,7 +25,6 @@
             <input
                 type="text"
                 wire:model.live.debounce.400ms="city"
-                wire:updated="searchCities($event.target.value)"
                 x-on:focus="open = true"
                 x-on:blur="setTimeout(() => open = false, 150)"
                 placeholder="Почніть вводити назву міста..."
