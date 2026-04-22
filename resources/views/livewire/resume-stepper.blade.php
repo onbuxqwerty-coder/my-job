@@ -22,7 +22,7 @@
                     {{ $isCurrentStep
                         ? 'border-2 shadow-sm'
                         : 'border-2 border-transparent' }}"
-                style="{{ $isCurrentStep ? 'background-color: #1F2937; border-color: #3B82F6;' : 'transition: background-color 0.2s;' }}"
+                style="{{ $isCurrentStep ? 'background-color: #FFFFFF; border-color: #4B5563;' : 'transition: background-color 0.2s;' }}"
                 onmouseover="{{ !$isCurrentStep ? 'this.style.backgroundColor=\"#1F2937\"' : '' }}"
                 onmouseout="{{ !$isCurrentStep ? 'this.style.backgroundColor=\"\"' : '' }}"
             >
@@ -53,10 +53,10 @@
 
                     {{-- Step text --}}
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-semibold {{ $isCurrentStep ? '' : 'text-gray-900' }}" style="{{ $isCurrentStep ? 'color: #FFFFFF;' : '' }}">
+                        <p class="text-sm font-semibold {{ $isCurrentStep ? 'text-blue-900' : 'text-gray-900' }}">
                             {{ $step['title'] }}
                         </p>
-                        <p class="text-xs {{ $isCurrentStep ? '' : 'text-gray-500' }}" style="{{ $isCurrentStep ? 'color: #FFFFFF;' : '' }}">
+                        <p class="text-xs {{ $isCurrentStep ? 'text-blue-700' : 'text-gray-500' }}">
                             {{ $step['description'] }}
                         </p>
                         @if ($hasErrors)
