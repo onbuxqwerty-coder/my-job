@@ -116,21 +116,6 @@
                             >
                                 Далі →
                             </button>
-                        @elseif ($resume->isPublishable())
-                            <button
-                                wire:click="publishResume"
-                                class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-                            >
-                                Опублікувати
-                            </button>
-                        @else
-                            <button
-                                disabled
-                                title="Заповніть критичні поля для публікації"
-                                class="px-6 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-                            >
-                                Опублікувати
-                            </button>
                         @endif
                     </div>
 
