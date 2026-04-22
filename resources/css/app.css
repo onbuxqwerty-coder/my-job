@@ -976,6 +976,18 @@ html[data-theme="dark"] .mj-company-block-logo-placeholder,
 html[data-theme="dark"] .mj-related-card-logo,
 html[data-theme="dark"] .mj-sidebar-related-logo { background: #374151 !important; }
 
+/* ── Date inputs: light/dark theme ──────────────────────────────── */
+.mj-date-input {
+  background-color: #FFFFFF;
+  border: 1px solid #A7A7A7;
+}
+html[data-theme="dark"] .mj-date-input {
+  background-color: #1F2937 !important;
+  border-color: #4B5563 !important;
+  color: #FFFFFF !important;
+  color-scheme: dark;
+}
+
 /* ── Dark theme: Resume builder notification banners ─────────────── */
 html[data-theme="dark"] .mj-alert {
   background-color: #505050 !important;
