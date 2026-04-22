@@ -20,9 +20,9 @@
                 aria-current="{{ $isCurrentStep ? 'step' : 'false' }}"
                 class="w-full text-left px-4 py-3 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400
                     {{ $isCurrentStep
-                        ? 'bg-blue-50 border-2 border-blue-500 shadow-sm'
+                        ? 'border-2 shadow-sm'
                         : 'border-2 border-transparent' }}"
-                style="{{ !$isCurrentStep ? 'transition: background-color 0.2s;' : '' }}"
+                style="{{ $isCurrentStep ? 'background-color: #1F2937; border-color: #3B82F6;' : 'transition: background-color 0.2s;' }}"
                 onmouseover="{{ !$isCurrentStep ? 'this.style.backgroundColor=\"#1F2937\"' : '' }}"
                 onmouseout="{{ !$isCurrentStep ? 'this.style.backgroundColor=\"\"' : '' }}"
             >
