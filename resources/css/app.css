@@ -980,6 +980,10 @@ html[data-theme="dark"] .mj-sidebar-related-logo { background: #374151 !importan
 html[data-theme="dark"] .mj-notif-item {
   border-color: #4B5563 !important;
 }
+html[data-theme="dark"] .mj-notif-item:hover {
+  background-color: transparent !important;
+  box-shadow: 0 0 0 2px #3B82F6 !important;
+}
 html[data-theme="dark"] .mj-notif-active {
   background-color: #1F2937 !important;
   border-color: #3B82F6 !important;
