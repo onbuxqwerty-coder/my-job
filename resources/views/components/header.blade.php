@@ -130,7 +130,7 @@
         </a>
 
         {{-- Burger (mobile only) --}}
-        <button class="header-burger" onclick="window.toggleMobileFilters()" aria-label="Фільтри">
+        <button class="header-burger" onclick="window.toggleMobileNav()" aria-label="Меню">
             <span class="header-burger__bar"></span>
             <span class="header-burger__bar"></span>
             <span class="header-burger__bar"></span>
@@ -138,9 +138,6 @@
 
         {{-- Nav links --}}
         <div class="site-header__nav">
-            <a href="{{ route('home') }}" {{ request()->routeIs('home') ? 'class=active' : '' }}>
-                Знайти вакансії
-            </a>
             <a href="{{ route('resumes.create') }}" {{ request()->routeIs('resumes.*') ? 'class=active' : '' }}>Розмістити Резюме</a>
             <button
                 onclick="Livewire.dispatch('open-quick-publish')"
@@ -215,6 +212,66 @@
     </div>
 </nav>
 
+{{-- Mobile nav drawer --}}
+<div id="mobile-nav-overlay"
+     onclick="window.toggleMobileNav()"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9998;"></div>
+
+<div id="mobile-nav-drawer"
+     style="display:none; position:fixed; top:0; left:0; bottom:0; width:280px;
+            background:#2d323b; z-index:9999; padding:24px 0; overflow-y:auto;
+            box-shadow:4px 0 16px rgba(0,0,0,0.4);">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:0 20px 20px;">
+        <span style="color:#fff; font-weight:700; font-size:1.1rem;">Меню</span>
+        <button onclick="window.toggleMobileNav()"
+                style="background:none; border:none; color:#a7a7a7; cursor:pointer; font-size:1.5rem; line-height:1;">✕</button>
+    </div>
+
+    <nav style="display:flex; flex-direction:column;">
+        <a href="{{ route('home') }}"
+           style="padding:14px 20px; color:#fff; text-decoration:none; font-weight:600; font-size:1rem;
+                  border-bottom:1px solid rgba(255,255,255,0.08); transition:background 0.2s;"
+           onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+           onmouseout="this.style.background=''"
+        >Знайти вакансії</a>
+
+        <a href="{{ route('resumes.create') }}"
+           style="padding:14px 20px; color:#fff; text-decoration:none; font-weight:600; font-size:1rem;
+                  border-bottom:1px solid rgba(255,255,255,0.08); transition:background 0.2s;"
+           onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+           onmouseout="this.style.background=''"
+        >Розмістити Резюме</a>
+
+        <button onclick="Livewire.dispatch('open-quick-publish'); window.toggleMobileNav();"
+                style="padding:14px 20px; color:#fff; text-align:left; font-weight:600; font-size:1rem;
+                       background:none; border:none; border-bottom:1px solid rgba(255,255,255,0.08);
+                       cursor:pointer; transition:background 0.2s; width:100%;"
+                onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                onmouseout="this.style.background=''"
+        >Розмістити вакансію</button>
+
+        @auth
+            @if(auth()->user()->role === \App\Enums\UserRole::Employer)
+                <a href="{{ route('employer.dashboard') }}"
+                   style="padding:14px 20px; color:#fff; text-decoration:none; font-weight:600; font-size:1rem;
+                          border-bottom:1px solid rgba(255,255,255,0.08); transition:background 0.2s;"
+                   onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                   onmouseout="this.style.background=''"
+                >Мої вакансії</a>
+            @endif
+            @if(auth()->user()->role === \App\Enums\UserRole::Candidate)
+                <a href="{{ route('seeker.dashboard') }}"
+                   style="padding:14px 20px; color:#fff; text-decoration:none; font-weight:600; font-size:1rem;
+                          border-bottom:1px solid rgba(255,255,255,0.08); transition:background 0.2s;"
+                   onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                   onmouseout="this.style.background=''"
+                >Мій кабінет</a>
+            @endif
+        @endauth
+    </nav>
+</div>
+
 <script>
     function initHeaderScroll() {
         const header = document.querySelector('.site-header');
@@ -261,5 +318,14 @@
     window.toggleMobileFilters = function() {
         const aside = document.querySelector('aside.mj-filters');
         if (aside) aside.classList.toggle('is-open');
+    };
+
+    window.toggleMobileNav = function() {
+        const drawer  = document.getElementById('mobile-nav-drawer');
+        const overlay = document.getElementById('mobile-nav-overlay');
+        const open    = drawer.style.display === 'none';
+        drawer.style.display  = open ? 'block' : 'none';
+        overlay.style.display = open ? 'block' : 'none';
+        document.body.style.overflow = open ? 'hidden' : '';
     };
 </script>
