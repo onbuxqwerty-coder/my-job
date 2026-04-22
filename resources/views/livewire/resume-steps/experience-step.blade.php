@@ -94,7 +94,9 @@
 
             {{-- Is current --}}
             <label class="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" wire:model="newExperience.is_current" wire:change="toggleCurrentJob"
+                <input type="checkbox"
+                    wire:click="toggleCurrentJob"
+                    @checked($newExperience['is_current'])
                     class="w-4 h-4 rounded border-gray-300" />
                 <span class="text-sm text-gray-700">Я працюю тут зараз</span>
             </label>
