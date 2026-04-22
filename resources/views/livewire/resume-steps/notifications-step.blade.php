@@ -13,8 +13,8 @@
             'viber'    => ['label' => 'Viber',             'icon' => '💬'],
             'whatsapp' => ['label' => 'WhatsApp',          'icon' => '💚'],
         ] as $channel => $meta)
-            <label class="flex items-center gap-4 cursor-pointer p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 transition
-                {{ ($notifications[$channel] ?? false) ? 'border-blue-300 bg-blue-50' : '' }}">
+            <label class="mj-notif-item flex items-center gap-4 cursor-pointer p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 transition
+                {{ ($notifications[$channel] ?? false) ? 'mj-notif-active border-blue-300 bg-blue-50' : '' }}">
                 <input
                     type="checkbox"
                     wire:change="toggleChannel('{{ $channel }}')"

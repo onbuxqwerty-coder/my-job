@@ -976,6 +976,15 @@ html[data-theme="dark"] .mj-company-block-logo-placeholder,
 html[data-theme="dark"] .mj-related-card-logo,
 html[data-theme="dark"] .mj-sidebar-related-logo { background: #374151 !important; }
 
+/* ── Dark theme: Notifications step active channels ─────────────── */
+html[data-theme="dark"] .mj-notif-item {
+  border-color: #4B5563 !important;
+}
+html[data-theme="dark"] .mj-notif-active {
+  background-color: #1F2937 !important;
+  border-color: #3B82F6 !important;
+}
+
 /* ── Dark theme: Skills dropdown ────────────────────────────────── */
 html[data-theme="dark"] .mj-skill-dropdown {
   background-color: #1F2937 !important;
