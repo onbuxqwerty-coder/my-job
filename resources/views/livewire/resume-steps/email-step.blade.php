@@ -48,7 +48,7 @@
 
     @else
         {{-- Step 2: Enter code --}}
-        <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div class="mj-alert p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p class="text-sm text-blue-900">
                 Код відправлено на <strong>{{ $email }}</strong>
             </p>
@@ -95,7 +95,7 @@
         </button>
     @endif
 
-    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+    <div class="mj-alert p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
         <p class="text-sm text-yellow-800">
             <strong>Важливо:</strong> Email дійсно впливає на можливість отримання пропозицій від роботодавців.
         </p>

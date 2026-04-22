@@ -79,12 +79,12 @@
             />
         </div>
     @else
-        <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div class="mj-alert p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p class="text-sm text-blue-800">Вибрано режим без прив'язки до міста. Вакансії будуть показані з усієї України.</p>
         </div>
     @endif
 
-    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+    <div class="mj-alert p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
         <p class="text-sm text-yellow-800">
             <strong>Порада:</strong> Точна локація допомагає знаходити роботодавців поруч з вами.
         </p>

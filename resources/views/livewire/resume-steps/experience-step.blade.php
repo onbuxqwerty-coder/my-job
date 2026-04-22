@@ -136,7 +136,7 @@
         </button>
     @endif
 
-    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+    <div class="mj-alert p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
         <p class="text-sm text-yellow-800">
             <strong>Порада:</strong> Більше досвіду = більше шансів знайти роботу. Мінімум одна посада допоможе роботодавцям зрозуміти ваш рівень.
         </p>

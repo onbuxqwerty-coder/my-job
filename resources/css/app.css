@@ -976,6 +976,16 @@ html[data-theme="dark"] .mj-company-block-logo-placeholder,
 html[data-theme="dark"] .mj-related-card-logo,
 html[data-theme="dark"] .mj-sidebar-related-logo { background: #374151 !important; }
 
+/* ── Dark theme: Resume builder notification banners ─────────────── */
+html[data-theme="dark"] .mj-alert {
+  background-color: #505050 !important;
+  border-color: #FEF08A !important;
+}
+html[data-theme="dark"] .mj-alert p,
+html[data-theme="dark"] .mj-alert strong {
+  color: #FFFFFF !important;
+}
+
 /* Global border override — light theme: all Tailwind gray borders → #a7a7a7 */
 html:not([data-theme="dark"]) .border-gray-100,
 html:not([data-theme="dark"]) .border-gray-200,

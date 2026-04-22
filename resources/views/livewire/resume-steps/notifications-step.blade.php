@@ -30,7 +30,7 @@
         @endforeach
     </div>
 
-    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+    <div class="mj-alert p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p class="text-sm text-blue-900">
             <strong>Інформація:</strong> Вибрані канали будуть використовуватись для надсилання пропозицій від роботодавців.
         </p>
