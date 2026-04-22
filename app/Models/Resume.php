@@ -115,8 +115,7 @@ class Resume extends Model
 
         $hasCriticalFields = !empty($info['first_name'])
             && !empty($info['last_name'])
-            && !empty($info['email'])
-            && !empty($info['email_verified_at']);
+            && $this->user_id !== null;
 
         $hasContent = $this->experiences()->exists() || $this->skills()->exists();
 
@@ -127,7 +126,7 @@ class Resume extends Model
     {
         return [
             'personal_info' => $this->validatePersonalInfo(),
-            'email'         => $this->validateEmail(),
+            'auth'          => $this->user_id !== null,
             'experience'    => $this->validateExperience(),
             'skills'        => $this->validateSkills(),
             'location'      => $this->validateLocation(),
