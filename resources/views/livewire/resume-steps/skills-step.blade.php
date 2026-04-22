@@ -20,14 +20,13 @@
     @endif
 
     {{-- Search / add --}}
-    <div class="relative" x-data="{ open: false }">
+    <div class="relative">
         <label class="block text-sm font-semibold text-gray-900 mb-2">Додати навичку</label>
         <div class="flex gap-2">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="searchQuery"
-                x-on:focus="open = true"
-                x-on:blur="setTimeout(() => open = false, 150)"
+                wire:blur="closeSearchResults"
                 placeholder="Напр. Laravel, React, Python..."
                 class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -38,10 +37,10 @@
         </div>
 
         {{-- Dropdown --}}
-        @if (!empty($searchResults))
-            <div x-show="open" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+        @if ($showSearchResults && !empty($searchResults))
+            <div class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                 @foreach ($searchResults as $result)
-                    <button wire:click="addSkill('{{ $result }}')"
+                    <button wire:mousedown="addSkill('{{ $result }}')"
                         class="w-full text-left px-4 py-2.5 hover:bg-blue-50 text-sm border-b border-gray-100 last:border-b-0">
                         {{ $result }}
                     </button>

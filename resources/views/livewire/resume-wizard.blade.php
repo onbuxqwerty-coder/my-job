@@ -4,7 +4,7 @@
     x-init="init()"
 >
     {{-- STICKY HEADER --}}
-    <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+    <div class="sticky z-40 bg-white border-b border-gray-200 shadow-sm" style="top: 64px;" id="wizard-sticky-header">
         <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
                 <h1 class="text-2xl font-bold text-gray-900">Конструктор резюме</h1>
@@ -32,18 +32,21 @@
         </div>
     </div>
 
+    {{-- MOBILE STEP INDICATOR --}}
+    <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
+        <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Прогрес</span>
+            <span class="text-xs font-semibold text-blue-600">{{ $currentStep }} / {{ $totalSteps }}</span>
+        </div>
+        <div class="flex gap-1">
+            @for ($i = 1; $i <= $totalSteps; $i++)
+                <div class="h-1.5 flex-1 rounded-full {{ $i < $currentStep ? 'bg-green-500' : ($i === $currentStep ? 'bg-blue-500' : 'bg-gray-200') }}"></div>
+            @endfor
+        </div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-
-            {{-- SIDEBAR — STEPPER --}}
-            <aside class="lg:col-span-1">
-                @livewire('resume-stepper', [
-                    'resume'        => $resume,
-                    'currentStep'   => $currentStep,
-                    'stepperStatus' => $stepperStatus,
-                    'isPublishable' => $resume->isPublishable(),
-                ], key('stepper-' . $resume->id . '-' . $currentStep))
-            </aside>
 
             {{-- MAIN CONTENT --}}
             <main class="lg:col-span-3">
@@ -141,6 +144,16 @@
                     @endif
                 </div>
             </main>
+
+            {{-- SIDEBAR — STEPPER (desktop only) --}}
+            <aside class="lg:col-span-1">
+                @livewire('resume-stepper', [
+                    'resume'        => $resume,
+                    'currentStep'   => $currentStep,
+                    'stepperStatus' => $stepperStatus,
+                    'isPublishable' => $resume->isPublishable(),
+                ], key('stepper-' . $resume->id . '-' . $currentStep))
+            </aside>
         </div>
     </div>
 </div>
@@ -152,7 +165,9 @@
             autoSaveTimer: null,
 
             init() {
-                // Debounce auto-save: triggered by scheduleAutoSave event
+                this.updateStickyTop();
+                window.addEventListener('resize', () => this.updateStickyTop());
+
                 $wire.on('scheduleAutoSave', () => {
                     clearTimeout(this.autoSaveTimer);
                     this.autoSaveTimer = setTimeout(() => {
@@ -160,12 +175,16 @@
                     }, 2500);
                 });
 
-                // Hide save message after 2 sec
                 $wire.on('hideSaveMessage', () => {
                     setTimeout(() => {
                         $wire.hideSaveMessage();
                     }, 2000);
                 });
+            },
+
+            updateStickyTop() {
+                const el = document.getElementById('wizard-sticky-header');
+                if (el) el.style.top = window.innerWidth < 768 ? '64px' : '120px';
             },
         };
     }

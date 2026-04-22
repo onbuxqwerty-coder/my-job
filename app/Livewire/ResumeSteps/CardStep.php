@@ -24,15 +24,15 @@ class CardStep extends Component
         return view('livewire.resume-steps.card-step');
     }
 
-    public function updatePrivacy(bool $value): void
+    public function updatePrivacy(): void
     {
-        $this->formData['personal_info']['privacy'] = $value;
+        $value = (bool) ($this->formData['personal_info']['privacy'] ?? false);
         $this->syncToParent('privacy', $value);
     }
 
-    public function updateTransparency(bool $value): void
+    public function updateTransparency(): void
     {
-        $this->formData['personal_info']['transparency'] = $value;
+        $value = (bool) ($this->formData['personal_info']['transparency'] ?? false);
         $this->syncToParent('transparency', $value);
     }
 

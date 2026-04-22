@@ -15,8 +15,9 @@ class SkillsStep extends Component
     public array  $skills      = [];
     public array  $suggestions = [];
 
-    public string $newSkill     = '';
-    public string $searchQuery  = '';
+    public string $newSkill          = '';
+    public string $searchQuery       = '';
+    public bool   $showSearchResults = false;
 
     protected array $predefinedSkills = [
         'Laravel', 'PHP', 'JavaScript', 'React', 'Vue.js',
@@ -41,6 +42,16 @@ class SkillsStep extends Component
         ]);
     }
 
+    public function updatedSearchQuery(): void
+    {
+        $this->showSearchResults = strlen($this->searchQuery) >= 1;
+    }
+
+    public function closeSearchResults(): void
+    {
+        $this->showSearchResults = false;
+    }
+
     public function addSkill(?string $skill = null): void
     {
         $skillName = trim($skill ?? $this->newSkill);
@@ -51,9 +62,10 @@ class SkillsStep extends Component
 
         try {
             $this->resume->skills()->create(['skill_name' => $skillName]);
-            $this->skills[]    = $skillName;
-            $this->newSkill    = '';
-            $this->searchQuery = '';
+            $this->skills[]          = $skillName;
+            $this->newSkill          = '';
+            $this->searchQuery       = '';
+            $this->showSearchResults = false;
             $this->generateSuggestions();
             $this->dispatch('step-updated', section: 'skills', data: []);
         } catch (\Exception) {

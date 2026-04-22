@@ -44,7 +44,7 @@
             <input
                 type="checkbox"
                 wire:model="formData.personal_info.privacy"
-                wire:change="updatePrivacy($event.target.checked)"
+                wire:change="updatePrivacy"
                 class="w-4 h-4 rounded border-gray-300"
             />
             <span class="text-sm text-gray-700">
@@ -57,7 +57,7 @@
             <input
                 type="checkbox"
                 wire:model="formData.personal_info.transparency"
-                wire:change="updateTransparency($event.target.checked)"
+                wire:change="updateTransparency"
                 class="w-4 h-4 rounded border-gray-300"
             />
             <span class="text-sm text-gray-700">
