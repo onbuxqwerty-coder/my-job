@@ -29,7 +29,13 @@
                 x-on:focus="open = true"
                 x-on:blur="setTimeout(() => open = false, 150)"
                 placeholder="Почніть вводити назву міста..."
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="city-search-input"
+                style="width:100%; height:48px; padding:0 16px; font-size:15px;
+                       border:1px solid #000; border-radius:var(--radius-lg);
+                       color:var(--color-text-dark); background:#fff;
+                       outline:none; transition:box-shadow .15s;"
+                onfocus="this.style.boxShadow='0 0 0 3px rgba(0,0,0,.1)'"
+                onblur="this.style.boxShadow=''"
             />
 
             @if (!empty($citySuggestions))
