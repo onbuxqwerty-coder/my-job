@@ -43,11 +43,12 @@ class CardStep extends Component
         $this->validateFields();
     }
 
-    public function onBlur(): void
+    public function updatedFormData(): void
     {
-        $this->dispatch('step-updated',
+        $this->dispatch('updateFormData',
             section: 'personal_info',
-            data: $this->formData['personal_info'] ?? [],
+            key: $this->formData['personal_info'] ?? [],
+            value: null,
         );
     }
 
