@@ -21,6 +21,7 @@ class LocationStep extends Component
     public ?float  $longitude          = null;
     public bool    $noLocationBinding  = false;
     public array   $citySuggestions    = [];
+    public bool    $showSuggestions    = false;
 
     public function mount(Resume $resume, array $formData = []): void
     {
@@ -51,6 +52,7 @@ class LocationStep extends Component
     {
         if (strlen($query) < 2) {
             $this->citySuggestions = [];
+            $this->showSuggestions = false;
             return;
         }
 
@@ -66,6 +68,8 @@ class LocationStep extends Component
                 'longitude' => $c->longitude,
             ])
             ->toArray();
+
+        $this->showSuggestions = !empty($this->citySuggestions);
     }
 
     public function selectCity(int $id, string $name, ?float $lat, ?float $lon): void
@@ -75,7 +79,13 @@ class LocationStep extends Component
         $this->latitude        = $lat;
         $this->longitude       = $lon;
         $this->citySuggestions = [];
+        $this->showSuggestions = false;
         $this->saveLocation();
+    }
+
+    public function closeSuggestions(): void
+    {
+        $this->showSuggestions = false;
     }
 
     public function toggleNoLocationBinding(): void

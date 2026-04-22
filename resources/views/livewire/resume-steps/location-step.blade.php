@@ -20,13 +20,12 @@
 
     @if (!$noLocationBinding)
         {{-- City search --}}
-        <div class="relative" x-data="{ open: false }">
+        <div class="relative">
             <label class="block text-sm font-semibold text-gray-900 mb-2">Місто</label>
             <input
                 type="text"
                 wire:model.live.debounce.400ms="city"
-                x-on:focus="open = true"
-                x-on:blur="setTimeout(() => open = false, 150)"
+                wire:blur="closeSuggestions"
                 placeholder="Почніть вводити назву міста..."
                 class="city-search-input"
                 style="width:100%; height:48px; padding:0 16px; font-size:15px;
@@ -37,11 +36,11 @@
                 onblur="this.style.boxShadow=''"
             />
 
-            @if (!empty($citySuggestions))
-                <div x-show="open" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+            @if ($showSuggestions && !empty($citySuggestions))
+                <div class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                     @foreach ($citySuggestions as $c)
                         <button
-                            wire:click="selectCity({{ $c['id'] }}, '{{ $c['name'] }}', {{ $c['latitude'] ?? 'null' }}, {{ $c['longitude'] ?? 'null' }})"
+                            wire:mousedown="selectCity({{ $c['id'] }}, '{{ $c['name'] }}', {{ $c['latitude'] ?? 'null' }}, {{ $c['longitude'] ?? 'null' }})"
                             class="w-full text-left px-4 py-2.5 hover:bg-blue-50 text-sm border-b border-gray-100 last:border-b-0"
                         >
                             <span class="font-medium">{{ $c['name'] }}</span>
