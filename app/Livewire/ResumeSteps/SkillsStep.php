@@ -89,10 +89,22 @@ class SkillsStep extends Component
             return [];
         }
 
-        return array_values(array_filter(
+        $fromPredefined = array_filter(
             $this->predefinedSkills,
             fn (string $s) => stripos($s, $this->searchQuery) !== false
-                && !in_array($s, $this->skills, true)
+        );
+
+        $fromDb = \App\Models\Skill::query()
+            ->where('skill_name', 'like', '%' . $this->searchQuery . '%')
+            ->distinct()
+            ->pluck('skill_name')
+            ->toArray();
+
+        $merged = array_values(array_unique(array_merge($fromPredefined, $fromDb)));
+
+        return array_values(array_filter(
+            $merged,
+            fn (string $s) => !in_array($s, $this->skills, true)
         ));
     }
 
