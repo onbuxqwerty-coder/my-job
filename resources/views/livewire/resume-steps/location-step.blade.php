@@ -41,7 +41,9 @@
                     @foreach ($citySuggestions as $c)
                         <button
                             wire:mousedown="selectCity({{ $c['id'] }}, '{{ $c['name'] }}', {{ $c['latitude'] ?? 'null' }}, {{ $c['longitude'] ?? 'null' }})"
-                            class="w-full text-left px-4 py-2.5 hover:bg-blue-50 text-sm border-b border-gray-100 last:border-b-0"
+                            class="w-full text-left px-4 py-2.5 text-sm border-b border-gray-100 last:border-b-0 transition-colors"
+                            onmouseover="this.style.backgroundColor='#1F2937'; this.style.color='#FFFFFF';"
+                            onmouseout="this.style.backgroundColor=''; this.style.color='';"
                         >
                             <span class="font-medium">{{ $c['name'] }}</span>
                             @if ($c['region'])
