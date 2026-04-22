@@ -42,6 +42,12 @@ class ResumeWizard extends Component
             'notifications'   => $resume->notifications   ?? [],
             'additional_info' => $resume->additional_info ?? [],
         ];
+
+        $step = session()->pull('resume_wizard_step');
+        if ($step && $step >= 1 && $step <= $this->totalSteps) {
+            $this->currentStep = (int) $step;
+        }
+
         $this->updateStepperStatus();
     }
 
