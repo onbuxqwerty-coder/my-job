@@ -54,7 +54,7 @@ class SkillsStep extends Component
 
     public function addSkill(?string $skill = null): void
     {
-        $skillName = trim($skill ?? $this->newSkill);
+        $skillName = trim($skill ?? $this->searchQuery ?? $this->newSkill);
 
         if (empty($skillName) || in_array($skillName, $this->skills, true)) {
             return;
