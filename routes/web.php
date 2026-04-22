@@ -6,6 +6,7 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TelegramAuthController;
 use App\Models\Category;
 use App\Models\Interview;
+use App\Models\Resume;
 use App\Models\Vacancy;
 use App\Services\InterviewService;
 use App\Services\PaymentService;
@@ -92,12 +93,40 @@ Route::middleware(['auth', 'role:employer'])
         })->name('vacancies.promote');
     });
 
+// ── Resume Wizard ───────────────────────────────────────────────────────────
+Route::middleware(['auth'])
+    ->prefix('resumes')
+    ->name('resumes.')
+    ->group(function () {
+        Route::get('/create', function () {
+            $resume = auth()->user()->resumes()->create([
+                'title'  => 'Нове резюме',
+                'status' => 'draft',
+            ]);
+            return view('resumes.create', compact('resume'));
+        })->name('create');
+
+        Route::get('/{resume}/edit', function (Resume $resume) {
+            abort_unless(auth()->id() === $resume->user_id, 403);
+            return view('resumes.edit', compact('resume'));
+        })->name('edit');
+
+        Route::get('/{resume}/export/pdf', function (Resume $resume) {
+            abort_unless(auth()->id() === $resume->user_id, 403);
+            // PDF export — підключити бібліотеку (наприклад, barryvdh/laravel-dompdf) у майбутньому
+            abort(501, 'Експорт PDF ще не реалізовано');
+        })->name('export.pdf');
+    });
+
+Volt::route('/resumes/{resume}', 'pages.resumes.show')->name('resumes.show');
+
 // ── Seeker Dashboard ────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:candidate'])
     ->prefix('dashboard/seeker')
     ->name('seeker.')
     ->group(function () {
         Volt::route('/', 'pages.seeker.dashboard')->name('dashboard');
+        Volt::route('/resumes', 'pages.seeker.resumes')->name('resumes');
         Volt::route('/applications', 'pages.seeker.applications')->name('applications');
         Volt::route('/applications/{applicationId}', 'pages.seeker.application-detail')->name('application.detail');
         Volt::route('/interviews', 'pages.seeker.interviews')->name('interviews');

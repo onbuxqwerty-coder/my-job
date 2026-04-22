@@ -141,7 +141,7 @@
             <a href="{{ route('home') }}" {{ request()->routeIs('home') ? 'class=active' : '' }}>
                 Знайти вакансії
             </a>
-            <a href="{{ route('home') }}">Розмістити Резюме</a>
+            <a href="{{ route('resumes.create') }}" {{ request()->routeIs('resumes.*') ? 'class=active' : '' }}>Розмістити Резюме</a>
             <button
                 onclick="Livewire.dispatch('open-quick-publish')"
                 style="background:none; border:none; cursor:pointer; font-size:inherit; font-weight:600;
