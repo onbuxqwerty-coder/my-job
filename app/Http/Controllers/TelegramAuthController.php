@@ -66,6 +66,14 @@ class TelegramAuthController extends Controller
                 ->with('vacancy_published_id', $vacancy->id);
         }
 
+        // Якщо прийшли з resume wizard — повертаємо назад
+        if (request()->query('resume_redirect')) {
+            $resumeId = session('pending_resume_id');
+            if ($resumeId) {
+                return redirect()->route('resumes.create');
+            }
+        }
+
         $redirect = match($user->role->value) {
             'employer'  => route('employer.dashboard'),
             'candidate' => route('seeker.dashboard'),

@@ -94,15 +94,26 @@ Route::middleware(['auth', 'role:employer'])
     });
 
 // ── Resume Wizard ───────────────────────────────────────────────────────────
-Route::middleware(['auth'])
-    ->prefix('resumes')
+Route::prefix('resumes')
     ->name('resumes.')
     ->group(function () {
         Route::get('/create', function () {
-            $resume = auth()->user()->resumes()->create([
-                'title'  => 'Нове резюме',
-                'status' => 'draft',
+            $resumeId = session('pending_resume_id');
+
+            if ($resumeId) {
+                $resume = \App\Models\Resume::find($resumeId);
+                if ($resume && ($resume->user_id === null || $resume->user_id === auth()->id())) {
+                    return view('resumes.create', compact('resume'));
+                }
+            }
+
+            $resume = \App\Models\Resume::create([
+                'user_id' => auth()->id(),
+                'title'   => 'Нове резюме',
+                'status'  => 'draft',
             ]);
+            session(['pending_resume_id' => $resume->id]);
+
             return view('resumes.create', compact('resume'));
         })->name('create');
 

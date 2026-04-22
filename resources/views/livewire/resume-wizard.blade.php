@@ -61,7 +61,7 @@
                     @endif
 
                     @if ($currentStep === 2)
-                        @livewire('resume-steps.email-step', [
+                        @livewire('resume-steps.auth-step', [
                             'resume'   => $resume,
                             'formData' => $formData,
                         ], key('step-2-' . $resume->id))

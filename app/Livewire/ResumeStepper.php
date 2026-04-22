@@ -18,7 +18,7 @@ class ResumeStepper extends Component
     /** @var array<int, array{key: string, title: string, description: string}> */
     protected array $steps = [
         1 => ['key' => 'personal_info', 'title' => 'Картка-Візитка',  'description' => "Ім'я та прізвище"],
-        2 => ['key' => 'email',         'title' => 'Email',            'description' => 'Верифікація'],
+        2 => ['key' => 'auth',          'title' => 'Авторизація',      'description' => 'Вхід або реєстрація'],
         3 => ['key' => 'experience',    'title' => 'Досвід',           'description' => 'Посади та компанії'],
         4 => ['key' => 'skills',        'title' => 'Навички',          'description' => 'Технічні вміння'],
         5 => ['key' => 'location',      'title' => 'Локація',          'description' => 'Місто та адреса'],
@@ -81,7 +81,7 @@ class ResumeStepper extends Component
     {
         return match ($stepKey) {
             'personal_info' => !$this->validatePersonalInfo(),
-            'email'         => !$this->validateEmail(),
+            'auth'          => !auth()->check(),
             default         => false,
         };
     }
@@ -103,9 +103,4 @@ class ResumeStepper extends Component
         return !empty($info['first_name']) && !empty($info['last_name']);
     }
 
-    private function validateEmail(): bool
-    {
-        $info = $this->resume->personal_info ?? [];
-        return !empty($info['email']) && !empty($info['email_verified_at']);
-    }
 }

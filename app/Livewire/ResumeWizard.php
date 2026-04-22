@@ -26,7 +26,7 @@ class ResumeWizard extends Component
     /** @var array<int,string> */
     protected array $steps = [
         1 => 'personal-info',
-        2 => 'email',
+        2 => 'auth',
         3 => 'experience',
         4 => 'skills',
         5 => 'location',
@@ -191,6 +191,13 @@ class ResumeWizard extends Component
 
     // ===== Step updated from child =====
 
+    #[On('auth-completed')]
+    public function onAuthCompleted(): void
+    {
+        $this->resume->refresh();
+        $this->goToStep(3);
+    }
+
     #[On('step-updated')]
     public function onStepUpdated(string $section, array $data): void
     {
@@ -207,7 +214,7 @@ class ResumeWizard extends Component
     {
         return match ($this->currentStep) {
             1       => $this->validatePersonalInfo(),
-            2       => $this->validateEmail(),
+            2       => $this->validateAuth(),
             default => true,
         };
     }
@@ -230,25 +237,15 @@ class ResumeWizard extends Component
         return empty($errors);
     }
 
-    private function validateEmail(): bool
+    private function validateAuth(): bool
     {
-        $errors          = [];
-        $email           = $this->formData['personal_info']['email']             ?? '';
-        $emailVerifiedAt = $this->formData['personal_info']['email_verified_at'] ?? null;
-
-        if (empty($email)) {
-            $errors['personal_info.email'] = "Email обов'язковий";
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors['personal_info.email'] = 'Невірний формат email';
+        if (! auth()->check()) {
+            $this->validationErrors['auth'] = 'Будь ласка, увійдіть або зареєструйтесь';
+            return false;
         }
 
-        if (empty($emailVerifiedAt)) {
-            $errors['personal_info.email_verified_at'] = 'Email не верифіковано';
-        }
-
-        $this->validationErrors = $errors;
-
-        return empty($errors);
+        $this->validationErrors = [];
+        return true;
     }
 
     private function updateStepperStatus(): void
