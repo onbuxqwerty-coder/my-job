@@ -53,10 +53,10 @@
 
                     {{-- Step text --}}
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-semibold {{ $isCurrentStep ? 'text-blue-900' : 'text-gray-900' }}">
+                        <p class="text-sm font-semibold {{ $isCurrentStep ? '' : 'text-gray-900' }}" style="{{ $isCurrentStep ? 'color: #FFFFFF;' : '' }}">
                             {{ $step['title'] }}
                         </p>
-                        <p class="text-xs {{ $isCurrentStep ? 'text-blue-700' : 'text-gray-500' }}">
+                        <p class="text-xs {{ $isCurrentStep ? '' : 'text-gray-500' }}" style="{{ $isCurrentStep ? 'color: #FFFFFF;' : '' }}">
                             {{ $step['description'] }}
                         </p>
                         @if ($hasErrors)
