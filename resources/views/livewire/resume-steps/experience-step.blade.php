@@ -85,9 +85,9 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Дата початку</label>
                 <input type="date" wire:model="newExperience.start_date"
-                    style="--color-input-bg: #1f2937; background-color: #1f2937; color-scheme: dark;"
-                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                        {{ isset($errors['start_date']) ? 'border-red-500' : 'border-gray-300' }}" />
+                    style="background-color: #FFFFFF; border: 1px solid #A7A7A7;"
+                    class="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+                        {{ isset($errors['start_date']) ? 'border-red-500' : '' }}" />
                 @if (isset($errors['start_date']))
                     <p class="mt-1 text-sm text-red-600">{{ $errors['start_date'] }}</p>
                 @endif
@@ -105,9 +105,9 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Дата закінчення</label>
                     <input type="date" wire:model="newExperience.end_date"
-                        style="--color-input-bg: #1f2937; background-color: #1f2937; color-scheme: dark;"
-                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                            {{ isset($errors['end_date']) ? 'border-red-500' : 'border-gray-300' }}" />
+                        style="background-color: #FFFFFF; border: 1px solid #A7A7A7;"
+                        class="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+                            {{ isset($errors['end_date']) ? 'border-red-500' : '' }}" />
                     @if (isset($errors['end_date']))
                         <p class="mt-1 text-sm text-red-600">{{ $errors['end_date'] }}</p>
                     @endif
