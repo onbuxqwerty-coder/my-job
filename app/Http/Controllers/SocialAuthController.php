@@ -99,15 +99,14 @@ class SocialAuthController extends Controller
         Auth::login($user, remember: true);
 
         // Якщо прийшли з resume wizard — прив'язуємо резюме і повертаємо на крок 3
-        $resumeId = session('pending_resume_id');
+        $resumeId = session()->pull('pending_resume_id');
         if ($resumeId) {
             $resume = \App\Models\Resume::find($resumeId);
             if ($resume && $resume->user_id === null) {
                 $resume->update(['user_id' => $user->id]);
             }
-            session()->forget('pending_resume_id');
             session(['resume_wizard_step' => 3]);
-            return redirect()->route('resumes.create');
+            return redirect()->route('resumes.edit', ['resume' => $resumeId]);
         }
 
         $vacancy = app(PendingVacancyService::class)->createFromSession($user);
