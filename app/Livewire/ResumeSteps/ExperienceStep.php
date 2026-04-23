@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\ResumeSteps;
 
 use App\Models\Experience;
+use App\Models\Industry;
 use App\Models\Position;
 use App\Models\Resume;
 use Livewire\Component;
@@ -25,10 +26,13 @@ class ExperienceStep extends Component
         'is_current'       => false,
     ];
 
-    public bool   $isAddingNew         = false;
-    public string $positionSearch      = '';
-    public array  $positionSuggestions = [];
-    public bool   $showSuggestions     = false;
+    public bool   $isAddingNew          = false;
+    public string $positionSearch       = '';
+    public array  $positionSuggestions  = [];
+    public bool   $showSuggestions      = false;
+    public string $industrySearch       = '';
+    public array  $industrySuggestions  = [];
+    public bool   $showIndustrySuggestions = false;
 
     public function mount(Resume $resume, array $formData = []): void
     {
@@ -142,6 +146,38 @@ class ExperienceStep extends Component
         $this->showSuggestions = false;
     }
 
+    public function updatedIndustrySearch(string $value): void
+    {
+        $trimmed = trim($value);
+
+        if (strlen($trimmed) < 2) {
+            $this->industrySuggestions       = [];
+            $this->showIndustrySuggestions   = false;
+            return;
+        }
+
+        $this->industrySuggestions = Industry::where('name', 'like', "%{$trimmed}%")
+            ->orderByRaw('CASE WHEN name LIKE ? THEN 0 ELSE 1 END', ["{$trimmed}%"])
+            ->limit(8)
+            ->pluck('name')
+            ->toArray();
+
+        $this->showIndustrySuggestions = !empty($this->industrySuggestions);
+    }
+
+    public function selectIndustry(string $name): void
+    {
+        $this->newExperience['company_industry'] = $name;
+        $this->industrySearch                    = $name;
+        $this->industrySuggestions               = [];
+        $this->showIndustrySuggestions           = false;
+    }
+
+    public function closeIndustrySuggestions(): void
+    {
+        $this->showIndustrySuggestions = false;
+    }
+
     public function toggleCurrentJob(): void
     {
         $this->newExperience['is_current'] = !$this->newExperience['is_current'];
@@ -180,9 +216,12 @@ class ExperienceStep extends Component
             'end_date'         => '',
             'is_current'       => false,
         ];
-        $this->positionSearch      = '';
-        $this->positionSuggestions = [];
-        $this->showSuggestions     = false;
-        $this->errors              = [];
+        $this->positionSearch          = '';
+        $this->positionSuggestions     = [];
+        $this->showSuggestions         = false;
+        $this->industrySearch          = '';
+        $this->industrySuggestions     = [];
+        $this->showIndustrySuggestions = false;
+        $this->errors                  = [];
     }
 }

@@ -90,11 +90,27 @@
                 @endif
             </div>
 
-            {{-- Industry --}}
-            <div>
+            {{-- Industry search --}}
+            <div class="relative">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Галузь <span class="text-gray-400">(необов'язково)</span></label>
-                <input type="text" wire:model="newExperience.company_industry" placeholder="IT / Software Development"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <input
+                    type="text"
+                    wire:model.live.debounce.300ms="industrySearch"
+                    wire:blur="closeIndustrySuggestions"
+                    placeholder="Наприклад: IT, комп'ютери, інтернет"
+                    autocomplete="off"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                @if ($showIndustrySuggestions)
+                    <ul class="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-52 overflow-y-auto">
+                        @foreach ($industrySuggestions as $suggestion)
+                            <li
+                                wire:mousedown.prevent="selectIndustry('{{ addslashes($suggestion) }}')"
+                                class="px-4 py-2 text-sm text-gray-800 hover:bg-blue-50 hover:text-blue-700 cursor-pointer"
+                            >{{ $suggestion }}</li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
 
             {{-- Start date --}}
