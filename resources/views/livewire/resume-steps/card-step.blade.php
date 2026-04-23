@@ -46,12 +46,63 @@
     </div>
 
     {{-- Телефон --}}
-    <div>
+    <div
+        x-data="{
+            init() {
+                const el = this.$refs.phone;
+                const raw = el.value.replace(/\D/g, '');
+                if (raw) el.value = this.buildMask(raw);
+                else if (!el.value) el.value = '+38 (0';
+            },
+            buildMask(digits) {
+                // normalize: strip leading 380 / 38 / 0
+                if (digits.startsWith('380')) digits = digits.slice(3);
+                else if (digits.startsWith('38')) digits = digits.slice(2);
+                else if (digits.startsWith('0')) digits = digits.slice(1);
+                digits = digits.slice(0, 9);
+
+                let out = '+38 (0';
+                if (digits.length > 0) out += digits.slice(0, Math.min(2, digits.length));
+                if (digits.length >= 2) out += ') ';
+                if (digits.length > 2) out += digits.slice(2, Math.min(5, digits.length));
+                if (digits.length >= 5) out += '-';
+                if (digits.length > 5) out += digits.slice(5, Math.min(7, digits.length));
+                if (digits.length >= 7) out += '-';
+                if (digits.length > 7) out += digits.slice(7, 9);
+                return out;
+            },
+            onInput(e) {
+                const pos = e.target.selectionStart;
+                const prev = e.target.value;
+                let digits = prev.replace(/\D/g, '');
+                const masked = this.buildMask(digits);
+                e.target.value = masked;
+                // sync to Livewire
+                \$wire.set('formData.personal_info.phone', masked);
+            },
+            onFocus(e) {
+                if (!e.target.value) e.target.value = '+38 (0';
+            },
+            onKeydown(e) {
+                // prevent erasing the prefix '+38 (0'
+                const prefix = '+38 (0';
+                if ((e.key === 'Backspace' || e.key === 'Delete') && e.target.value.length <= prefix.length) {
+                    e.preventDefault();
+                    e.target.value = prefix;
+                }
+            }
+        }"
+    >
         <label class="block text-sm font-semibold text-gray-900 mb-2">Телефон</label>
         <input
+            x-ref="phone"
             type="tel"
             wire:model.live.debounce.2500ms="formData.personal_info.phone"
-            placeholder="+380 XX XXX XX XX"
+            placeholder="+38 (0XX) XXX-XX-XX"
+            autocomplete="tel"
+            @input="onInput($event)"
+            @focus="onFocus($event)"
+            @keydown="onKeydown($event)"
             class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
                 {{ isset($errors['phone']) ? 'border-red-500' : 'border-gray-300' }}"
         />

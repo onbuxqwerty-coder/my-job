@@ -64,8 +64,10 @@ class CardStep extends Component
         }
 
         $phone = $this->formData['personal_info']['phone'] ?? '';
-        if (!empty($phone) && !preg_match('/^\+?[\d\s\-\(\)]{7,15}$/', $phone)) {
-            $this->errors['phone'] = 'Невірний формат телефону';
+        if (!empty($phone) && $phone !== '+38 (0') {
+            if (!preg_match('/^\+38 \(0\d{2}\) \d{3}-\d{2}-\d{2}$/', $phone)) {
+                $this->errors['phone'] = 'Введіть номер у форматі +38 (0XX) XXX-XX-XX';
+            }
         }
     }
 
