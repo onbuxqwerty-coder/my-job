@@ -19,6 +19,17 @@
         @endif
     </div>
 
+    {{-- По батькові --}}
+    <div>
+        <label class="block text-sm font-semibold text-gray-900 mb-2">По батькові <span class="text-gray-400 font-normal">(необов'язково)</span></label>
+        <input
+            type="text"
+            wire:model.live.debounce.2500ms="formData.personal_info.patronymic"
+            placeholder="Наприклад: Іванович"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+    </div>
+
     {{-- Прізвище --}}
     <div>
         <label class="block text-sm font-semibold text-gray-900 mb-2">Прізвище</label>
@@ -32,17 +43,6 @@
         @if (isset($errors['last_name']))
             <p class="mt-1 text-sm text-red-600">{{ $errors['last_name'] }}</p>
         @endif
-    </div>
-
-    {{-- По батькові --}}
-    <div>
-        <label class="block text-sm font-semibold text-gray-900 mb-2">По батькові <span class="text-gray-400 font-normal">(необов'язково)</span></label>
-        <input
-            type="text"
-            wire:model.live.debounce.2500ms="formData.personal_info.patronymic"
-            placeholder="Наприклад: Іванович"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
     </div>
 
     {{-- Телефон --}}
