@@ -70,10 +70,10 @@ new #[Layout('layouts.app')] class extends Component
         @endif
 
         {{-- Header row --}}
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-3">
             <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">Мої резюме</h2>
             <a href="{{ route('resumes.create') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition shadow-sm">
+               class="shrink-0 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition shadow-sm">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
                 </svg>
@@ -93,7 +93,7 @@ new #[Layout('layouts.app')] class extends Component
             <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
 
                 {{-- Card header --}}
-                <div class="px-6 py-5 flex items-start gap-4">
+                <div class="px-6 py-5 flex flex-wrap items-start gap-4">
 
                     {{-- Avatar --}}
                     <div class="shrink-0 w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-bold text-lg">
@@ -125,16 +125,16 @@ new #[Layout('layouts.app')] class extends Component
                     </div>
 
                     {{-- Stats --}}
-                    <div class="shrink-0 flex items-center gap-5 text-center">
-                        <div>
+                    <div class="w-full sm:w-auto flex items-center gap-5 text-center pt-2 sm:pt-0 border-t border-gray-100 dark:border-gray-700 sm:border-0">
+                        <div class="flex-1 sm:flex-none">
                             <p class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ number_format($resume->views_count) }}</p>
                             <p class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">переглядів</p>
                         </div>
-                        <div>
+                        <div class="flex-1 sm:flex-none">
                             <p class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $resume->experiences_count }}</p>
                             <p class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">досвід</p>
                         </div>
-                        <div>
+                        <div class="flex-1 sm:flex-none">
                             <p class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $resume->skills_count }}</p>
                             <p class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">навичок</p>
                         </div>
