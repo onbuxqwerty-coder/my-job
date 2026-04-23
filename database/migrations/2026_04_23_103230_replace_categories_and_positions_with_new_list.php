@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Database\Seeders;
-
-use Illuminate\Database\Seeder;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class CategoryPositionSeeder extends Seeder
+return new class extends Migration
 {
     /** @var array<array{string, list<string>}> */
     private array $data = [
@@ -42,7 +40,7 @@ class CategoryPositionSeeder extends Seeder
         ["Управління персоналом, HR", ["HR-менеджер", "Рекрутер", "IT-рекрутер", "Спеціаліст з навчання", "Менеджер з корпоративної культури", "HR-адміністратор", "Фахівець з компенсацій"]],
     ];
 
-    public function run(): void
+    public function up(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
         DB::table('positions')->truncate();
@@ -60,7 +58,7 @@ class CategoryPositionSeeder extends Seeder
                 'updated_at' => $now,
             ]);
 
-            $rows = array_map(fn(string $job) => [
+            $positionRows = array_map(fn(string $job) => [
                 'category_id' => $categoryId,
                 'name'        => $job,
                 'slug'        => Str::slug($job),
@@ -68,7 +66,15 @@ class CategoryPositionSeeder extends Seeder
                 'updated_at'  => $now,
             ], $jobs);
 
-            DB::table('positions')->insert($rows);
+            DB::table('positions')->insert($positionRows);
         }
     }
-}
+
+    public function down(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('positions')->truncate();
+        DB::table('categories')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+    }
+};
