@@ -28,42 +28,60 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Header row --}}
-        <div style="display:flex; align-items:center; justify-content:space-between; padding-top:20px; padding-bottom:12px; gap:16px;">
+        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 pt-5 pb-3">
 
             {{-- Left: user name --}}
-            <div style="flex-shrink:0;">
-                <p style="font-size:11px; font-weight:700; color:#9ca3af; text-transform:uppercase; letter-spacing:.08em; margin-bottom:2px;">Кабінет шукача</p>
-                <h1 class="seeker-header-title" style="font-size:1.2rem; font-weight:800; color:#111827; line-height:1.3; margin:0;">
+            <div class="shrink-0">
+                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-0.5">Кабінет шукача</p>
+                <h1 class="seeker-header-title text-xl font-extrabold text-gray-900 leading-tight m-0">
                     {{ $user->name }}
                 </h1>
             </div>
 
-            {{-- Center: stats --}}
-            <div style="display:flex; align-items:center; gap:20px;">
-                <div style="display:flex; align-items:baseline; gap:6px;">
-                    <span class="seeker-header-title" style="font-size:1.5rem; font-weight:800; color:#111827;">{{ $totalApps }}</span>
-                    <span style="font-size:0.75rem; color:#9ca3af; white-space:nowrap;">всього заявок</span>
+            {{-- Center: stats (hidden on xs, visible from sm) --}}
+            <div class="hidden sm:flex items-center gap-5">
+                <div class="flex items-baseline gap-1.5">
+                    <span class="seeker-header-title text-2xl font-extrabold text-gray-900">{{ $totalApps }}</span>
+                    <span class="text-xs text-gray-400 whitespace-nowrap">всього заявок</span>
                 </div>
-                <div style="width:1px; height:20px; background:#e5e7eb;"></div>
-                <div style="display:flex; align-items:baseline; gap:6px;">
-                    <span style="font-size:1.5rem; font-weight:800; color:#2563eb;">{{ $activeApps }}</span>
-                    <span style="font-size:0.75rem; color:#9ca3af; white-space:nowrap;">активних</span>
+                <div class="w-px h-5 bg-gray-200"></div>
+                <div class="flex items-baseline gap-1.5">
+                    <span class="text-2xl font-extrabold text-blue-600">{{ $activeApps }}</span>
+                    <span class="text-xs text-gray-400 whitespace-nowrap">активних</span>
                 </div>
-                <div style="width:1px; height:20px; background:#e5e7eb;"></div>
-                <div style="display:flex; align-items:baseline; gap:6px;">
-                    <span style="font-size:1.5rem; font-weight:800; color:#7c3aed;">{{ $upcomingIntvs }}</span>
-                    <span style="font-size:0.75rem; color:#9ca3af; white-space:nowrap;">співбесід</span>
+                <div class="w-px h-5 bg-gray-200"></div>
+                <div class="flex items-baseline gap-1.5">
+                    <span class="text-2xl font-extrabold text-violet-600">{{ $upcomingIntvs }}</span>
+                    <span class="text-xs text-gray-400 whitespace-nowrap">співбесід</span>
                 </div>
             </div>
 
             {{-- Right: CTA --}}
             <a href="{{ route('home') }}"
-               style="flex-shrink:0; display:inline-flex; align-items:center; gap:6px; padding:8px 18px; font-size:0.875rem; font-weight:700; color:#fff; background:#2563eb; border-radius:12px; text-decoration:none; white-space:nowrap; box-shadow:0 1px 4px rgba(37,99,235,.3);">
-                <svg style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-xl whitespace-nowrap shadow-sm hover:bg-blue-700 transition">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
                 Знайти вакансії
             </a>
+
+            {{-- Stats row on mobile only --}}
+            <div class="flex sm:hidden w-full items-center gap-4 pb-1">
+                <div class="flex items-baseline gap-1">
+                    <span class="text-lg font-extrabold text-gray-900">{{ $totalApps }}</span>
+                    <span class="text-xs text-gray-400">заявок</span>
+                </div>
+                <div class="w-px h-4 bg-gray-200"></div>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-lg font-extrabold text-blue-600">{{ $activeApps }}</span>
+                    <span class="text-xs text-gray-400">активних</span>
+                </div>
+                <div class="w-px h-4 bg-gray-200"></div>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-lg font-extrabold text-violet-600">{{ $upcomingIntvs }}</span>
+                    <span class="text-xs text-gray-400">співбесід</span>
+                </div>
+            </div>
         </div>
 
         {{-- Tabs --}}
