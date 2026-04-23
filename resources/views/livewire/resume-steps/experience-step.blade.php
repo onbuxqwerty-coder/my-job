@@ -65,11 +65,11 @@
                         {{ isset($errors['position']) ? 'border-red-500' : 'border-gray-300' }}"
                 />
                 @if ($showSuggestions)
-                    <ul class="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-52 overflow-y-auto">
+                    <ul class="absolute z-50 left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-lg max-h-52 overflow-y-auto">
                         @foreach ($positionSuggestions as $suggestion)
                             <li
                                 wire:mousedown.prevent="selectPosition('{{ addslashes($suggestion) }}')"
-                                class="px-4 py-2 text-sm text-gray-800 hover:bg-blue-50 hover:text-blue-700 cursor-pointer"
+                                class="px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 cursor-pointer"
                             >{{ $suggestion }}</li>
                         @endforeach
                     </ul>
@@ -102,11 +102,11 @@
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 @if ($showIndustrySuggestions)
-                    <ul class="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-52 overflow-y-auto">
+                    <ul class="absolute z-50 left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-lg max-h-52 overflow-y-auto">
                         @foreach ($industrySuggestions as $suggestion)
                             <li
                                 wire:mousedown.prevent="selectIndustry('{{ addslashes($suggestion) }}')"
-                                class="px-4 py-2 text-sm text-gray-800 hover:bg-blue-50 hover:text-blue-700 cursor-pointer"
+                                class="px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 cursor-pointer"
                             >{{ $suggestion }}</li>
                         @endforeach
                     </ul>
