@@ -34,6 +34,32 @@
         @endif
     </div>
 
+    {{-- По батькові --}}
+    <div>
+        <label class="block text-sm font-semibold text-gray-900 mb-2">По батькові <span class="text-gray-400 font-normal">(необов'язково)</span></label>
+        <input
+            type="text"
+            wire:model.live.debounce.2500ms="formData.personal_info.patronymic"
+            placeholder="Наприклад: Іванович"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+    </div>
+
+    {{-- Телефон --}}
+    <div>
+        <label class="block text-sm font-semibold text-gray-900 mb-2">Телефон</label>
+        <input
+            type="tel"
+            wire:model.live.debounce.2500ms="formData.personal_info.phone"
+            placeholder="+380 XX XXX XX XX"
+            class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+                {{ isset($errors['phone']) ? 'border-red-500' : 'border-gray-300' }}"
+        />
+        @if (isset($errors['phone']))
+            <p class="mt-1 text-sm text-red-600">{{ $errors['phone'] }}</p>
+        @endif
+    </div>
+
     {{-- Видимість --}}
     <div class="space-y-3 pt-4 border-t border-gray-200">
         <h3 class="text-sm font-semibold text-gray-900">Видимість резюме</h3>

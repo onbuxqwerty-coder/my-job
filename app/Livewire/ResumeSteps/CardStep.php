@@ -62,6 +62,11 @@ class CardStep extends Component
         if (empty($this->formData['personal_info']['last_name'] ?? '')) {
             $this->errors['last_name'] = "Прізвище обов'язкове";
         }
+
+        $phone = $this->formData['personal_info']['phone'] ?? '';
+        if (!empty($phone) && !preg_match('/^\+?[\d\s\-\(\)]{7,15}$/', $phone)) {
+            $this->errors['phone'] = 'Невірний формат телефону';
+        }
     }
 
     private function syncToParent(string $key, mixed $value): void
