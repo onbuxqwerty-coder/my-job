@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\ResumeSteps;
 
 use App\Models\Experience;
+use App\Models\Position;
 use App\Models\Resume;
 use Livewire\Component;
 
@@ -24,7 +25,10 @@ class ExperienceStep extends Component
         'is_current'       => false,
     ];
 
-    public bool $isAddingNew = false;
+    public bool   $isAddingNew         = false;
+    public string $positionSearch      = '';
+    public array  $positionSuggestions = [];
+    public bool   $showSuggestions     = false;
 
     public function mount(Resume $resume, array $formData = []): void
     {
@@ -106,6 +110,38 @@ class ExperienceStep extends Component
         }
     }
 
+    public function updatedPositionSearch(string $value): void
+    {
+        $trimmed = trim($value);
+
+        if (strlen($trimmed) < 2) {
+            $this->positionSuggestions = [];
+            $this->showSuggestions     = false;
+            return;
+        }
+
+        $this->positionSuggestions = Position::where('name', 'like', "%{$trimmed}%")
+            ->orderByRaw('CASE WHEN name LIKE ? THEN 0 ELSE 1 END', ["{$trimmed}%"])
+            ->limit(8)
+            ->pluck('name')
+            ->toArray();
+
+        $this->showSuggestions = !empty($this->positionSuggestions);
+    }
+
+    public function selectPosition(string $name): void
+    {
+        $this->newExperience['position'] = $name;
+        $this->positionSearch            = $name;
+        $this->positionSuggestions       = [];
+        $this->showSuggestions           = false;
+    }
+
+    public function closeSuggestions(): void
+    {
+        $this->showSuggestions = false;
+    }
+
     public function toggleCurrentJob(): void
     {
         $this->newExperience['is_current'] = !$this->newExperience['is_current'];
@@ -144,6 +180,9 @@ class ExperienceStep extends Component
             'end_date'         => '',
             'is_current'       => false,
         ];
-        $this->errors = [];
+        $this->positionSearch      = '';
+        $this->positionSuggestions = [];
+        $this->showSuggestions     = false;
+        $this->errors              = [];
     }
 }
