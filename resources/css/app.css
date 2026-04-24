@@ -39,6 +39,10 @@
   --color-input-border:    #a7a7a7;
   --color-dropdown-hover:  #f0f7ff;
 
+  /* Hover / interactive */
+  --color-primary-blue-dark: #2563EB;
+  --color-row-hover:         #e9eaec;
+
   /* Spacing */
   --spacing-xs:   4px;
   --spacing-sm:   8px;
@@ -215,7 +219,7 @@ aside.mj-filters {
   transition: background-color var(--transition-fast);
 }
 
-.radio-item:hover { background-color: #e9eaec; }
+.radio-item:hover { background-color: var(--color-row-hover); }
 
 .radio-item input[type="radio"] {
   width: 16px;
@@ -281,7 +285,7 @@ aside.mj-filters {
   color: inherit;
   cursor: pointer;
   background-color: var(--color-bg-white);
-  border: 1px solid #a7a7a7;
+  border: 1px solid var(--color-sidebar-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
   display: grid;
@@ -388,7 +392,7 @@ aside.mj-filters {
   transition: color var(--transition-fast);
 }
 
-.job-company:hover { color: #2563EB; text-decoration: underline; }
+.job-company:hover { color: var(--color-primary-blue-dark); text-decoration: underline; }
 
 .job-location { color: var(--color-text-gray); }
 
@@ -556,7 +560,7 @@ aside.mj-filters {
   padding-top: var(--spacing-xl);
 }
 
-.filters-modal-apply:hover { background-color: #2563EB; }
+.filters-modal-apply:hover { background-color: var(--color-primary-blue-dark); }
 
 /* Hamburger button (mobile only) */
 .mj-hamburger {
@@ -575,7 +579,7 @@ aside.mj-filters {
   flex-shrink: 0;
 }
 
-.mj-hamburger:hover { background-color: #2563EB; box-shadow: var(--shadow-md); }
+.mj-hamburger:hover { background-color: var(--color-primary-blue-dark); box-shadow: var(--shadow-md); }
 
 @media (max-width: 1023px) {
   .mj-hamburger { display: none; }
@@ -618,6 +622,9 @@ aside.mj-filters {
   --color-input-text:      #e2e8f0;
   --color-input-border:    #374151;
   --color-dropdown-hover:  #374151;
+
+  /* Hover / interactive */
+  --color-row-hover:       #374151;
 }
 
 html[data-theme="dark"],
@@ -894,6 +901,11 @@ html[data-theme="dark"] .employer-heading {
   color: #F1F5F9 !important;
 }
 
+/* Fix: hover:bg-gray-50 (Tailwind pseudo) turns white in dark theme — override */
+html[data-theme="dark"] .hover\:bg-gray-50:hover {
+  background-color: var(--color-row-hover) !important;
+}
+
 /* ── Dark theme toggle button ────────────────────────────────────── */
 .dark-toggle {
   width: 40px;
@@ -917,7 +929,7 @@ html[data-theme="dark"] .employer-heading {
     background-image: url('/img/bg-main.webp');
     background-size: auto;
     background-repeat: repeat;
-    border: 1px solid #a7a7a7;
+    border: 1px solid var(--color-sidebar-border);
 }
 [data-theme="dark"] .seeker-dashboard-bg,
 .dark .seeker-dashboard-bg {
@@ -925,14 +937,10 @@ html[data-theme="dark"] .employer-heading {
     border-color: transparent;
 }
 
-/* Card border — light theme */
+/* Card border — uses theme variable */
 .employer-card-border {
     border-width: 1px;
-    border-color: #a7a7a7;
-}
-html[data-theme="dark"] .employer-card-border {
-    border-width: 1px;
-    border-color: #374151;
+    border-color: var(--color-sidebar-border);
 }
 
 /* ── Dark theme: Job Show Page ───────────────────────────────────── */
@@ -1004,8 +1012,8 @@ html[data-theme="dark"] .mj-skill-dropdown button:hover {
 
 /* ── Date inputs: light/dark theme ──────────────────────────────── */
 .mj-date-input {
-  background-color: #FFFFFF;
-  border: 1px solid #A7A7A7;
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
 }
 html[data-theme="dark"] .mj-date-input {
   background-color: #1F2937 !important;
