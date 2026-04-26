@@ -141,6 +141,9 @@ Route::middleware(['auth', 'role:candidate'])
         Volt::route('/applications', 'pages.seeker.applications')->name('applications');
         Volt::route('/applications/{applicationId}', 'pages.seeker.application-detail')->name('application.detail');
         Volt::route('/interviews', 'pages.seeker.interviews')->name('interviews');
+        Volt::route('/offers', 'pages.seeker.offers')->name('offers');
+        Volt::route('/saved', 'pages.seeker.saved-vacancies')->name('saved');
+        Volt::route('/recommended', 'pages.seeker.recommended')->name('recommended');
         Volt::route('/profile', 'pages.seeker.profile')->name('profile');
     });
 

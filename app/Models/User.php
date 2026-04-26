@@ -12,6 +12,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -52,5 +53,12 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function resumes(): HasMany
     {
         return $this->hasMany(Resume::class);
+    }
+
+    public function savedVacancies(): BelongsToMany
+    {
+        return $this->belongsToMany(Vacancy::class, 'saved_vacancies')
+            ->withPivot('created_at')
+            ->orderByPivot('created_at', 'desc');
     }
 }

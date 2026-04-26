@@ -22,6 +22,7 @@ new #[Layout('layouts.app')] class extends Component
     public bool $submitted = false;
     public bool $alreadyApplied = false;
     public bool $showForm = false;
+    public bool $isSaved = false;
 
     public function mount(Vacancy $vacancy): void
     {
@@ -30,7 +31,19 @@ new #[Layout('layouts.app')] class extends Component
         if (auth()->check()) {
             $this->alreadyApplied = app(ApplicationService::class)
                 ->alreadyApplied(auth()->user(), $vacancy);
+            $this->isSaved = auth()->user()->savedVacancies()->where('vacancy_id', $vacancy->id)->exists();
         }
+    }
+
+    public function toggleSave(): void
+    {
+        if (!auth()->check()) {
+            $this->redirect(route('login'));
+            return;
+        }
+
+        auth()->user()->savedVacancies()->toggle($this->vacancy->id);
+        $this->isSaved = !$this->isSaved;
     }
 
     #[Computed]
@@ -403,6 +416,20 @@ new #[Layout('layouts.app')] class extends Component
                             </div>
                         @endif
                     @endif
+
+                    {{-- Save vacancy --}}
+                    @auth
+                        @if(auth()->user()->role === \App\Enums\UserRole::Candidate)
+                            <button wire:click="toggleSave"
+                                    class="mj-btn-save {{ $isSaved ? 'mj-btn-save--active' : '' }}">
+                                <svg width="16" height="16" viewBox="0 0 24 24"
+                                     fill="{{ $isSaved ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                </svg>
+                                {{ $isSaved ? 'Збережено' : 'Зберегти' }}
+                            </button>
+                        @endif
+                    @endauth
 
                     {{-- Telegram share --}}
                     <a href="https://t.me/share/url?url={{ urlencode(url()->current()) }}&text={{ urlencode($vacancy->title) }}"
@@ -962,6 +989,25 @@ new #[Layout('layouts.app')] class extends Component
     transition: border-color 0.2s;
 }
 .mj-textarea:focus { border-color: var(--color-primary-blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+
+.mj-btn-save {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-gray);
+    background: var(--color-bg-gray);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.mj-btn-save:hover { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+.mj-btn-save--active { color: #2563eb; background: #eff6ff; border-color: #bfdbfe; }
 
 .mj-tg-share {
     display: flex;

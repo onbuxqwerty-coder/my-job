@@ -6,6 +6,9 @@
         ['route' => 'seeker.resumes',      'label' => 'Мої резюме'],
         ['route' => 'seeker.applications', 'label' => 'Мої заявки'],
         ['route' => 'seeker.interviews',   'label' => 'Співбесіди'],
+        ['route' => 'seeker.offers',       'label' => 'Пропозиції'],
+        ['route' => 'seeker.saved',        'label' => 'Збережені'],
+        ['route' => 'seeker.recommended',  'label' => 'Рекомендовані'],
         ['route' => 'seeker.profile',      'label' => 'Мій профіль'],
     ];
 
