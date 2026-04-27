@@ -107,7 +107,7 @@ new #[Layout('layouts.app')] class extends Component
             Vacancy::create($data);
         }
 
-        $this->saved = true;
+        $this->redirect(route('employer.dashboard'), navigate: true);
     }
 
     #[Computed]
