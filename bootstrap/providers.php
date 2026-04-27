@@ -5,4 +5,5 @@ return [
     App\Providers\Filament\AdminPanelProvider::class,
     App\Providers\TelegramServiceProvider::class,
     App\Providers\VoltServiceProvider::class,
+    App\Payments\PaymentServiceProvider::class,
 ];

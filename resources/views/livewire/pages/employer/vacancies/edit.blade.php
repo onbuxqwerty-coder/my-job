@@ -141,7 +141,9 @@ new #[Layout('layouts.app')] class extends Component
             <h2 class="text-lg font-semibold text-gray-900">{{ $vacancyId ? 'Редагувати вакансію' : 'Нова вакансія' }}</h2>
         </div>
 
-        <div class="max-w-2xl bg-white rounded-2xl border border-gray-200 p-8">
+        <div class="{{ $vacancyId ? 'grid grid-cols-1 lg:grid-cols-3 gap-6 items-start' : '' }}">
+
+        <div class="{{ $vacancyId ? 'lg:col-span-2' : 'max-w-2xl' }} bg-white rounded-2xl border border-gray-200 p-8">
             @if($saved)
                 <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
                     Вакансію {{ $vacancyId ? 'оновлено' : 'опубліковано' }}.
@@ -295,5 +297,16 @@ new #[Layout('layouts.app')] class extends Component
 
             </form>
         </div>
+
+        @if($vacancyId)
+            <aside class="lg:col-span-1 sticky top-4">
+                <livewire:employer.vacancy-countdown
+                    :vacancy-id="$vacancyId"
+                    :wire:key="'countdown-' . $vacancyId"
+                />
+            </aside>
+        @endif
+
+        </div>{{-- end grid --}}
     </div>
 </div>

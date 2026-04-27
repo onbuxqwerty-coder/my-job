@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Telegram\Callbacks\AlertToggleCallback;
+use App\Telegram\Callbacks\VacancyActionCallback;
 use App\Telegram\Commands\AlertsCommand;
 use App\Telegram\Commands\StartCommand;
 use App\Telegram\Handlers\ContactAuthHandler;
@@ -17,6 +18,7 @@ Route::post('/telegram/webhook', function (Nutgram $bot): void {
     $bot->onCommand('start {payload}', StartCommand::class);
     $bot->onCommand('alerts', AlertsCommand::class);
     $bot->onCallbackQueryData('alert_toggle:[0-9]+', AlertToggleCallback::class);
+    $bot->onCallbackQueryData('vac:[a-z]+:[0-9]+(:[0-9]+)?', VacancyActionCallback::class);
     $bot->onContact(ContactAuthHandler::class);
 
     try {
