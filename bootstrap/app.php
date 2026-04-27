@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             '/telegram/webhook',
             '/stripe/webhook',
+            'webhooks/payments/*',
         ]);
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureUserRole::class,

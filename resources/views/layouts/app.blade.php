@@ -13,6 +13,7 @@
         <link rel="icon" type="image/webp" href="{{ asset('img/logo/favicon.ico') }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('head')
         <style>
             @media (max-width: 767px) {
                 #main-content { padding-top: 64px !important; }

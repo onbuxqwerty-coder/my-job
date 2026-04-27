@@ -9,10 +9,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        if (DB::getDriverName() === 'mysql') { DB::statement('SET FOREIGN_KEY_CHECKS=0'); }
         DB::table('industry_subsectors')->truncate();
         DB::table('industries')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        if (DB::getDriverName() === 'mysql') { DB::statement('SET FOREIGN_KEY_CHECKS=1'); }
 
         $now = now();
 
@@ -47,9 +47,9 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        if (DB::getDriverName() === 'mysql') { DB::statement('SET FOREIGN_KEY_CHECKS=0'); }
         DB::table('industry_subsectors')->truncate();
         DB::table('industries')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        if (DB::getDriverName() === 'mysql') { DB::statement('SET FOREIGN_KEY_CHECKS=1'); }
     }
 };

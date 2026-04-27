@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Payments\WebhookController as PaymentWebhookController;
+use App\Http\Controllers\Payments\WfpFormController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TelegramAuthController;
 use App\Models\Category;
@@ -153,10 +155,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/cancel', fn() => view('payment.cancel'))->name('payment.cancel');
 });
 
-// ── Stripe Webhook (no CSRF, signed by Stripe) ──────────────────────────────
+// ── Stripe Webhook (legacy — зберігаємо для prod сумісності) ────────────────
 Route::post('/stripe/webhook', StripeWebhookController::class)
     ->name('stripe.webhook')
     ->middleware('throttle:60,1');
+
+// ── Unified Payment Webhooks (всі провайдери) ────────────────────────────────
+Route::post('/webhooks/payments/{gateway}', [PaymentWebhookController::class, 'handle'])
+    ->name('webhooks.payments')
+    ->middleware('throttle:60,1');
+
+// ── WayForPay: auto-submit form page (form checkout mode) ────────────────────
+Route::get('/payments/wfp/form/{orderId}', [WfpFormController::class, 'show'])
+    ->name('payments.wfp.form')
+    ->middleware('auth');
 
 // ── Health Check ────────────────────────────────────────────────────────────
 Route::get('/health', function () {

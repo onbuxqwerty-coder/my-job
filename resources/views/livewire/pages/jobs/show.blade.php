@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use App\DTOs\ApplyDTO;
+use App\Enums\VacancyStatus;
 use App\Models\Vacancy;
 use App\Services\ApplicationService;
+use App\Services\Vacancies\SimilarVacanciesService;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
@@ -23,10 +25,24 @@ new #[Layout('layouts.app')] class extends Component
     public bool $alreadyApplied = false;
     public bool $showForm = false;
     public bool $isSaved = false;
+    public bool $isExpired = false;
 
     public function mount(Vacancy $vacancy): void
     {
         $this->vacancy = $vacancy->load(['company', 'category', 'city', 'company.city']);
+
+        if ($vacancy->status === VacancyStatus::Archived) {
+            abort(404);
+        }
+
+        if ($vacancy->status === VacancyStatus::Draft) {
+            $ownerId = $vacancy->company?->user_id;
+            if (auth()->id() !== $ownerId) {
+                abort(404);
+            }
+        }
+
+        $this->isExpired = $vacancy->status === VacancyStatus::Expired;
 
         if (auth()->check()) {
             $this->alreadyApplied = app(ApplicationService::class)
@@ -50,12 +66,22 @@ new #[Layout('layouts.app')] class extends Component
     public function relatedVacancies(): \Illuminate\Database\Eloquent\Collection
     {
         return Vacancy::with(['company', 'category'])
+            ->active()
             ->where('category_id', $this->vacancy->category_id)
             ->where('id', '!=', $this->vacancy->id)
-            ->where('is_active', true)
             ->latest('published_at')
             ->limit(6)
             ->get();
+    }
+
+    #[Computed]
+    public function similarVacancies(): \Illuminate\Support\Collection
+    {
+        if (! $this->isExpired) {
+            return collect();
+        }
+
+        return app(SimilarVacanciesService::class)->findFor($this->vacancy, limit: 6);
     }
 
     #[Computed]
@@ -115,6 +141,35 @@ new #[Layout('layouts.app')] class extends Component
     }
 }; ?>
 
+@push('head')
+    @if($isExpired)
+        <meta name="robots" content="noindex, follow">
+    @endif
+    <script type="application/ld+json">
+        {!! json_encode(array_filter([
+            '@context' => 'https://schema.org',
+            '@type' => 'JobPosting',
+            'title' => $vacancy->title,
+            'description' => strip_tags($vacancy->description),
+            'datePosted' => $vacancy->published_at?->toIso8601String(),
+            'validThrough' => $vacancy->expires_at?->toIso8601String(),
+            'employmentType' => $vacancy->employment_type ? (is_array($vacancy->employment_type) ? implode(',', $vacancy->employment_type) : $vacancy->employment_type) : 'FULL_TIME',
+            'hiringOrganization' => [
+                '@type' => 'Organization',
+                'name' => $vacancy->company->name ?? 'Роботодавець',
+            ],
+            'jobLocation' => $vacancy->city ? [
+                '@type' => 'Place',
+                'address' => [
+                    '@type' => 'PostalAddress',
+                    'addressLocality' => $vacancy->city->name,
+                    'addressCountry' => 'UA',
+                ],
+            ] : null,
+        ]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+@endpush
+
 <div class="mj-show-bg seeker-dashboard-bg dark:bg-gray-900" style="min-height: 100vh;">
     <div class="mj-show-wrap">
 
@@ -126,6 +181,10 @@ new #[Layout('layouts.app')] class extends Component
             <span class="mj-breadcrumb-sep">›</span>
             <span>{{ $vacancy->title }}</span>
         </nav>
+
+        @if($isExpired)
+            <x-vacancy.expired-banner :vacancy="$vacancy" />
+        @endif
 
         <div class="mj-show-grid">
 
@@ -501,8 +560,59 @@ new #[Layout('layouts.app')] class extends Component
             </aside>
         </div>
 
-        {{-- ═══════════ RELATED VACANCIES (bottom) ═══════════ --}}
-        @if($this->relatedVacancies->isNotEmpty())
+        {{-- ═══════════ СХОЖІ АКТИВНІ (для expired) ═══════════ --}}
+        @if($isExpired && $this->similarVacancies->isNotEmpty())
+            <section class="mj-related-section">
+                <div class="mj-related-header">
+                    <h2 class="mj-related-title">Схожі активні вакансії</h2>
+                    <a href="{{ route('home', ['categoryId' => $vacancy->category_id]) }}"
+                       class="mj-related-all">
+                        Всі вакансії категорії →
+                    </a>
+                </div>
+                <div class="mj-related-grid">
+                    @foreach($this->similarVacancies as $related)
+                        @php
+                            $relBadgeColors = [
+                                'full-time' => 'mj-tag--blue',
+                                'part-time' => 'mj-tag--purple',
+                                'remote'    => 'mj-tag--green',
+                                'hybrid'    => 'mj-tag--orange',
+                                'contract'  => 'mj-tag--gray',
+                            ];
+                        @endphp
+                        <a href="{{ route('jobs.show', $related) }}" class="mj-related-card">
+                            <div class="mj-related-card-top">
+                                <div class="mj-related-card-logo">
+                                    @if($related->company->logo_url)
+                                        <img src="{{ $related->company->logo_url }}" alt="{{ $related->company->name }}"/>
+                                    @else
+                                        {{ strtoupper(substr($related->company->name, 0, 1)) }}
+                                    @endif
+                                </div>
+                                <div class="mj-related-card-info">
+                                    <div class="mj-related-card-title">{{ $related->title }}</div>
+                                    <div class="mj-related-card-company">{{ $related->company->name }}</div>
+                                </div>
+                            </div>
+                            <div class="mj-related-card-footer">
+                                @foreach((array) $related->employment_type as $ret)
+                                <span class="mj-tag mj-tag--sm {{ $relBadgeColors[$ret] ?? 'mj-tag--gray' }}">{{ \App\Enums\EmploymentType::from($ret)->label() }}</span>
+                                @endforeach
+                                @if($related->salary_from)
+                                    <span class="mj-related-card-salary">
+                                        від {{ number_format($related->salary_from, 0, '.', ' ') }} {{ $related->currency }}
+                                    </span>
+                                @endif
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        {{-- ═══════════ RELATED VACANCIES (bottom, тільки для активних) ═══════════ --}}
+        @if(!$isExpired && $this->relatedVacancies->isNotEmpty())
             <section class="mj-related-section">
                 <div class="mj-related-header">
                     <h2 class="mj-related-title">Схожі вакансії</h2>
