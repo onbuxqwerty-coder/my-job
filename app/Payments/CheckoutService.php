@@ -14,8 +14,12 @@ class CheckoutService
         private readonly PaymentGateway $gateway,
     ) {}
 
-    public function createVacancyExtensionCheckout(Vacancy $vacancy, int $days): string
-    {
+    public function createVacancyExtensionCheckout(
+        Vacancy $vacancy,
+        int $days,
+        ?string $successUrl = null,
+        ?string $cancelUrl  = null,
+    ): string {
         $prices        = config('payments.prices');
         $amountKopecks = $prices[$days] ?? throw new \InvalidArgumentException("Unknown plan: {$days} days");
 
@@ -28,8 +32,8 @@ class CheckoutService
             currency:      'UAH',
             orderId:       $orderId,
             description:   "Публікація вакансії «{$vacancy->title}» на {$days} днів",
-            successUrl:    route('vacancies.show', $vacancy),
-            cancelUrl:     route('vacancies.show', $vacancy),
+            successUrl:    $successUrl ?? route('employer.vacancies.payment.success', $vacancy),
+            cancelUrl:     $cancelUrl  ?? route('employer.vacancies.payment.cancel', $vacancy),
             webhookUrl:    route('webhooks.payments', ['gateway' => $this->gateway->name()]),
             customerEmail: $vacancy->company?->user?->email,
             customerName:  $vacancy->company?->name,

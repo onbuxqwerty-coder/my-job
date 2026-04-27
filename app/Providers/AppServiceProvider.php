@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\Resume;
+use App\Models\Vacancy;
 use App\Policies\ResumePolicy;
+use App\Policies\VacancyPolicy;
 use App\Events\VacancyExtended;
 use App\Listeners\NotifyEmployerOfExtension;
 use App\Notifications\Channels\TelegramChannel;
@@ -32,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(SocialiteWasCalled::class, AppleExtendSocialite::class);
 
         Gate::policy(Resume::class, ResumePolicy::class);
+        Gate::policy(Vacancy::class, VacancyPolicy::class);
     }
 }

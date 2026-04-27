@@ -93,6 +93,49 @@ Route::middleware(['auth', 'role:employer'])
         Route::get('/vacancies/{vacancy}/promote', function (Vacancy $vacancy, PaymentService $payment) {
             return redirect($payment->createVacancyPromoCheckout($vacancy));
         })->name('vacancies.promote');
+
+        // ── Продовження вакансії (оплата) ────────────────────────────────
+        Volt::route('/vacancies/{vacancy}/extend', 'pages.employer.vacancies.extend')
+            ->name('vacancies.extend');
+
+        Route::post('/vacancies/{vacancy}/extend', function (
+            \Illuminate\Http\Request $request,
+            Vacancy $vacancy,
+            \App\Payments\CheckoutService $checkout,
+        ) {
+            abort_unless($vacancy->company_id === auth()->user()->company?->id, 403);
+            abort_if($vacancy->status->value === 'archived', 403, 'Архівовану вакансію не можна продовжити.');
+
+            $days = (int) $request->validate([
+                'days' => ['required', 'integer', 'in:15,30,90'],
+            ])['days'];
+
+            try {
+                $url = $checkout->createVacancyExtensionCheckout($vacancy, $days);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::channel('payments')->error('Employer checkout failed', [
+                    'vacancy_id' => $vacancy->id,
+                    'days'       => $days,
+                    'error'      => $e->getMessage(),
+                ]);
+                return back()->with('error', 'Не вдалося ініціювати оплату. Спробуйте ще раз або зверніться до підтримки.');
+            }
+
+            return redirect()->away($url);
+        })->name('vacancies.extend.initiate');
+
+        Volt::route('/vacancies/{vacancy}/payment/success', 'pages.employer.vacancies.payment-success')
+            ->name('vacancies.payment.success');
+
+        Route::get('/vacancies/{vacancy}/payment/cancel', function (Vacancy $vacancy) {
+            abort_unless($vacancy->company_id === auth()->user()->company?->id, 403);
+            return redirect()
+                ->route('employer.vacancies.extend', $vacancy)
+                ->with('warning', 'Оплату скасовано. Виберіть тариф та спробуйте ще раз.');
+        })->name('vacancies.payment.cancel');
+
+        // ── Мої платежі ──────────────────────────────────────────────────
+        Volt::route('/billing', 'pages.employer.billing')->name('billing');
     });
 
 // ── Resume Wizard ───────────────────────────────────────────────────────────

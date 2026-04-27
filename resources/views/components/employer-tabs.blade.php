@@ -6,14 +6,18 @@
         ['route' => 'employer.candidates',         'label' => 'Кандидати'],
         ['route' => 'employer.message.templates',  'label' => 'Шаблони повідомлень'],
         ['route' => 'employer.analytics',          'label' => 'Аналітика'],
+        ['route' => 'employer.billing',            'label' => 'Мої платежі'],
         ['route' => 'employer.profile',            'label' => 'Профіль компанії'],
     ];
 
     $activeMap = [
-        'employer.vacancies.create' => 'employer.dashboard',
-        'employer.vacancies.edit'   => 'employer.dashboard',
-        'employer.applicants'       => 'employer.dashboard',
-        'employer.candidate.detail' => 'employer.candidates',
+        'employer.vacancies.create'          => 'employer.dashboard',
+        'employer.vacancies.edit'            => 'employer.dashboard',
+        'employer.vacancies.extend'          => 'employer.billing',
+        'employer.vacancies.extend.initiate' => 'employer.billing',
+        'employer.vacancies.payment.success' => 'employer.billing',
+        'employer.applicants'                => 'employer.dashboard',
+        'employer.candidate.detail'          => 'employer.candidates',
     ];
 
     $activeTab = $activeMap[$currentRoute] ?? $currentRoute;
