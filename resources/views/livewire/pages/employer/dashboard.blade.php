@@ -102,12 +102,13 @@ new #[Layout('layouts.app')] class extends Component
                         </thead>
                         @foreach($this->vacancies as $vacancy)
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <tr class="vacancy-row" onclick="if(!event.target.closest('a,button,input,label'))window.location='{{ route('jobs.show', $vacancy) }}'" style="cursor:pointer;">
-                                    <td class="px-6 py-4">
+                                <tr class="vacancy-row">
+                                    @php $goTo = route('jobs.show', $vacancy); @endphp
+                                    <td class="px-6 py-4 row-link" onclick="window.location='{{ $goTo }}'" style="cursor:pointer;">
                                         <p class="vacancy-title font-medium text-gray-900 dark:text-gray-100" style="transition: color .2s, transform .2s;">{{ $vacancy->title }}</p>
                                         <p class="text-xs text-gray-400">{{ implode(', ', array_map(fn($t) => \App\Enums\EmploymentType::from($t)->label(), (array) $vacancy->employment_type)) }}</p>
                                     </td>
-                                    <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
+                                    <td class="px-6 py-4 text-gray-700 dark:text-gray-300 row-link" onclick="window.location='{{ $goTo }}'" style="cursor:pointer;">
                                         @if($vacancy->salary_from || $vacancy->salary_to)
                                             <span class="font-medium">
                                                 @if($vacancy->salary_from && $vacancy->salary_to)
@@ -123,15 +124,15 @@ new #[Layout('layouts.app')] class extends Component
                                             <span class="text-gray-400 dark:text-gray-500">—</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
+                                    <td class="px-6 py-4 text-gray-700 dark:text-gray-300 row-link" onclick="window.location='{{ $goTo }}'" style="cursor:pointer;">
                                         {{ $vacancy->city?->name ?? '—' }}
                                     </td>
-                                    <td class="px-4 py-4 text-center">
+                                    <td class="px-4 py-4 text-center row-link" onclick="window.location='{{ $goTo }}'" style="cursor:pointer;">
                                         @if($vacancy->is_featured)
                                             <span title="Гаряча вакансія" style="font-size:18px; line-height:1;">🔥</span>
                                         @endif
                                     </td>
-                                    <td class="px-4 py-4 text-center">
+                                    <td class="px-4 py-4 text-center row-link" onclick="window.location='{{ $goTo }}'" style="cursor:pointer;">
                                         @if($vacancy->is_top)
                                             <span title="Топ вакансія" style="font-size:18px; line-height:1;">⭐</span>
                                         @endif
@@ -145,13 +146,13 @@ new #[Layout('layouts.app')] class extends Component
                                             </svg>
                                         </a>
                                     </td>
-                                    <td class="px-6 py-4 text-gray-400">
+                                    <td class="px-6 py-4 text-gray-400 row-link" onclick="window.location='{{ $goTo }}'" style="cursor:pointer;">
                                         {{ $vacancy->created_at->format('d.m.Y') }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         <div style="display:flex; gap:12px; justify-content:flex-end; align-items:center;">
                                             {{-- Toggle активності --}}
-                                            <button wire:click.stop="toggleActive({{ $vacancy->id }})"
+                                            <button wire:click="toggleActive({{ $vacancy->id }})"
                                                     title="{{ $vacancy->is_active ? 'Деактивувати' : 'Активувати' }}"
                                                     style="position:relative; display:inline-flex; align-items:center; width:44px; height:24px; border-radius:999px; border:none; cursor:pointer; transition:background .25s; background:{{ $vacancy->is_active ? '#16a34a' : '#d1d5db' }}; flex-shrink:0;">
                                                 <span style="position:absolute; left:{{ $vacancy->is_active ? '22px' : '2px' }}; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.2); transition:left .25s;"></span>
@@ -183,7 +184,7 @@ new #[Layout('layouts.app')] class extends Component
                                             @endif
 
                                             {{-- Видалити --}}
-                                            <button wire:click.stop="delete({{ $vacancy->id }})"
+                                            <button wire:click="delete({{ $vacancy->id }})"
                                                     wire:confirm="Ви впевнені, що хочете видалити цю вакансію?"
                                                     title="Видалити"
                                                     style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; border:none; background:transparent; cursor:pointer; transition:opacity .15s;"
