@@ -151,7 +151,7 @@ new #[Layout('layouts.app')] class extends Component
                                     <td class="px-6 py-4 text-right">
                                         <div style="display:flex; gap:12px; justify-content:flex-end; align-items:center;">
                                             {{-- Toggle активності --}}
-                                            <button wire:click="toggleActive({{ $vacancy->id }})"
+                                            <button wire:click.stop="toggleActive({{ $vacancy->id }})"
                                                     title="{{ $vacancy->is_active ? 'Деактивувати' : 'Активувати' }}"
                                                     style="position:relative; display:inline-flex; align-items:center; width:44px; height:24px; border-radius:999px; border:none; cursor:pointer; transition:background .25s; background:{{ $vacancy->is_active ? '#16a34a' : '#d1d5db' }}; flex-shrink:0;">
                                                 <span style="position:absolute; left:{{ $vacancy->is_active ? '22px' : '2px' }}; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.2); transition:left .25s;"></span>
@@ -183,7 +183,7 @@ new #[Layout('layouts.app')] class extends Component
                                             @endif
 
                                             {{-- Видалити --}}
-                                            <button wire:click="delete({{ $vacancy->id }})"
+                                            <button wire:click.stop="delete({{ $vacancy->id }})"
                                                     wire:confirm="Ви впевнені, що хочете видалити цю вакансію?"
                                                     title="Видалити"
                                                     style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; border:none; background:transparent; cursor:pointer; transition:opacity .15s;"
