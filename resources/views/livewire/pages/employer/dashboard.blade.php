@@ -102,7 +102,7 @@ new #[Layout('layouts.app')] class extends Component
                         </thead>
                         @foreach($this->vacancies as $vacancy)
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <tr class="vacancy-row">
+                                <tr class="vacancy-row" onclick="window.location='{{ route('jobs.show', $vacancy) }}'" style="cursor:pointer;">
                                     <td class="px-6 py-4">
                                         <p class="vacancy-title font-medium text-gray-900 dark:text-gray-100" style="transition: color .2s, transform .2s;">{{ $vacancy->title }}</p>
                                         <p class="text-xs text-gray-400">{{ implode(', ', array_map(fn($t) => \App\Enums\EmploymentType::from($t)->label(), (array) $vacancy->employment_type)) }}</p>
@@ -136,7 +136,7 @@ new #[Layout('layouts.app')] class extends Component
                                             <span title="Топ вакансія" style="font-size:18px; line-height:1;">⭐</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4" onclick="event.stopPropagation()">
                                         <a href="{{ route('employer.applicants', $vacancy->id) }}"
                                            class="inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800">
                                             {{ $vacancy->applications_count }}
@@ -148,7 +148,7 @@ new #[Layout('layouts.app')] class extends Component
                                     <td class="px-6 py-4 text-gray-400">
                                         {{ $vacancy->created_at->format('d.m.Y') }}
                                     </td>
-                                    <td class="px-6 py-4 text-right">
+                                    <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
                                         <div style="display:flex; gap:12px; justify-content:flex-end; align-items:center;">
                                             {{-- Toggle активності --}}
                                             <button wire:click="toggleActive({{ $vacancy->id }})"
