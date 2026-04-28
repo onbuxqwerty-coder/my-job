@@ -25,10 +25,11 @@ new #[Layout('layouts.app')] class extends Component
     public bool $alreadyApplied = false;
     public bool $showForm = false;
     public bool $isSaved = false;
-    public bool $isExpired  = false;
-    public bool $isOwner    = false;
-    public ?string $sidebarState = null;
-    public ?int $daysLeft   = null;
+    public bool $isExpired        = false;
+    public bool $isOwner          = false;
+    public ?string $sidebarState  = null;
+    public ?int $daysLeft         = null;
+    public bool $useAccountResume = false;
 
     public function mount(Vacancy $vacancy): void
     {
@@ -87,6 +88,13 @@ new #[Layout('layouts.app')] class extends Component
     }
 
     #[Computed]
+    public function accountResume(): ?\App\Models\Resume
+    {
+        if (!auth()->check()) return null;
+        return auth()->user()->resumes()->latest()->first();
+    }
+
+    #[Computed]
     public function relatedVacancies(): \Illuminate\Database\Eloquent\Collection
     {
         return Vacancy::with(['company', 'category'])
@@ -139,20 +147,30 @@ new #[Layout('layouts.app')] class extends Component
 
         RateLimiter::hit($key, 300);
 
-        $this->validate([
-            'resume'      => 'required|file|mimes:pdf,doc,docx|max:5120',
-            'coverLetter' => 'nullable|string|max:5000',
-        ]);
-
-        $ext  = $this->resume->getClientOriginalExtension();
-        $path = $this->resume->storeAs('resumes', uniqid('cv_', true) . '.' . $ext, 'public');
+        if ($this->useAccountResume) {
+            $accountResume = $this->accountResume;
+            if (!$accountResume) {
+                $this->addError('resume', 'Резюме в кабінеті не знайдено.');
+                return;
+            }
+            $this->validate(['coverLetter' => 'nullable|string|max:5000']);
+            $resumeUrl = route('resumes.show', $accountResume);
+        } else {
+            $this->validate([
+                'resume'      => 'required|file|mimes:pdf,doc,docx|max:5120',
+                'coverLetter' => 'nullable|string|max:5000',
+            ]);
+            $ext       = $this->resume->getClientOriginalExtension();
+            $path      = $this->resume->storeAs('resumes', uniqid('cv_', true) . '.' . $ext, 'public');
+            $resumeUrl = Storage::url($path);
+        }
 
         try {
             app(ApplicationService::class)->apply(
                 auth()->user(),
                 $this->vacancy,
                 new ApplyDTO(
-                    resumeUrl: Storage::url($path),
+                    resumeUrl:   $resumeUrl,
                     coverLetter: $this->coverLetter ?: null,
                 )
             );
@@ -555,21 +573,36 @@ new #[Layout('layouts.app')] class extends Component
                                     <button wire:click="toggleForm" class="mj-apply-form-close">✕</button>
                                 </div>
                                 <form wire:submit="apply" class="mj-apply-form">
-                                    <div class="mj-form-field">
-                                        <label class="mj-form-label">
-                                            Резюме <span class="mj-required">*</span>
+                                    {{-- Вибір резюме --}}
+                                    @if($this->accountResume)
+                                        <label class="mj-resume-option">
+                                            <input type="checkbox"
+                                                   wire:model.live="useAccountResume"
+                                                   class="mj-resume-option__checkbox" />
+                                            <span class="mj-resume-option__label">
+                                                Використати резюме з кабінету —
+                                                <strong>{{ $this->accountResume->title ?: 'Моє резюме' }}</strong>
+                                            </span>
                                         </label>
-                                        <input
-                                            type="file"
-                                            wire:model="resume"
-                                            accept=".pdf,.doc,.docx"
-                                            class="mj-file-input"
-                                        />
-                                        <p class="mj-form-hint">PDF, DOC, DOCX — макс. 5 МБ</p>
-                                        @error('resume')
-                                            <p class="mj-form-error">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                    @endif
+
+                                    @if(!$useAccountResume)
+                                        <div class="mj-form-field">
+                                            <label class="mj-form-label">
+                                                Резюме <span class="mj-required">*</span>
+                                            </label>
+                                            <input
+                                                type="file"
+                                                wire:model="resume"
+                                                accept=".pdf,.doc,.docx"
+                                                class="mj-file-input"
+                                            />
+                                            <p class="mj-form-hint">PDF, DOC, DOCX — макс. 5 МБ</p>
+                                        </div>
+                                    @endif
+                                    @error('resume')
+                                        <p class="mj-form-error">{{ $message }}</p>
+                                    @enderror
                                     <div class="mj-form-field">
                                         <label class="mj-form-label">Супровідний лист</label>
                                         <textarea
@@ -1464,5 +1497,21 @@ new #[Layout('layouts.app')] class extends Component
 .mj-employer-action:hover { background: rgba(255,255,255,0.08); }
 .mj-employer-action--blue  { background: rgba(24,95,165,0.2); border-color: rgba(24,95,165,0.4); color: #85B7EB; }
 .mj-employer-action--ghost { color: var(--mj-text-muted, rgba(255,255,255,0.45)); font-size: 12px; }
+
+/* Account resume checkbox */
+.mj-resume-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(99,153,34,0.35);
+    background: rgba(99,153,34,0.08);
+}
+.mj-resume-option__checkbox { margin-top: 2px; accent-color: #639922; width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+.mj-resume-option__label { font-size: 13px; color: var(--color-text, #e2e8f0); line-height: 1.4; }
+.mj-resume-option__label strong { color: #a3d977; }
 </style>
 </div>
