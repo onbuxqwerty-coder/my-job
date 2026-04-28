@@ -19,7 +19,7 @@ final class VacancyService
     {
         return Vacancy::query()
             ->with(['company', 'category', 'city'])
-            ->where('is_active', true)
+            ->active()
             ->when($dto->search, function (Builder $query, string $search): void {
                 $query->where(function (Builder $q) use ($search): void {
                     $q->where('title', 'like', "%{$search}%")
