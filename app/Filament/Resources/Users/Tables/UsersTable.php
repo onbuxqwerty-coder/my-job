@@ -2,14 +2,44 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Models\User;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class UsersTable
 {
+    private static function deleteUserCascade(User $user): void
+    {
+        // candidate-side
+        $user->savedVacancies()->detach();
+        \DB::table('telegram_sessions')->where('user_id', $user->id)->delete();
+        \DB::table('candidate_messages')->where('sender_id', $user->id)->delete();
+        \DB::table('application_notes')->where('author_id', $user->id)->delete();
+        \DB::table('interviews')->where('created_by', $user->id)->delete();
+        $user->resumes()->delete();
+        $user->applications()->delete();
+
+        // employer-side: cascade through company → vacancies → applications/saved
+        $user->company()->withTrashed()->each(function ($company) {
+            $vacancyIds = \DB::table('vacancies')->where('company_id', $company->id)->pluck('id');
+            if ($vacancyIds->isNotEmpty()) {
+                \DB::table('saved_vacancies')->whereIn('vacancy_id', $vacancyIds)->delete();
+                \DB::table('application_notes')
+                    ->whereIn('application_id',
+                        \DB::table('applications')->whereIn('vacancy_id', $vacancyIds)->pluck('id')
+                    )->delete();
+                \DB::table('applications')->whereIn('vacancy_id', $vacancyIds)->delete();
+                \DB::table('vacancies')->whereIn('id', $vacancyIds)->delete();
+            }
+            \DB::table('message_templates')->where('company_id', $company->id)->delete();
+            $company->forceDelete();
+        });
+    }
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -59,10 +89,19 @@ class UsersTable
             ->filters([])
             ->recordActions([
                 EditAction::make()->label('Редагувати'),
+                DeleteAction::make()
+                    ->label('Видалити')
+                    ->before(fn (User $record) => self::deleteUserCascade($record)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Видалити'),
+                    BulkAction::make('delete')
+                        ->label('Видалити вибраних')
+                        ->color('danger')
+                        ->icon('heroicon-o-trash')
+                        ->requiresConfirmation()
+                        ->action(fn ($records) => $records->each(fn (User $u) => self::deleteUserCascade($u) && $u->delete()))
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
