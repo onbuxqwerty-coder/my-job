@@ -11,6 +11,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
+// Stripe вимкнено — тести деактивовано
+// Для повторного увімкнення: розкоментуй StripeGateway в PaymentServiceProvider
+// та встанови: composer require stripe/stripe-php
+#[\PHPUnit\Framework\Attributes\Group('stripe')]
 class WebhookExtendsVacancyTest extends TestCase
 {
     use RefreshDatabase;

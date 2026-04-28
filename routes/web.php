@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Payments\WebhookController as PaymentWebhookController;
 use App\Http\Controllers\Payments\WfpFormController;
-use App\Http\Controllers\StripeWebhookController;
+// use App\Http\Controllers\StripeWebhookController; // Stripe вимкнено
 use App\Http\Controllers\TelegramAuthController;
 use App\Models\Category;
 use App\Models\Interview;
@@ -198,10 +198,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/cancel', fn() => view('payment.cancel'))->name('payment.cancel');
 });
 
-// ── Stripe Webhook (legacy — зберігаємо для prod сумісності) ────────────────
-Route::post('/stripe/webhook', StripeWebhookController::class)
-    ->name('stripe.webhook')
-    ->middleware('throttle:60,1');
+// Stripe вимкнено — маршрут деактивовано
+// Route::post('/stripe/webhook', StripeWebhookController::class)
+//     ->name('stripe.webhook')
+//     ->middleware('throttle:60,1');
 
 // ── Unified Payment Webhooks (всі провайдери) ────────────────────────────────
 Route::post('/webhooks/payments/{gateway}', [PaymentWebhookController::class, 'handle'])

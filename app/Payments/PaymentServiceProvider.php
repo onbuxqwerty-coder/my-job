@@ -20,7 +20,8 @@ class PaymentServiceProvider extends ServiceProvider
 
         $this->app->singleton(PaymentGatewayRegistry::class, function () {
             $registry = new PaymentGatewayRegistry();
-            $registry->register($this->app->make(StripeGateway::class));
+            // $registry->register($this->app->make(StripeGateway::class));
+            // Stripe недоступний для UA-компаній. Клас збережено для можливого повернення.
             $registry->register($this->app->make(MonoPayGateway::class));
             $registry->register($this->app->make(WayForPayGateway::class));
             $registry->register($this->app->make(LiqPayGateway::class));
