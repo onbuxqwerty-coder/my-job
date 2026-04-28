@@ -8,6 +8,7 @@
         ['route' => 'employer.analytics',          'label' => 'Аналітика'],
         ['route' => 'employer.billing',            'label' => 'Мої платежі'],
         ['route' => 'employer.profile',            'label' => 'Профіль компанії'],
+        ['route' => 'employer.my-profile',         'label' => 'Мій профіль'],
     ];
 
     $activeMap = [

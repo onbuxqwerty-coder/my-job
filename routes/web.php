@@ -136,6 +136,7 @@ Route::middleware(['auth', 'role:employer'])
 
         // ── Мої платежі ──────────────────────────────────────────────────
         Volt::route('/billing', 'pages.employer.billing')->name('billing');
+        Volt::route('/my-profile', 'pages.employer.my-profile')->name('my-profile');
     });
 
 // ── Resume Wizard ───────────────────────────────────────────────────────────
