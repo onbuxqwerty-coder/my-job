@@ -115,15 +115,6 @@ class Vacancy extends Model
     // Computed accessors
     // -------------------------------------------------------------------------
 
-    protected function isActive(): Attribute
-    {
-        return Attribute::get(fn () =>
-            $this->status === VacancyStatus::Active
-            && $this->published_at !== null
-            && ($this->expires_at === null || $this->expires_at->isFuture())
-        );
-    }
-
     protected function daysLeft(): Attribute
     {
         return Attribute::get(function (): ?int {

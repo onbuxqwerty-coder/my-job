@@ -16,7 +16,11 @@ new #[Layout('layouts.app')] class extends Component
         $vacancy = Vacancy::where('company_id', auth()->user()->company->id)
             ->findOrFail($vacancyId);
 
-        $vacancy->update(['is_active' => !$vacancy->is_active]);
+        if ($vacancy->status === \App\Enums\VacancyStatus::Active) {
+            $vacancy->forceFill(['status' => \App\Enums\VacancyStatus::Draft, 'is_active' => false])->save();
+        } else {
+            $vacancy->publish();
+        }
     }
 
     public function delete(int $vacancyId): void
@@ -51,7 +55,7 @@ new #[Layout('layouts.app')] class extends Component
     #[Computed]
     public function activeVacancies(): int
     {
-        return $this->vacancies->where('is_active', true)->count();
+        return $this->vacancies->where('status', \App\Enums\VacancyStatus::Active)->count();
     }
 
     #[Computed]
@@ -152,10 +156,11 @@ new #[Layout('layouts.app')] class extends Component
                                     <td class="px-6 py-4 text-right">
                                         <div style="display:flex; gap:12px; justify-content:flex-end; align-items:center;">
                                             {{-- Toggle активності --}}
+                                            @php $isActive = $vacancy->status === \App\Enums\VacancyStatus::Active; @endphp
                                             <button wire:click="toggleActive({{ $vacancy->id }})"
-                                                    title="{{ $vacancy->is_active ? 'Деактивувати' : 'Активувати' }}"
-                                                    style="position:relative; display:inline-flex; align-items:center; width:44px; height:24px; border-radius:999px; border:none; cursor:pointer; transition:background .25s; background:{{ $vacancy->is_active ? '#16a34a' : '#d1d5db' }}; flex-shrink:0;">
-                                                <span style="position:absolute; left:{{ $vacancy->is_active ? '22px' : '2px' }}; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.2); transition:left .25s;"></span>
+                                                    title="{{ $isActive ? 'Деактивувати' : 'Активувати' }}"
+                                                    style="position:relative; display:inline-flex; align-items:center; width:44px; height:24px; border-radius:999px; border:none; cursor:pointer; transition:background .25s; background:{{ $isActive ? '#16a34a' : '#d1d5db' }}; flex-shrink:0;">
+                                                <span style="position:absolute; left:{{ $isActive ? '22px' : '2px' }}; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.2); transition:left .25s;"></span>
                                             </button>
 
                                             {{-- Редагувати --}}

@@ -25,7 +25,7 @@
     $company = auth()->user()?->company;
 
     $totalVacancies    = $company ? $company->vacancies()->count() : 0;
-    $activeVacancies   = $company ? $company->vacancies()->where('is_active', true)->count() : 0;
+    $activeVacancies   = $company ? $company->vacancies()->where('status', \App\Enums\VacancyStatus::Active)->count() : 0;
     $totalApplications = $company
         ? \App\Models\Application::whereHas('vacancy', fn ($q) => $q->where('company_id', $company->id))->count()
         : 0;
