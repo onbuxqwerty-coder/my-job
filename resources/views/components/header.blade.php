@@ -176,18 +176,6 @@
         {{-- Auth --}}
         <div class="site-header__auth">
             @auth
-                @if(auth()->user()->role === \App\Enums\UserRole::Employer)
-                    <button
-                        onclick="Livewire.dispatch('open-quick-publish')"
-                        style="padding:8px 18px; font-size:1rem; font-weight:700; color:#fff;
-                               background:#1a73e8; border:none; border-radius:8px; cursor:pointer;
-                               white-space:nowrap; transition:background-color 0.2s; flex-shrink:0;"
-                        onmouseover="this.style.background='#1557b0'"
-                        onmouseout="this.style.background='#1a73e8'"
-                    >
-                        🚀 Опублікувати
-                    </button>
-                @endif
                 <span style="color:#ffffff; font-weight:600;">
                     {{ auth()->user()->name }}
                 </span>
