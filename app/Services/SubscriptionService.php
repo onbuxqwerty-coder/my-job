@@ -89,6 +89,16 @@ final class SubscriptionService
      */
     public function canPublishJob(User $employer): bool
     {
+        if ($employer->currentPlan() === null) {
+            $hasEverSubscribed = EmployerSubscription::where('user_id', $employer->id)->exists();
+
+            if ($hasEverSubscribed) {
+                return false;
+            }
+
+            return $this->activeJobsCount($employer) < 1;
+        }
+
         return $this->checkLimit($employer, PlanFeature::ActiveJobs);
     }
 

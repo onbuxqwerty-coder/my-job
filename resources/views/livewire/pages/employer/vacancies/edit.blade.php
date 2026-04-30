@@ -5,8 +5,10 @@ declare(strict_types=1);
 use App\Enums\EmploymentType;
 use App\Enums\Language;
 use App\Enums\Suitability;
+use App\Enums\VacancyStatus;
 use App\Models\Category;
 use App\Models\Vacancy;
+use App\Services\SubscriptionService;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -82,6 +84,11 @@ new #[Layout('layouts.app')] class extends Component
 
         $company = auth()->user()->company;
 
+        if (! $this->vacancyId && ! app(SubscriptionService::class)->canPublishJob(auth()->user())) {
+            $this->addError('title', 'Ліміт вакансій вичерпано. Оновіть тариф.');
+            return;
+        }
+
         $data = [
             'company_id'      => $company->id,
             'category_id'     => (int) $this->categoryId,
@@ -96,6 +103,7 @@ new #[Layout('layouts.app')] class extends Component
             'is_active'       => $this->isActive,
             'is_featured'     => $this->isFeatured,
             'is_top'          => $this->isTop,
+            'status'          => $this->isActive ? VacancyStatus::Active : VacancyStatus::Draft,
             'published_at'    => $this->isActive ? now() : null,
             'languages'       => $this->languages ?: null,
             'suitability'     => $this->suitability ?: null,
