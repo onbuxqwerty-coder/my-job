@@ -57,4 +57,9 @@ class Application extends Model
     {
         return $this->hasMany(Interview::class)->latest();
     }
+
+    public function statusHistory(): HasMany
+    {
+        return $this->hasMany(ApplicationStatusHistory::class)->latest();
+    }
 }

@@ -11,6 +11,18 @@ enum ApplicationStatus: string
     case Interview = 'interview';
     case Hired     = 'hired';
     case Rejected  = 'rejected';
+    case Withdrawn = 'withdrawn';
+
+    /** @return array<string> */
+    public function allowedActors(): array
+    {
+        return match($this) {
+            self::Screening, self::Interview, self::Hired => ['employer'],
+            self::Withdrawn                               => ['seeker'],
+            self::Rejected                                => ['employer', 'seeker'],
+            default                                       => [],
+        };
+    }
 
     public function label(): string
     {
@@ -20,6 +32,7 @@ enum ApplicationStatus: string
             self::Interview => 'Співбесіда',
             self::Hired     => 'Прийнятий',
             self::Rejected  => 'Відхилений',
+            self::Withdrawn => 'Відкликано',
         };
     }
 
@@ -36,6 +49,7 @@ enum ApplicationStatus: string
             self::Interview => 'yellow',
             self::Hired     => 'green',
             self::Rejected  => 'red',
+            self::Withdrawn => 'orange',
         };
     }
 }

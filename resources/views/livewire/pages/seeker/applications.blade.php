@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\ApplicationStatus;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
@@ -25,6 +26,12 @@ new #[Layout('layouts.app')] class extends Component
     public function updatedSearch(): void    { $this->resetPage(); }
     public function updatedFilterStatus(): void { $this->resetPage(); }
     public function updatedSortBy(): void    { $this->resetPage(); }
+
+    #[On('application-status-updated')]
+    public function handleStatusUpdate(int $applicationId, string $newStatus): void
+    {
+        unset($this->applications);
+    }
 
     public function clearFilters(): void
     {

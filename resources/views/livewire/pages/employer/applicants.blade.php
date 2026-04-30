@@ -9,6 +9,7 @@ use App\Models\Vacancy;
 use App\Services\ApplicationService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
 new #[Layout('layouts.app')] class extends Component
@@ -25,6 +26,12 @@ new #[Layout('layouts.app')] class extends Component
         $this->vacancy = Vacancy::where('company_id', auth()->user()->company->id)
             ->with('company')
             ->findOrFail($vacancyId);
+    }
+
+    #[On('application-status-updated')]
+    public function handleStatusUpdate(int $applicationId, string $newStatus): void
+    {
+        unset($this->applications);
     }
 
     public function updateStatus(int $applicationId, string $status): void
