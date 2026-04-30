@@ -9,7 +9,7 @@ use App\Models\Application;
 use App\Models\ApplicationNote;
 use App\Models\Interview;
 use App\Models\MessageTemplate;
-use App\Services\ApplicationService;
+use App\Services\ApplicationStatusService;
 use App\Services\CommunicationService;
 use App\Services\InterviewService;
 use Livewire\Attributes\Computed;
@@ -58,13 +58,15 @@ new #[Layout('layouts.app')] class extends Component
     public function updateStatus(string $status): void
     {
         try {
-            app(ApplicationService::class)->changeStatus(
+            app(ApplicationStatusService::class)->changeStatus(
                 $this->application,
-                ApplicationStatus::from($status)
+                ApplicationStatus::from($status),
+                auth()->user(),
+                'employer',
             );
             $this->application->refresh();
-        } catch (\DomainException) {
-            // Already in this status
+        } catch (\Throwable) {
+            // Невалідний статус або заборонена дія
         }
     }
 

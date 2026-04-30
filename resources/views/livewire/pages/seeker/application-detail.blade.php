@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Enums\ApplicationStatus;
 use App\Enums\InterviewStatus;
 use App\Models\Application;
 use App\Models\Interview;
+use App\Services\ApplicationStatusService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -22,6 +24,24 @@ new #[Layout('layouts.app')] class extends Component
             Application::where('id', $applicationId)->where('user_id', auth()->id())->exists(),
             403
         );
+    }
+
+    public bool $confirmWithdraw = false;
+
+    public function withdraw(): void
+    {
+        try {
+            app(ApplicationStatusService::class)->changeStatus(
+                $this->application,
+                ApplicationStatus::Withdrawn,
+                auth()->user(),
+                'seeker',
+            );
+            $this->confirmWithdraw = false;
+            unset($this->application);
+        } catch (\Throwable) {
+            // Статус вже встановлено або дія заборонена
+        }
     }
 
     #[Computed]
@@ -72,6 +92,7 @@ new #[Layout('layouts.app')] class extends Component
                 'interview' => ['bg' => '#fef3c7', 'color' => '#b45309'],
                 'hired'     => ['bg' => '#dcfce7', 'color' => '#15803d'],
                 'rejected'  => ['bg' => '#fee2e2', 'color' => '#b91c1c'],
+                'withdrawn' => ['bg' => '#fff7ed', 'color' => '#c2410c'],
             ];
             $sc = $statusColors[$app->status->value] ?? ['bg' => '#f3f4f6', 'color' => '#374151'];
 
@@ -83,7 +104,8 @@ new #[Layout('layouts.app')] class extends Component
             ];
             $stepValues = array_column($steps, 'status');
             $currentIdx = array_search($app->status->value, $stepValues);
-            $isRejected = $app->status->value === 'rejected';
+            $isRejected   = $app->status->value === 'rejected';
+            $isWithdrawn  = $app->status->value === 'withdrawn';
         @endphp
 
         {{-- Header card --}}
@@ -122,7 +144,7 @@ new #[Layout('layouts.app')] class extends Component
             </div>
 
             {{-- Progress bar --}}
-            @if(!$isRejected)
+            @if(!$isRejected && !$isWithdrawn)
                 <div class="mt-6">
                     <div class="flex items-center justify-between relative">
                         <div class="absolute top-3.5 left-0 right-0 h-0.5 bg-gray-200 -z-0"></div>
@@ -144,13 +166,40 @@ new #[Layout('layouts.app')] class extends Component
                         @endforeach
                     </div>
                 </div>
-            @else
+            @elseif($isRejected)
                 <div class="mt-4 p-3 bg-red-50 rounded-xl text-sm text-red-600 font-medium text-center">
                     На жаль, ваша заявка була відхилена
                 </div>
+            @elseif($isWithdrawn)
+                <div class="mt-4 p-3 bg-orange-50 rounded-xl text-sm text-orange-600 font-medium text-center">
+                    Ви відкликали цю заявку
+                </div>
             @endif
 
-            <p class="text-xs text-gray-400 mt-4">Подано {{ $app->created_at->format('d.m.Y') }}</p>
+            <div class="flex items-center justify-between mt-4">
+                <p class="text-xs text-gray-400">Подано {{ $app->created_at->format('d.m.Y') }}</p>
+
+                @if(in_array($app->status, [App\Enums\ApplicationStatus::Pending, App\Enums\ApplicationStatus::Screening, App\Enums\ApplicationStatus::Interview]))
+                    @if($confirmWithdraw)
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-500">Відкликати заявку?</span>
+                            <button wire:click="withdraw"
+                                    class="px-3 py-1 text-xs font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                Так, відкликати
+                            </button>
+                            <button wire:click="$set('confirmWithdraw', false)"
+                                    class="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+                                Скасувати
+                            </button>
+                        </div>
+                    @else
+                        <button wire:click="$set('confirmWithdraw', true)"
+                                class="text-xs text-gray-400 hover:text-red-500 transition-colors underline">
+                            Відкликати заявку
+                        </button>
+                    @endif
+                @endif
+            </div>
         </div>
 
         {{-- Upcoming interview --}}

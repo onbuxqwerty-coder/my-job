@@ -6,7 +6,7 @@ use App\Enums\ApplicationStatus;
 use App\Models\Application;
 use App\Models\ApplicationNote;
 use App\Models\Vacancy;
-use App\Services\ApplicationService;
+use App\Services\ApplicationStatusService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -40,12 +40,14 @@ new #[Layout('layouts.app')] class extends Component
             ->findOrFail($applicationId);
 
         try {
-            app(ApplicationService::class)->changeStatus(
+            app(ApplicationStatusService::class)->changeStatus(
                 $application,
-                ApplicationStatus::from($status)
+                ApplicationStatus::from($status),
+                auth()->user(),
+                'employer',
             );
-        } catch (\DomainException) {
-            // Вже в цьому статусі — ігноруємо
+        } catch (\Throwable) {
+            // Невалідний статус або заборонена дія — ігноруємо
         }
     }
 
