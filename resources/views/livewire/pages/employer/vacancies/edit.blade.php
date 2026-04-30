@@ -9,7 +9,7 @@ use App\Enums\VacancyStatus;
 use App\Models\Category;
 use App\Models\Vacancy;
 use App\Services\SubscriptionService;
-use Illuminate\Support\Str;
+use App\Services\VacancyService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -94,7 +94,6 @@ new #[Layout('layouts.app')] class extends Component
             'category_id'     => (int) $this->categoryId,
             'city_id'         => $this->cityId ? (int) $this->cityId : null,
             'title'           => $this->title,
-            'slug'            => Str::slug($this->title) . '-' . ($this->vacancyId ?? uniqid()),
             'description'     => $this->description,
             'employment_type' => $this->employmentType,
             'salary_from'     => $this->salaryFrom ?: null,
@@ -110,9 +109,10 @@ new #[Layout('layouts.app')] class extends Component
         ];
 
         if ($this->vacancyId) {
-            Vacancy::where('company_id', $company->id)->findOrFail($this->vacancyId)->update($data);
+            $vacancy = Vacancy::where('company_id', $company->id)->findOrFail($this->vacancyId);
+            app(VacancyService::class)->update($vacancy, $data);
         } else {
-            Vacancy::create($data);
+            app(VacancyService::class)->publish(auth()->user(), $data);
         }
 
         $this->redirect(route('employer.dashboard'), navigate: true);
