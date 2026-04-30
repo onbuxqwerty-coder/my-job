@@ -1,10 +1,7 @@
 <x-app-layout>
 @php
-    use App\Enums\PlanFeature;
-    use App\Enums\PlanType;
-
     $plans = \App\Models\SubscriptionPlan::where('is_active', true)
-        ->whereIn('type', [PlanType::Start, PlanType::Business, PlanType::Pro])
+        ->whereIn('type', [\App\Enums\PlanType::Start, \App\Enums\PlanType::Business, \App\Enums\PlanType::Pro])
         ->orderBy('price_monthly')
         ->get();
 @endphp
@@ -162,13 +159,6 @@
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Тарифи</h2>
             <p class="text-lg text-slate-500 max-w-2xl mx-auto">Обирайте план, який підходить вашій компанії. Починайте безкоштовно — оновіть, коли будете готові.</p>
         </div>
-
-        @php
-            $plans = \App\Models\SubscriptionPlan::where('is_active', true)
-                ->whereIn('type', [\App\Enums\PlanType::Start, \App\Enums\PlanType::Business, \App\Enums\PlanType::Pro])
-                ->orderBy('price_monthly')
-                ->get();
-        @endphp
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($plans as $plan)
