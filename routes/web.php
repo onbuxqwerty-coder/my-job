@@ -86,7 +86,9 @@ Route::middleware(['auth', 'role:employer'])
         Volt::route('/candidates/{applicationId}', 'pages.employer.candidate-detail')->name('candidate.detail');
         Volt::route('/templates', 'pages.employer.message-templates')->name('message.templates');
         Volt::route('/analytics', 'pages.employer.analytics')->name('analytics');
-        Volt::route('/vacancies/create', 'pages.employer.vacancies.edit')->name('vacancies.create');
+        Volt::route('/vacancies/create', 'pages.employer.vacancies.edit')
+            ->middleware('subscription.job_limit')
+            ->name('vacancies.create');
         Volt::route('/vacancies/{vacancyId}/edit', 'pages.employer.vacancies.edit')->name('vacancies.edit');
 
         // Stripe Checkout redirect

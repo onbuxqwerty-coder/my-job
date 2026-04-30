@@ -23,7 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'webhooks/payments/*',
         ]);
         $middleware->alias([
-            'role' => \App\Http\Middleware\EnsureUserRole::class,
+            'role'                  => \App\Http\Middleware\EnsureUserRole::class,
+            'subscription.job_limit' => \App\Http\Middleware\CheckJobPublishingLimit::class,
         ]);
     })
     ->withProviders([

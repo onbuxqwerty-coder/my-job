@@ -12,6 +12,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\PlanFeature;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -53,6 +54,24 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function resumes(): HasMany
     {
         return $this->hasMany(Resume::class);
+    }
+
+    public function activeSubscription(): HasOne
+    {
+        return $this->hasOne(EmployerSubscription::class)
+            ->where('status', 'active')
+            ->where('ends_at', '>', now())
+            ->latest();
+    }
+
+    public function currentPlan(): ?SubscriptionPlan
+    {
+        return $this->activeSubscription?->plan;
+    }
+
+    public function hasFeature(PlanFeature $feature): bool|int
+    {
+        return $this->currentPlan()?->feature($feature) ?? false;
     }
 
     public function savedVacancies(): BelongsToMany
