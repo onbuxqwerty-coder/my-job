@@ -149,6 +149,8 @@
                 Розмістити вакансію
             </button>
 
+            <a href="{{ route('for-employers') }}" {{ request()->routeIs('for-employers') ? 'class=active' : '' }}>Для роботодавців</a>
+
             @auth
                 @if(auth()->user()->role === \App\Enums\UserRole::Employer)
                     <a href="{{ route('employer.dashboard') }}"
@@ -238,6 +240,13 @@
                 onmouseover="this.style.background='rgba(255,255,255,0.08)'"
                 onmouseout="this.style.background=''"
         >Розмістити вакансію</button>
+
+        <a href="{{ route('for-employers') }}"
+           style="padding:14px 20px; color:#fff; text-decoration:none; font-weight:600; font-size:1rem;
+                  border-bottom:1px solid rgba(255,255,255,0.08); transition:background 0.2s;"
+           onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+           onmouseout="this.style.background=''"
+        >Для роботодавців</a>
 
         @auth
             @if(auth()->user()->role === \App\Enums\UserRole::Employer)
