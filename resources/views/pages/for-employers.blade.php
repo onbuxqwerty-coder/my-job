@@ -7,51 +7,50 @@
 @endphp
 
 {{-- Hero Section --}}
-<section class="relative overflow-hidden text-slate-900"
-    style="background-color: #f8fafc; background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat; background-size: auto;">
+<section class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
     <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-        <div class="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-blue-100/60 blur-3xl"></div>
-        <div class="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-indigo-100/60 blur-3xl"></div>
+        <div class="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl"></div>
     </div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
         <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             {{-- Text content --}}
             <div class="flex-1 max-w-2xl">
-                <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-sm text-blue-600 font-medium mb-6">
+                <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 rounded-full px-4 py-1.5 text-sm text-blue-300 font-medium mb-6">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
                     Для роботодавців
                 </div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6 text-slate-900">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
                     Знайдіть найкращих<br>
-                    <span class="text-blue-600">спеціалістів України</span>
+                    <span class="text-blue-400">спеціалістів України</span>
                 </h1>
-                <p class="text-lg sm:text-xl text-slate-600 mb-10 leading-relaxed">
+                <p class="text-lg sm:text-xl text-slate-300 mb-10 leading-relaxed">
                     MyJob — найшвидший спосіб опублікувати вакансію та отримати відгуки від кандидатів.
                     Telegram-розсилка, аналітика, шаблони — все в одному місці.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <a href="{{ route('register') }}"
-                       class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 text-lg shadow-lg shadow-blue-500/25 hover:shadow-blue-600/35 hover:-translate-y-0.5">
+                       class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 text-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-400/40 hover:-translate-y-0.5">
                         Почати безкоштовно
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                     <a href="{{ route('login') }}"
-                       class="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold px-8 py-4 rounded-2xl transition-all duration-200 text-lg shadow-sm">
+                       class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200 text-lg backdrop-blur-sm">
                         Увійти в кабінет
                     </a>
                 </div>
-                <p class="mt-5 text-sm text-slate-500">Реєстрація займає менше хвилини. Перша вакансія — безкоштовно.</p>
+                <p class="mt-5 text-sm text-slate-400">Реєстрація займає менше хвилини. Перша вакансія — безкоштовно.</p>
             </div>
 
             {{-- Hero image --}}
             <div class="flex-shrink-0 w-full lg:w-auto hidden lg:block">
                 <div class="relative">
-                    <div class="absolute inset-0 rounded-3xl bg-blue-200/40 blur-2xl scale-105"></div>
+                    <div class="absolute inset-0 rounded-3xl bg-blue-500/20 blur-2xl scale-105"></div>
                     <img
                         src="{{ asset('img/office_people.png') }}"
                         alt="Команда фахівців переглядає вакансії на планшеті"
-                        class="relative w-80 xl:w-96 rounded-3xl shadow-xl object-cover object-top"
-                        style="max-height: 520px; border: 1px solid #7A7A7A;"
+                        class="relative w-80 xl:w-96 rounded-3xl shadow-2xl object-cover object-top"
+                        style="max-height: 520px;"
                         loading="eager"
                     >
                 </div>
@@ -59,24 +58,24 @@
         </div>
     </div>
     {{-- Stats bar --}}
-    <div class="relative border-t border-slate-200 bg-white/60 backdrop-blur-sm">
+    <div class="relative border-t border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div>
-                    <div class="text-3xl font-extrabold text-slate-900">10 000+</div>
-                    <div class="text-sm text-slate-500 mt-1">активних кандидатів</div>
+                    <div class="text-3xl font-extrabold text-white">10 000+</div>
+                    <div class="text-sm text-slate-400 mt-1">активних кандидатів</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-extrabold text-slate-900">500+</div>
-                    <div class="text-sm text-slate-500 mt-1">вакансій щомісяця</div>
+                    <div class="text-3xl font-extrabold text-white">500+</div>
+                    <div class="text-sm text-slate-400 mt-1">вакансій щомісяця</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-extrabold text-slate-900">48 год</div>
-                    <div class="text-sm text-slate-500 mt-1">середній час до відгуку</div>
+                    <div class="text-3xl font-extrabold text-white">48 год</div>
+                    <div class="text-sm text-slate-400 mt-1">середній час до відгуку</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-extrabold text-slate-900">94%</div>
-                    <div class="text-sm text-slate-500 mt-1">задоволених компаній</div>
+                    <div class="text-3xl font-extrabold text-white">94%</div>
+                    <div class="text-sm text-slate-400 mt-1">задоволених компаній</div>
                 </div>
             </div>
         </div>
@@ -84,7 +83,7 @@
 </section>
 
 {{-- How it works Section --}}
-<section class="bg-white py-20 lg:py-28">
+<section class="bg-white py-20 lg:py-28" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Як це працює?</h2>
@@ -111,7 +110,7 @@
 </section>
 
 {{-- Features Section --}}
-<section class="bg-slate-50 py-20 lg:py-28">
+<section class="bg-slate-50 py-20 lg:py-28" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Всі інструменти роботодавця</h2>
@@ -171,7 +170,7 @@
 </section>
 
 {{-- Pricing Section --}}
-<section class="bg-white py-20 lg:py-28" id="pricing">
+<section class="bg-white py-20 lg:py-28" id="pricing" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Тарифи</h2>
@@ -291,7 +290,7 @@
 </section>
 
 {{-- Testimonials Section --}}
-<section class="bg-slate-50 py-20 lg:py-28">
+<section class="bg-slate-50 py-20 lg:py-28" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Нам довіряють компанії</h2>
@@ -348,7 +347,7 @@
 </section>
 
 {{-- FAQ Section --}}
-<section class="bg-white py-20 lg:py-28">
+<section class="bg-white py-20 lg:py-28" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Часті запитання</h2>
