@@ -75,7 +75,7 @@ class SubscriptionPlanSeeder extends Seeder
         ];
 
         foreach ($plans as $plan) {
-            SubscriptionPlan::updateOrCreate(['type' => $plan['type']], $plan);
+            SubscriptionPlan::updateOrCreate(['type' => $plan['type']], array_merge($plan, ['is_active' => true]));
         }
     }
 }

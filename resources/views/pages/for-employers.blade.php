@@ -13,31 +13,48 @@
         <div class="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl"></div>
     </div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
-        <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 rounded-full px-4 py-1.5 text-sm text-blue-300 font-medium mb-6">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
-                Для роботодавців
+        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+            {{-- Text content --}}
+            <div class="flex-1 max-w-2xl">
+                <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 rounded-full px-4 py-1.5 text-sm text-blue-300 font-medium mb-6">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
+                    Для роботодавців
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
+                    Знайдіть найкращих<br>
+                    <span class="text-blue-400">спеціалістів України</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-slate-300 mb-10 leading-relaxed">
+                    MyJob — найшвидший спосіб опублікувати вакансію та отримати відгуки від кандидатів.
+                    Telegram-розсилка, аналітика, шаблони — все в одному місці.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{{ route('register') }}"
+                       class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 text-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-400/40 hover:-translate-y-0.5">
+                        Почати безкоштовно
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                    <a href="{{ route('login') }}"
+                       class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200 text-lg backdrop-blur-sm">
+                        Увійти в кабінет
+                    </a>
+                </div>
+                <p class="mt-5 text-sm text-slate-400">Реєстрація займає менше хвилини. Перша вакансія — безкоштовно.</p>
             </div>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
-                Знайдіть найкращих<br>
-                <span class="text-blue-400">спеціалістів України</span>
-            </h1>
-            <p class="text-lg sm:text-xl text-slate-300 mb-10 leading-relaxed max-w-2xl">
-                MyJob — найшвидший спосіб опублікувати вакансію та отримати відгуки від кандидатів.
-                Telegram-розсилка, аналітика, шаблони — все в одному місці.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <a href="{{ route('register') }}"
-                   class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 text-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-400/40 hover:-translate-y-0.5">
-                    Почати безкоштовно
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-                <a href="{{ route('login') }}"
-                   class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200 text-lg backdrop-blur-sm">
-                    Увійти в кабінет
-                </a>
+
+            {{-- Hero image --}}
+            <div class="flex-shrink-0 w-full lg:w-auto hidden lg:block">
+                <div class="relative">
+                    <div class="absolute inset-0 rounded-3xl bg-blue-500/20 blur-2xl scale-105"></div>
+                    <img
+                        src="{{ asset('img/office_people.png') }}"
+                        alt="Команда фахівців переглядає вакансії на планшеті"
+                        class="relative w-80 xl:w-96 rounded-3xl shadow-2xl object-cover object-top"
+                        style="max-height: 520px;"
+                        loading="eager"
+                    >
+                </div>
             </div>
-            <p class="mt-5 text-sm text-slate-400">Реєстрація займає менше хвилини. Перша вакансія — безкоштовно.</p>
         </div>
     </div>
     {{-- Stats bar --}}
