@@ -110,7 +110,7 @@
 </section>
 
 {{-- Features Section --}}
-<section class="py-20 lg:py-28" style="background-color: #0f172a;">
+<section class="py-20 lg:py-28 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Всі інструменти роботодавця</h2>
