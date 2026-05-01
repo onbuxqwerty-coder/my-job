@@ -83,7 +83,7 @@
 </section>
 
 {{-- How it works Section --}}
-<section class="bg-white py-20 lg:py-28" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="bg-white py-20 lg:py-28">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Як це працює?</h2>
