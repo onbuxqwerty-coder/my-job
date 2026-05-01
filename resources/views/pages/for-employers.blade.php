@@ -364,7 +364,7 @@
             @endphp
 
             @foreach($faqs as $index => $faq)
-            <div class="rounded-2xl overflow-hidden" style="border: 1px solid #7A7A7A;" x-data="{ open: false }">
+            <div class="rounded-2xl overflow-hidden bg-white" style="border: 1px solid #7A7A7A;" x-data="{ open: false }">
                 <button
                     @click="open = !open"
                     class="w-full flex items-center justify-between px-6 py-5 text-left font-semibold text-slate-900 hover:bg-slate-50 transition-colors duration-150"
