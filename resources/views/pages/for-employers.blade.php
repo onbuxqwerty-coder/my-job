@@ -110,7 +110,7 @@
 </section>
 
 {{-- Features Section --}}
-<section class="py-20 lg:py-28" style="background-color: #0f172a; background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="py-20 lg:py-28" style="background-color: #0f172a;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Всі інструменти роботодавця</h2>
@@ -170,7 +170,7 @@
 </section>
 
 {{-- Pricing Section --}}
-<section class="py-20 lg:py-28" id="pricing" style="background-color: #0f172a; background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="py-20 lg:py-28" id="pricing" style="background-color: #0f172a;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Тарифи</h2>
@@ -290,7 +290,7 @@
 </section>
 
 {{-- Testimonials Section --}}
-<section class="py-20 lg:py-28" style="background-color: #0f172a; background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="py-20 lg:py-28" style="background-color: #0f172a;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Нам довіряють компанії</h2>
@@ -347,7 +347,7 @@
 </section>
 
 {{-- FAQ Section --}}
-<section class="py-20 lg:py-28" style="background-color: #0f172a; background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="py-20 lg:py-28" style="background-color: #0f172a;">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Часті запитання</h2>
