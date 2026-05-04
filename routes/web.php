@@ -137,8 +137,13 @@ Route::middleware(['auth', 'role:employer'])
                 ->with('warning', 'Оплату скасовано. Виберіть тариф та спробуйте ще раз.');
         })->name('vacancies.payment.cancel');
 
-        // ── Мої платежі ──────────────────────────────────────────────────
+        // ── Білінг ────────────────────────────────────────────────────────
         Volt::route('/billing', 'pages.employer.billing')->name('billing');
+        Route::get('/billing/checkout/{plan}', \App\Http\Controllers\Employer\BillingCheckoutController::class)
+            ->name('billing.checkout');
+        Route::get('/billing/success', function () {
+            return view('employer.billing-success');
+        })->name('billing.success');
         Volt::route('/my-profile', 'pages.employer.my-profile')->name('my-profile');
     });
 

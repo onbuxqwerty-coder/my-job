@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\PlanFeature;
+use App\Enums\PlanType;
 use App\Models\EmployerSubscription;
 use App\Models\SubscriptionPlan;
 use App\Models\Vacancy;
@@ -23,6 +24,11 @@ new #[Layout('layouts.app')] class extends Component
     public function activatePlan(int $planId): void
     {
         $plan = SubscriptionPlan::findOrFail($planId);
+
+        if ($plan->type !== PlanType::Free && $plan->price_monthly > 0) {
+            $this->redirect(route('employer.billing.checkout', $plan), navigate: false);
+            return;
+        }
 
         app(SubscriptionService::class)->activate(auth()->user(), $plan);
 
