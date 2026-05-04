@@ -7,8 +7,10 @@ namespace App\Services;
 use App\DTOs\VacancySearchDTO;
 use App\Enums\PlanType;
 use App\Enums\VacancyStatus;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
 use App\Models\Vacancy;
+use App\Services\SubscriptionService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,7 +26,24 @@ final class VacancyService
         $data['published_at'] ??= now();
         $data['status']       ??= VacancyStatus::Active;
 
-        return Vacancy::create([...$data, 'slug' => $slug, 'expires_at' => $expiresAt]);
+        $vacancy = Vacancy::create([...$data, 'slug' => $slug, 'expires_at' => $expiresAt]);
+
+        $this->maybeActivateFreePlan($employer);
+
+        return $vacancy;
+    }
+
+    private function maybeActivateFreePlan(User $employer): void
+    {
+        if ($employer->currentPlan() !== null) {
+            return;
+        }
+
+        $freePlan = SubscriptionPlan::where('type', PlanType::Free)->first();
+
+        if ($freePlan) {
+            app(SubscriptionService::class)->activate($employer, $freePlan);
+        }
     }
 
     public function update(Vacancy $vacancy, array $data): Vacancy
