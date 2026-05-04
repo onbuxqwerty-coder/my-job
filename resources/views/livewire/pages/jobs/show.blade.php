@@ -212,6 +212,7 @@ new #[Layout('layouts.app')] class extends Component
     </script>
 @endpush
 
+<div>
 @auth
     @if(auth()->user()->role === \App\Enums\UserRole::Candidate)
         <x-seeker-tabs />
@@ -1544,4 +1545,5 @@ html[data-theme="dark"] .mj-resume-option { border-color: rgba(99,153,34,0.35); 
 html[data-theme="dark"] .mj-resume-option__label { color: #e2e8f0; }
 html[data-theme="dark"] .mj-resume-option__label strong { color: #a3d977; }
 </style>
+</div>
 </div>
