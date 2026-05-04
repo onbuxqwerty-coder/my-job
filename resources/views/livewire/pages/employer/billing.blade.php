@@ -211,7 +211,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="bg-gray-50 border-b border-gray-100">
+                            <tr style="background-color:#D2D2D2;" class="border-b border-gray-300">
                                 <th class="text-left px-4 py-3 font-medium text-gray-600">Тариф</th>
                                 <th class="text-left px-4 py-3 font-medium text-gray-600">Початок</th>
                                 <th class="text-left px-4 py-3 font-medium text-gray-600">Закінчення</th>
@@ -263,7 +263,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="bg-gray-50 border-b border-gray-100">
+                            <tr style="background-color:#D2D2D2;" class="border-b border-gray-300">
                                 <th class="text-left px-4 py-3 font-medium text-gray-600">Дата</th>
                                 <th class="text-left px-4 py-3 font-medium text-gray-600">Order ID</th>
                                 <th class="text-left px-4 py-3 font-medium text-gray-600">Провайдер</th>
