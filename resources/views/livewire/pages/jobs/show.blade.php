@@ -410,7 +410,7 @@ new #[Layout('layouts.app')] class extends Component
                             <p class="mj-company-block-desc">{{ Str::limit($vacancy->company->description, 200) }}</p>
                         @endif
                         <div class="mj-company-block-links">
-                            <a href="{{ route('home', ['search' => $vacancy->company->name]) }}"
+                            <a href="{{ route('home', ['companyId' => $vacancy->company->id]) }}"
                                class="mj-company-block-link">
                                 Всі вакансії компанії →
                             </a>

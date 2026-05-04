@@ -48,6 +48,9 @@ new #[Layout('layouts.app')] class extends Component
     #[Url(history: true)]
     public int $perPage = 10;
 
+    #[Url(history: true)]
+    public string $companyId = '';
+
     /** @var array<int> */
     public array $perPageOptions = [10, 25, 50];
 
@@ -79,6 +82,7 @@ new #[Layout('layouts.app')] class extends Component
             languages:      $this->languages,
             suitability:    $this->suitability,
             cityId:         $this->cityId ? (int) $this->cityId : null,
+            companyId:      $this->companyId ? (int) $this->companyId : null,
             perPage:        in_array($this->perPage, $this->perPageOptions) ? $this->perPage : 10,
         ));
     }
