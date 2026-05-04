@@ -67,6 +67,8 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_END,
                 fn(): HtmlString => new HtmlString('
                 <style>
+                    body { padding-top: 120px !important; }
+                    @media (max-width: 768px) { body { padding-top: 64px !important; } }
                     .fi-main-ctn { max-width: 100% !important; width: 100% !important; }
                     .fi-main { max-width: 100% !important; width: 100% !important; }
                     .fi-body { overflow-x: hidden; }
