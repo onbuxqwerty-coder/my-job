@@ -145,12 +145,6 @@ new #[Layout('layouts.app')] class extends Component
                     <div class="bg-white rounded-2xl border-2 p-5 flex flex-col
                         {{ $isCurrent ? 'border-blue-500 shadow-md' : 'border-gray-200' }}">
 
-                        @if($isCurrent)
-                            <span class="self-start mb-2 px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                                Поточний
-                            </span>
-                        @endif
-
                         <p class="text-lg font-bold text-gray-900">{{ $plan->name }}</p>
                         <p class="text-2xl font-bold text-blue-600 mt-1">
                             {{ $plan->price_monthly > 0 ? number_format($plan->price_monthly, 0, '.', ' ') . ' ₴/міс' : 'Безкоштовно' }}
