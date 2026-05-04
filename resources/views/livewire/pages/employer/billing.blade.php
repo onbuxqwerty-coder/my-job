@@ -19,8 +19,6 @@ new #[Layout('layouts.app')] class extends Component
 {
     use WithPagination;
 
-    public bool $showPlans = false;
-
     public function activatePlan(int $planId): void
     {
         $plan = SubscriptionPlan::findOrFail($planId);
@@ -32,7 +30,6 @@ new #[Layout('layouts.app')] class extends Component
 
         app(SubscriptionService::class)->activate(auth()->user(), $plan);
 
-        $this->showPlans = false;
         unset($this->currentSubscription, $this->subscriptionHistory);
     }
 
@@ -138,16 +135,11 @@ new #[Layout('layouts.app')] class extends Component
                     @endif
                 </div>
 
-                <button wire:click="$toggle('showPlans')"
-                        class="shrink-0 px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
-                    {{ $showPlans ? 'Сховати' : 'Змінити тариф' }}
-                </button>
             </div>
         </div>
 
         {{-- ── Секція 2: Вибір тарифу ── --}}
-        @if($showPlans)
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach($this->plans as $plan)
                     @php $isCurrent = $this->currentSubscription?->plan_id === $plan->id; @endphp
                     <div class="bg-white rounded-2xl border-2 p-5 flex flex-col
@@ -200,8 +192,7 @@ new #[Layout('layouts.app')] class extends Component
                         </button>
                     </div>
                 @endforeach
-            </div>
-        @endif
+        </div>
 
         {{-- ── Секція 3: Історія підписок ── --}}
         @if($this->subscriptionHistory->isNotEmpty())
