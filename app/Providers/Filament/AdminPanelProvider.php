@@ -93,6 +93,10 @@ class AdminPanelProvider extends PanelProvider
                         background: #ffffff !important;
                         border: 1px solid #7a7a7a !important;
                     }
+                    html:not(.dark) .fi-wi-stats-overview {
+                        border: none !important;
+                        background: transparent !important;
+                    }
 
                     /* Dark theme */
                     html.dark body,
