@@ -89,7 +89,7 @@ class AdminPanelProvider extends PanelProvider
                     html:not(.dark) .fi-section,
                     html:not(.dark) .fi-modal-window,
                     html:not(.dark) .fi-ta-ctn,
-                    html:not(.dark) .fi-stats-overview-stat {
+                    html:not(.dark) .fi-wi-stats-overview-stat {
                         background: #ffffff !important;
                         border: 1px solid #7a7a7a !important;
                     }
