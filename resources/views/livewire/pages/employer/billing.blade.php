@@ -94,7 +94,7 @@ new #[Layout('layouts.app')] class extends Component
 }
 ?>
 
-<div>
+<div class="min-h-screen" style="background-image:url('/img/bg-main.webp?v=3');background-size:auto;background-repeat:repeat;background-attachment:fixed;">
     <x-employer-tabs />
 
     <div class="max-w-5xl mx-auto px-4 py-8 space-y-8">
