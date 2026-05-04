@@ -212,6 +212,12 @@ new #[Layout('layouts.app')] class extends Component
     </script>
 @endpush
 
+@auth
+    @if(auth()->user()->role === \App\Enums\UserRole::Candidate)
+        <x-seeker-tabs />
+    @endif
+@endauth
+
 <div class="mj-show-bg seeker-dashboard-bg dark:bg-gray-900" style="min-height: 100vh;">
     <div class="mj-show-wrap">
 
