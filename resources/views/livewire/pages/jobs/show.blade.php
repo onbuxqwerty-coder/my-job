@@ -1469,34 +1469,53 @@ new #[Layout('layouts.app')] class extends Component
 
 /* ===== EMPLOYER OWNER SIDEBAR ===== */
 .mj-employer-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-.mj-employer-stat-box { background: var(--mj-bg-secondary, rgba(255,255,255,0.05)); border-radius: 8px; padding: 10px; text-align: center; }
-.mj-employer-stat-num { display: block; font-size: 22px; font-weight: 600; color: var(--mj-text-primary, #fff); }
-.mj-employer-stat-label { display: block; font-size: 11px; color: var(--mj-text-muted, rgba(255,255,255,0.5)); margin-top: 2px; }
+.mj-employer-stat-box { background: #f3f4f6; border-radius: 8px; padding: 10px; text-align: center; border: 1px solid #e5e7eb; }
+.mj-employer-stat-num { display: block; font-size: 22px; font-weight: 600; color: #111827; }
+.mj-employer-stat-label { display: block; font-size: 11px; color: #6b7280; margin-top: 2px; }
 .mj-employer-expiry { margin-bottom: 10px; }
-.mj-employer-expiry-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--mj-text-secondary, rgba(255,255,255,0.7)); margin-bottom: 5px; }
+.mj-employer-expiry-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #374151; margin-bottom: 5px; }
 .mj-expiry-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
-.mj-expiry-badge--active   { background: #2a4a14; color: #a3d977; }
-.mj-expiry-badge--expiring { background: #4a3010; color: #FAC775; }
-.mj-expiry-badge--expired  { background: #4a1414; color: #F09595; }
-.mj-days-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.mj-expiry-badge--active   { background: #dcfce7; color: #166534; }
+.mj-expiry-badge--expiring { background: #fef3c7; color: #92400e; }
+.mj-expiry-badge--expired  { background: #fee2e2; color: #991b1b; }
+.mj-days-bar { height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
 .mj-days-fill { height: 100%; border-radius: 2px; transition: width 0.3s ease; }
-.mj-days-fill--active   { background: #639922; }
-.mj-days-fill--expiring { background: #BA7517; }
-.mj-days-fill--expired  { background: #A32D2D; width: 0 !important; }
-.mj-employer-expiry-date { font-size: 11px; color: var(--mj-text-muted, rgba(255,255,255,0.4)); }
+.mj-days-fill--active   { background: #16a34a; }
+.mj-days-fill--expiring { background: #d97706; }
+.mj-days-fill--expired  { background: #dc2626; width: 0 !important; }
+.mj-employer-expiry-date { font-size: 11px; color: #9ca3af; }
 .mj-employer-alert { border-radius: 8px; padding: 9px 11px; font-size: 12px; line-height: 1.4; margin-bottom: 10px; }
-.mj-employer-alert--warning { background: rgba(186,117,23,0.15); border: 0.5px solid rgba(186,117,23,0.4); color: #FAC775; }
-.mj-employer-alert--danger  { background: rgba(163,45,45,0.15);  border: 0.5px solid rgba(163,45,45,0.4);  color: #F09595; }
+.mj-employer-alert--warning { background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; }
+.mj-employer-alert--danger  { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
 .mj-employer-cta { display: block; text-align: center; padding: 10px 14px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; margin-bottom: 5px; transition: opacity 0.2s; }
 .mj-employer-cta:hover { opacity: 0.85; }
-.mj-employer-cta--warning { background: #BA7517; color: #fff; }
-.mj-employer-cta--danger  { background: #A32D2D; color: #fff; }
-.mj-employer-cta-hint { font-size: 11px; color: var(--mj-text-muted, rgba(255,255,255,0.4)); text-align: center; margin-bottom: 10px; }
-.mj-employer-divider { border: none; border-top: 0.5px solid rgba(255,255,255,0.08); margin: 10px 0; }
-.mj-employer-action { display: block; text-align: center; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; margin-bottom: 6px; border: 0.5px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: var(--mj-text-secondary, rgba(255,255,255,0.7)); transition: background 0.2s; }
-.mj-employer-action:hover { background: rgba(255,255,255,0.08); }
-.mj-employer-action--blue  { background: rgba(24,95,165,0.2); border-color: rgba(24,95,165,0.4); color: #85B7EB; }
-.mj-employer-action--ghost { color: var(--mj-text-muted, rgba(255,255,255,0.45)); font-size: 12px; }
+.mj-employer-cta--warning { background: #d97706; color: #fff; }
+.mj-employer-cta--danger  { background: #dc2626; color: #fff; }
+.mj-employer-cta-hint { font-size: 11px; color: #9ca3af; text-align: center; margin-bottom: 10px; }
+.mj-employer-divider { border: none; border-top: 1px solid #e5e7eb; margin: 10px 0; }
+.mj-employer-action { display: block; text-align: center; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; margin-bottom: 6px; border: 1px solid #d1d5db; background: #f9fafb; color: #374151; transition: background 0.2s; }
+.mj-employer-action:hover { background: #f3f4f6; }
+.mj-employer-action--blue  { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+.mj-employer-action--ghost { color: #9ca3af; font-size: 12px; }
+
+/* Dark overrides for employer sidebar */
+html[data-theme="dark"] .mj-employer-stat-box { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+html[data-theme="dark"] .mj-employer-stat-num { color: #f9fafb; }
+html[data-theme="dark"] .mj-employer-stat-label { color: rgba(255,255,255,0.5); }
+html[data-theme="dark"] .mj-employer-expiry-header { color: rgba(255,255,255,0.7); }
+html[data-theme="dark"] .mj-expiry-badge--active   { background: #2a4a14; color: #a3d977; }
+html[data-theme="dark"] .mj-expiry-badge--expiring { background: #4a3010; color: #FAC775; }
+html[data-theme="dark"] .mj-expiry-badge--expired  { background: #4a1414; color: #F09595; }
+html[data-theme="dark"] .mj-days-bar { background: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .mj-employer-expiry-date { color: rgba(255,255,255,0.4); }
+html[data-theme="dark"] .mj-employer-alert--warning { background: rgba(186,117,23,0.15); border-color: rgba(186,117,23,0.4); color: #FAC775; }
+html[data-theme="dark"] .mj-employer-alert--danger  { background: rgba(163,45,45,0.15);  border-color: rgba(163,45,45,0.4);  color: #F09595; }
+html[data-theme="dark"] .mj-employer-cta-hint { color: rgba(255,255,255,0.4); }
+html[data-theme="dark"] .mj-employer-divider { border-color: rgba(255,255,255,0.08); }
+html[data-theme="dark"] .mj-employer-action { border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); }
+html[data-theme="dark"] .mj-employer-action:hover { background: rgba(255,255,255,0.08); }
+html[data-theme="dark"] .mj-employer-action--blue  { background: rgba(24,95,165,0.2); border-color: rgba(24,95,165,0.4); color: #85B7EB; }
+html[data-theme="dark"] .mj-employer-action--ghost { color: rgba(255,255,255,0.45); }
 
 /* Account resume checkbox */
 .mj-resume-option {
@@ -1507,11 +1526,14 @@ new #[Layout('layouts.app')] class extends Component
     cursor: pointer;
     padding: 10px 12px;
     border-radius: 8px;
-    border: 1px solid rgba(99,153,34,0.35);
-    background: rgba(99,153,34,0.08);
+    border: 1px solid #bbf7d0;
+    background: #f0fdf4;
 }
-.mj-resume-option__checkbox { margin-top: 2px; accent-color: #639922; width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
-.mj-resume-option__label { font-size: 13px; color: var(--color-text, #e2e8f0); line-height: 1.4; }
-.mj-resume-option__label strong { color: #a3d977; }
+.mj-resume-option__checkbox { margin-top: 2px; accent-color: #16a34a; width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+.mj-resume-option__label { font-size: 13px; color: #374151; line-height: 1.4; }
+.mj-resume-option__label strong { color: #15803d; }
+html[data-theme="dark"] .mj-resume-option { border-color: rgba(99,153,34,0.35); background: rgba(99,153,34,0.08); }
+html[data-theme="dark"] .mj-resume-option__label { color: #e2e8f0; }
+html[data-theme="dark"] .mj-resume-option__label strong { color: #a3d977; }
 </style>
 </div>
