@@ -13,6 +13,7 @@ use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\HtmlString;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -106,6 +107,13 @@ class AdminPanelProvider extends PanelProvider
                 </style>
                 '),
             )
-;
+            ->renderHook(
+                PanelsRenderHook::BODY_START,
+                fn(): HtmlString => new HtmlString(View::make('components.header')->render()),
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn(): HtmlString => new HtmlString(View::make('components.footer')->render()),
+            );
     }
 }
