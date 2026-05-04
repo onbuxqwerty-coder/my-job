@@ -215,6 +215,8 @@ new #[Layout('layouts.app')] class extends Component
 @auth
     @if(auth()->user()->role === \App\Enums\UserRole::Candidate)
         <x-seeker-tabs />
+    @elseif(auth()->user()->role === \App\Enums\UserRole::Employer)
+        <x-employer-tabs />
     @endif
 @endauth
 
