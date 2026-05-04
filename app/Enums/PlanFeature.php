@@ -12,6 +12,8 @@ enum PlanFeature: string
     case MessageTemplates      = 'message_templates';       // bool
     case HotPerMonth           = 'hot_per_month';           // int
     case TopPerMonth           = 'top_per_month';           // int
+    case HotDays               = 'hot_days';                // int: 0 = необмежено
+    case TopDays               = 'top_days';                // int: 0 = необмежено
     case ApiAccess             = 'api_access';              // bool
     case TeamMembers           = 'team_members';            // int: 0 = необмежено
 }

@@ -9,6 +9,7 @@ use App\Models\EmployerSubscription;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
 use App\Models\Vacancy;
+use Carbon\Carbon;
 
 final class SubscriptionService
 {
@@ -121,5 +122,38 @@ final class SubscriptionService
             : 0;
 
         return max(0, $limit - $usedThisMonth);
+    }
+
+    public function activateHot(Vacancy $vacancy, User $employer): void
+    {
+        $days = (int) ($employer->hasFeature(PlanFeature::HotDays) ?: 0);
+        $until = $days === 0 ? Carbon::create(9999, 12, 31) : now()->addDays($days);
+
+        $vacancy->forceFill(['is_hot' => true, 'hot_until' => $until])->save();
+    }
+
+    public function activateTop(Vacancy $vacancy, User $employer): void
+    {
+        $days = (int) ($employer->hasFeature(PlanFeature::TopDays) ?: 0);
+        $until = $days === 0 ? Carbon::create(9999, 12, 31) : now()->addDays($days);
+
+        $vacancy->forceFill(['is_top' => true, 'top_until' => $until])->save();
+    }
+
+    public function deactivateExpiredPromos(): int
+    {
+        $count = 0;
+
+        $count += Vacancy::where('is_hot', true)
+            ->whereNotNull('hot_until')
+            ->where('hot_until', '<', now())
+            ->update(['is_hot' => false, 'hot_until' => null]);
+
+        $count += Vacancy::where('is_top', true)
+            ->whereNotNull('top_until')
+            ->where('top_until', '<', now())
+            ->update(['is_top' => false, 'top_until' => null]);
+
+        return $count;
     }
 }

@@ -60,6 +60,8 @@ class Vacancy extends Model
             'is_hot'                      => 'boolean',
             'featured_until'              => 'datetime',
             'promoted_until'              => 'datetime',
+            'hot_until'                   => 'datetime',
+            'top_until'                   => 'datetime',
             'salary_from'                 => 'integer',
             'salary_to'                   => 'integer',
             'languages'                   => 'array',
