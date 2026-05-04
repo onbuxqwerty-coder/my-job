@@ -51,16 +51,39 @@ class WayForPayGateway implements PaymentGateway
         $transactionStatus = $data['transactionStatus'] ?? '';
         $isPaid            = $transactionStatus === 'Approved';
 
-        $orderId = $data['orderReference'] ?? '';
-        [$vacancyId, $days] = CheckoutService::parseOrderId($orderId);
-
-        // WFP передає суму як float (грн) — конвертуємо в копійки
+        $orderId       = $data['orderReference'] ?? '';
         $amountKopecks = (int) round((float) ($data['amount'] ?? 0) * 100);
+        $eventId       = $orderId ?: uniqid('wfp_', true);
+
+        Log::channel('payments')->debug('WayForPay webhook received', [
+            'status'   => $transactionStatus,
+            'order_id' => $orderId,
+        ]);
+
+        if (str_starts_with($orderId, 'sub_')) {
+            [$userId, $planId] = CheckoutService::parseSubscriptionOrderId($orderId);
+
+            return new PaymentResult(
+                isPaid:          $isPaid,
+                gatewayName:     $this->name(),
+                externalEventId: $eventId,
+                orderId:         $orderId,
+                amountKopecks:   $amountKopecks,
+                currency:        $data['currency'] ?? 'UAH',
+                vacancyId:       null,
+                days:            null,
+                planId:          $planId,
+                userId:          $userId,
+                failureReason:   $isPaid ? null : "status={$transactionStatus}",
+            );
+        }
+
+        [$vacancyId, $days] = CheckoutService::parseOrderId($orderId);
 
         return new PaymentResult(
             isPaid:          $isPaid,
             gatewayName:     $this->name(),
-            externalEventId: $orderId ?: uniqid('wfp_', true),
+            externalEventId: $eventId,
             orderId:         $orderId,
             amountKopecks:   $amountKopecks,
             currency:        $data['currency'] ?? 'UAH',
@@ -221,5 +244,128 @@ class WayForPayGateway implements PaymentGateway
             implode(';', [$orderReference, $status, $time]),
             config('payments.gateways.wayforpay.merchant_password'),
         );
+    }
+
+    // ── P2P виплати ───────────────────────────────────────────────────────────
+
+    /**
+     * P2P cardtransfer — виплата на картку отримувача.
+     * Використовує окремий мерчант WFP_P2P_ACCOUNT.
+     *
+     * @throws PaymentGatewayException
+     */
+    public function p2pCardTransfer(
+        string $cardPan,
+        float $amount,
+        string $currency,
+        string $orderReference,
+        string $clientEmail = '',
+    ): array {
+        $merchantAccount = config('payments.gateways.wayforpay.p2p_account');
+        $merchantDomain  = config('payments.gateways.wayforpay.merchant_domain');
+        $orderDate       = time();
+
+        $signatureString = implode(';', [
+            $merchantAccount,
+            $merchantDomain,
+            $orderReference,
+            $orderDate,
+            $amount,
+            $currency,
+            'P2P transfer',
+            1,
+            $amount,
+        ]);
+
+        $signature = hash_hmac('md5', $signatureString, config('payments.gateways.wayforpay.merchant_password'));
+
+        $response = Http::post(self::API_URL, [
+            'transactionType'   => 'PURCHASE',
+            'merchantAccount'   => $merchantAccount,
+            'merchantDomainName'=> $merchantDomain,
+            'orderReference'    => $orderReference,
+            'orderDate'         => $orderDate,
+            'amount'            => $amount,
+            'currency'          => $currency,
+            'productName'       => ['P2P transfer'],
+            'productCount'      => [1],
+            'productPrice'      => [$amount],
+            'clientEmail'       => $clientEmail,
+            'recTokenLifetime'  => 1,
+            'paymentSystems'    => 'card',
+            'defaultPaymentSystem' => 'card',
+            'recToken'          => $cardPan,
+            'signature'         => $signature,
+        ]);
+
+        if ($response->failed()) {
+            throw new PaymentGatewayException('WayForPay p2p cardtransfer error: ' . $response->body());
+        }
+
+        Log::channel('payments')->info('WayForPay p2p cardtransfer sent', [
+            'order'  => $orderReference,
+            'amount' => $amount,
+        ]);
+
+        return $response->json();
+    }
+
+    /**
+     * P2P credit — кредитна виплата на картку.
+     * Використовує окремий мерчант WFP_P2P_CREDIT_ACCOUNT.
+     *
+     * @throws PaymentGatewayException
+     */
+    public function p2pCredit(
+        string $cardPan,
+        float $amount,
+        string $currency,
+        string $orderReference,
+        string $clientEmail = '',
+    ): array {
+        $merchantAccount = config('payments.gateways.wayforpay.p2p_credit_account');
+        $merchantDomain  = config('payments.gateways.wayforpay.merchant_domain');
+        $orderDate       = time();
+
+        $signatureString = implode(';', [
+            $merchantAccount,
+            $merchantDomain,
+            $orderReference,
+            $orderDate,
+            $amount,
+            $currency,
+            'P2P credit',
+            1,
+            $amount,
+        ]);
+
+        $signature = hash_hmac('md5', $signatureString, config('payments.gateways.wayforpay.merchant_password'));
+
+        $response = Http::post(self::API_URL, [
+            'transactionType'   => 'CREDIT',
+            'merchantAccount'   => $merchantAccount,
+            'merchantDomainName'=> $merchantDomain,
+            'orderReference'    => $orderReference,
+            'orderDate'         => $orderDate,
+            'amount'            => $amount,
+            'currency'          => $currency,
+            'productName'       => ['P2P credit'],
+            'productCount'      => [1],
+            'productPrice'      => [$amount],
+            'clientEmail'       => $clientEmail,
+            'recToken'          => $cardPan,
+            'signature'         => $signature,
+        ]);
+
+        if ($response->failed()) {
+            throw new PaymentGatewayException('WayForPay p2p credit error: ' . $response->body());
+        }
+
+        Log::channel('payments')->info('WayForPay p2p credit sent', [
+            'order'  => $orderReference,
+            'amount' => $amount,
+        ]);
+
+        return $response->json();
     }
 }

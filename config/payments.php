@@ -27,10 +27,17 @@ return [
         ],
 
         'wayforpay' => [
+            // Основний мерчант для прийому платежів
             'merchant_account'  => env('WFP_MERCHANT_ACCOUNT'),
             'merchant_password' => env('WFP_MERCHANT_PASSWORD'),
             'merchant_domain'   => env('WFP_MERCHANT_DOMAIN', config('app.url')),
             'checkout_mode'     => env('WFP_CHECKOUT_MODE', 'form'), // 'form' | 'hosted'
+
+            // P2P cardtransfer (виплати на картку)
+            'p2p_account'       => env('WFP_P2P_ACCOUNT'),
+
+            // P2P credit (кредитні виплати)
+            'p2p_credit_account' => env('WFP_P2P_CREDIT_ACCOUNT'),
         ],
 
         'liqpay' => [
