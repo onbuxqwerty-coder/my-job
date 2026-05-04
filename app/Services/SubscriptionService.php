@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\PlanFeature;
-use App\Enums\PlanType;
 use App\Models\EmployerSubscription;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
@@ -22,9 +21,7 @@ final class SubscriptionService
             ->where('status', 'active')
             ->update(['status' => 'cancelled', 'cancelled_at' => now()]);
 
-        $endsAt = $plan->type === PlanType::Free
-            ? now()->addYears(100)
-            : now()->addMonths($months);
+        $endsAt = now()->addMonths($months);
 
         return EmployerSubscription::create([
             'user_id'   => $employer->id,
