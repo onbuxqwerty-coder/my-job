@@ -102,7 +102,9 @@ new #[Layout('layouts.app')] class extends Component
             foreach (ApplicationStatus::cases() as $status) {
                 $count = $funnelRaw[$status->value] ?? 0;
                 $funnel[] = [
-                    'status'  => $status,
+                    'status'  => $status->value,
+                    'label'   => $status->label(),
+                    'color'   => $status->color(),
                     'count'   => $count,
                     'percent' => $maxFunnel > 0 ? round($count / $maxFunnel * 100) : 0,
                 ];
@@ -139,7 +141,9 @@ new #[Layout('layouts.app')] class extends Component
                 ->having('app_count', '>', 0)
                 ->orderByDesc('app_count')
                 ->limit(5)
-                ->get(['id', 'title']);
+                ->get(['id', 'title'])
+                ->map(fn ($v) => ['id' => $v->id, 'title' => $v->title, 'app_count' => $v->app_count])
+                ->toArray();
 
             // ── Team activity ─────────────────────────────────────────────────
 
@@ -285,12 +289,12 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="space-y-4">
                     @foreach($s['funnel'] as $row)
                         @php
-                            $colors = $funnelColorMap[$row['status']->color()] ?? $funnelColorMap['gray'];
+                            $colors = $funnelColorMap[$row['color']] ?? $funnelColorMap['gray'];
                         @endphp
                         <div>
                             <div class="flex items-center justify-between mb-1.5">
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $colors['badge'] }}">
-                                    {{ $row['status']->label() }}
+                                    {{ $row['label'] }}
                                 </span>
                                 <span class="text-sm font-bold text-gray-800">{{ $row['count'] }}</span>
                             </div>
@@ -374,23 +378,23 @@ new #[Layout('layouts.app')] class extends Component
             <div class="bg-white rounded-2xl border employer-card-border p-6">
                 <h2 class="text-sm font-semibold text-gray-900 mb-4">Топ-5 вакансій</h2>
 
-                @if($s['topVacancies']->isEmpty())
+                @if(empty($s['topVacancies']))
                     <p class="text-sm text-gray-400">Немає заявок за обраний період.</p>
                 @else
-                    @php $topMax = $s['topVacancies']->first()->app_count; @endphp
+                    @php $topMax = $s['topVacancies'][0]['app_count'] ?? 1; @endphp
                     <div class="space-y-3">
                         @foreach($s['topVacancies'] as $i => $vacancy)
                             <div>
                                 <div class="flex items-center justify-between mb-1">
-                                    <a href="{{ route('employer.applicants', $vacancy->id) }}"
+                                    <a href="{{ route('employer.applicants', $vacancy['id']) }}"
                                        class="text-sm font-medium text-gray-800 hover:text-blue-600 truncate max-w-xs">
-                                        {{ $i + 1 }}. {{ $vacancy->title }}
+                                        {{ $i + 1 }}. {{ $vacancy['title'] }}
                                     </a>
-                                    <span class="text-sm font-bold text-gray-700 shrink-0 ml-2">{{ $vacancy->app_count }}</span>
+                                    <span class="text-sm font-bold text-gray-700 shrink-0 ml-2">{{ $vacancy['app_count'] }}</span>
                                 </div>
                                 <div class="w-full bg-gray-100 rounded-full h-1.5">
                                     <div class="bg-blue-500 h-1.5 rounded-full"
-                                         style="width: {{ $topMax > 0 ? round($vacancy->app_count / $topMax * 100) : 0 }}%"></div>
+                                         style="width: {{ $topMax > 0 ? round($vacancy['app_count'] / $topMax * 100) : 0 }}%"></div>
                                 </div>
                             </div>
                         @endforeach
