@@ -86,17 +86,18 @@ class AdminPanelProvider extends PanelProvider
                     html:not(.dark) .fi-topbar { background: #ffffff !important; border-bottom: 1px solid #7a7a7a !important; }
                     html:not(.dark) .fi-sidebar-nav { background: #ffffff !important; border-right: 1px solid #7a7a7a !important; }
                     html:not(.dark) .fi-card,
+                    html:not(.dark) .fi-wi-widget,
                     html:not(.dark) .fi-modal-window,
                     html:not(.dark) .fi-ta-ctn,
                     html:not(.dark) .fi-wi-stats-overview-stat {
                         background: #ffffff !important;
                         border: 1px solid #7a7a7a !important;
                     }
-                    html:not(.dark) .fi-wi-widget,
                     html:not(.dark) .fi-wi-stats-overview,
                     html:not(.dark) .fi-section {
                         border: none !important;
                         background: transparent !important;
+                        box-shadow: none !important;
                     }
 
                     /* Dark theme */
