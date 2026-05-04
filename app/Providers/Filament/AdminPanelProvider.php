@@ -87,7 +87,6 @@ class AdminPanelProvider extends PanelProvider
                     html:not(.dark) .fi-sidebar-nav { background: #ffffff !important; border-right: 1px solid #7a7a7a !important; }
                     html:not(.dark) .fi-card,
                     html:not(.dark) .fi-section,
-                    html:not(.dark) .fi-wi,
                     html:not(.dark) .fi-modal-window,
                     html:not(.dark) .fi-ta-ctn,
                     html:not(.dark) .fi-stats-overview-stat {
