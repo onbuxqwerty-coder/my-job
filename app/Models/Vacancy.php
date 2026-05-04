@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PlanType;
 use App\Enums\VacancyStatus;
+use App\Services\SubscriptionService;
 use Carbon\CarbonInterface;
 use Database\Factories\VacancyFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -211,6 +213,23 @@ class Vacancy extends Model
             'expires_at'                  => now()->addDays($days),
             'expiry_notification_sent_at' => null,
         ])->save();
+
+        $this->maybeActivateFreePlan();
+    }
+
+    private function maybeActivateFreePlan(): void
+    {
+        $employer = $this->company?->user;
+
+        if (! $employer || $employer->currentPlan() !== null) {
+            return;
+        }
+
+        $freePlan = SubscriptionPlan::where('type', PlanType::Free)->first();
+
+        if ($freePlan) {
+            app(SubscriptionService::class)->activate($employer, $freePlan);
+        }
     }
 
     /** @throws \DomainException */
