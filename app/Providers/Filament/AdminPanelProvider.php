@@ -85,9 +85,14 @@ class AdminPanelProvider extends PanelProvider
                     }
                     html:not(.dark) .fi-topbar { background: #ffffff !important; border-bottom: 1px solid #7a7a7a !important; }
                     html:not(.dark) .fi-sidebar-nav { background: #ffffff !important; border-right: 1px solid #7a7a7a !important; }
-                    html:not(.dark) .fi-card { background: #ffffff !important; border: 1px solid #7a7a7a !important; }
-                    html:not(.dark) .fi-modal-window { background: #ffffff !important; border: 1px solid #7a7a7a !important; }
-                    html:not(.dark) .fi-ta-ctn { background: #ffffff !important; border: 1px solid #7a7a7a !important; }
+                    html:not(.dark) .fi-card,
+                    html:not(.dark) .fi-section,
+                    html:not(.dark) .fi-wi,
+                    html:not(.dark) .fi-modal-window,
+                    html:not(.dark) .fi-ta-ctn {
+                        background: #ffffff !important;
+                        border: 1px solid #7a7a7a !important;
+                    }
 
                     /* Dark theme */
                     html.dark body,
