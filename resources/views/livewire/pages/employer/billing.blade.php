@@ -163,36 +163,39 @@ new #[Layout('layouts.app')] class extends Component
                                     'applications_per_month' => ['label' => 'Заявок/міс', 'type' => 'int'],
                                     'analytics'              => ['label' => 'Аналітика', 'type' => 'bool'],
                                     'message_templates'      => ['label' => 'Шаблони листів', 'type' => 'bool'],
-                                    'hot_per_month'          => ['label' => 'HOT/міс', 'type' => 'int'],
-                                    'top_per_month'          => ['label' => 'TOP/міс', 'type' => 'int'],
-                                    'hot_days'               => ['label' => 'HOT активний', 'type' => 'days'],
-                                    'top_days'               => ['label' => 'TOP активний', 'type' => 'days'],
                                 ];
+                                $hotCount = (int)($plan->features['hot_per_month'] ?? 0);
+                                $topCount = (int)($plan->features['top_per_month'] ?? 0);
+                                $hotDays  = (int)($plan->features['hot_days'] ?? 0);
+                                $topDays  = (int)($plan->features['top_days'] ?? 0);
                             @endphp
                             @foreach($featureLabels as $key => $meta)
                                 @php $val = $plan->features[$key] ?? false; @endphp
-                                @if(in_array($key, ['hot_per_month', 'top_per_month']) && (int)$val === 0) @continue @endif
-                                @php
-                                    $hotAvailable = (int)($plan->features['hot_per_month'] ?? 0) > 0;
-                                    $topAvailable = (int)($plan->features['top_per_month'] ?? 0) > 0;
-                                    if ($key === 'hot_days' && !$hotAvailable) { $val = false; $meta['type'] = 'bool'; }
-                                    if ($key === 'top_days' && !$topAvailable) { $val = false; $meta['type'] = 'bool'; }
-                                @endphp
                                 <li class="flex justify-between">
                                     <span>{{ $meta['label'] }}</span>
                                     @if($meta['type'] === 'bool')
-                                        <span class="{{ $val ? 'text-green-600' : 'text-gray-300' }}">
-                                            {{ $val ? '✓' : '—' }}
-                                        </span>
-                                    @elseif($meta['type'] === 'days')
-                                        <span class="font-medium">
-                                            {{ $val === 0 ? '∞' : $val . ' ' . trans_choice('день|дні|днів', (int)$val) }}
-                                        </span>
+                                        <span class="{{ $val ? 'text-green-600' : 'text-gray-300' }}">{{ $val ? '✓' : '—' }}</span>
                                     @else
                                         <span class="font-medium">{{ $val === 0 ? '∞' : $val }}</span>
                                     @endif
                                 </li>
                             @endforeach
+                            <li class="flex justify-between">
+                                <span>HOT</span>
+                                @if($hotCount === 0)
+                                    <span class="text-gray-300">—</span>
+                                @else
+                                    <span class="font-medium">{{ $hotCount }}/міс · {{ $hotDays === 0 ? '∞' : $hotDays . ' д' }}</span>
+                                @endif
+                            </li>
+                            <li class="flex justify-between">
+                                <span>TOP</span>
+                                @if($topCount === 0)
+                                    <span class="text-gray-300">—</span>
+                                @else
+                                    <span class="font-medium">{{ $topCount }}/міс · {{ $topDays === 0 ? '∞' : $topDays . ' д' }}</span>
+                                @endif
+                            </li>
                         </ul>
 
                         <button wire:click="activatePlan({{ $plan->id }})"
