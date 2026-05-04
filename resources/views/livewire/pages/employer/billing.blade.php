@@ -171,6 +171,7 @@ new #[Layout('layouts.app')] class extends Component
                             @endphp
                             @foreach($featureLabels as $key => $meta)
                                 @php $val = $plan->features[$key] ?? false; @endphp
+                                @if(in_array($key, ['hot_per_month', 'top_per_month']) && (int)$val === 0) @continue @endif
                                 <li class="flex justify-between">
                                     <span>{{ $meta['label'] }}</span>
                                     @if($meta['type'] === 'bool')
