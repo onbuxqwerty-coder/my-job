@@ -78,11 +78,13 @@ class AdminPanelProvider extends PanelProvider
                     /* Light theme */
                     html:not(.dark) body,
                     html:not(.dark) .fi-body {
-                        background-color: #f1f5f9 !important;
-                        background-image: none !important;
+                        background-image: url("/img/bg-main.webp?v=3") !important;
+                        background-size: auto !important;
+                        background-attachment: fixed !important;
+                        background-repeat: repeat !important;
                     }
-                    html:not(.dark) .fi-topbar { background: #ffffff !important; border-bottom: 1px solid #e2e8f0 !important; }
-                    html:not(.dark) .fi-sidebar-nav { background: #ffffff !important; border-right: 1px solid #e2e8f0 !important; }
+                    html:not(.dark) .fi-topbar { background: #ffffff !important; border-bottom: 1px solid #7a7a7a !important; }
+                    html:not(.dark) .fi-sidebar-nav { background: #ffffff !important; border-right: 1px solid #7a7a7a !important; }
                     html:not(.dark) .fi-card,
                     html:not(.dark) .fi-section,
                     html:not(.dark) .fi-wi-account,
@@ -92,7 +94,7 @@ class AdminPanelProvider extends PanelProvider
                     html:not(.dark) .fi-fo-field-wrp,
                     html:not(.dark) .fi-modal-window {
                         background: #ffffff !important;
-                        border: 1px solid #e2e8f0 !important;
+                        border: 1px solid #7a7a7a !important;
                     }
 
                     /* Dark theme */
