@@ -10,7 +10,6 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -67,35 +66,39 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_END,
                 fn(): HtmlString => new HtmlString('
                 <style>
-                    body { padding-top: 120px !important; }
                     .fi-main-ctn { max-width: 100% !important; width: 100% !important; }
                     .fi-main { max-width: 100% !important; width: 100% !important; }
                     .fi-body { overflow-x: hidden; }
                     [data-sidebar-collapsed] .fi-main-ctn,
                     [data-sidebar-collapsed] .fi-main { max-width: 100% !important; }
-                    body, .fi-body {
-                        background-image: url("/img/bg-main.webp?v=3");
-                        background-size: auto;
-                        background-attachment: fixed;
-                        background-repeat: repeat;
-                    }
-                    html.dark body,
-                    html.dark .fi-body {
-                        background-color: #111827 !important;
+
+                    /* Light theme */
+                    html:not(.dark) body,
+                    html:not(.dark) .fi-body {
+                        background-color: #f1f5f9 !important;
                         background-image: none !important;
                     }
+                    html:not(.dark) .fi-topbar { background: #ffffff !important; border-bottom: 1px solid #e2e8f0 !important; }
+                    html:not(.dark) .fi-sidebar-nav { background: #ffffff !important; border-right: 1px solid #e2e8f0 !important; }
                     html:not(.dark) .fi-card,
                     html:not(.dark) .fi-section,
                     html:not(.dark) .fi-wi-account,
                     html:not(.dark) .fi-wi-filament-info,
                     html:not(.dark) [class*="fi-wi-"],
-                    html:not(.dark) .fi-sidebar-nav,
-                    html:not(.dark) .fi-topbar,
                     html:not(.dark) .fi-ta-ctn,
                     html:not(.dark) .fi-fo-field-wrp,
                     html:not(.dark) .fi-modal-window {
-                        border: 1px solid #a7a7a7 !important;
+                        background: #ffffff !important;
+                        border: 1px solid #e2e8f0 !important;
                     }
+
+                    /* Dark theme */
+                    html.dark body,
+                    html.dark .fi-body {
+                        background-color: #111827 !important;
+                        background-image: none !important;
+                    }
+
                     .filepond--image-preview-wrapper,
                     .filepond--image-preview { background: #f3f4f6 !important; }
                     .filepond--panel-root { background: #f9fafb !important; }
@@ -103,13 +106,6 @@ class AdminPanelProvider extends PanelProvider
                 </style>
                 '),
             )
-            ->renderHook(
-                PanelsRenderHook::BODY_START,
-                fn(): HtmlString => new HtmlString(view('components.header')->render()),
-            )
-            ->renderHook(
-                PanelsRenderHook::BODY_END,
-                fn(): HtmlString => new HtmlString(view('components.footer')->render()),
-            );
+;
     }
 }
