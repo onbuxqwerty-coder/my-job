@@ -165,6 +165,8 @@ new #[Layout('layouts.app')] class extends Component
                                     'message_templates'      => ['label' => 'Шаблони листів', 'type' => 'bool'],
                                     'hot_per_month'          => ['label' => 'HOT/міс', 'type' => 'int'],
                                     'top_per_month'          => ['label' => 'TOP/міс', 'type' => 'int'],
+                                    'hot_days'               => ['label' => 'HOT активний', 'type' => 'days'],
+                                    'top_days'               => ['label' => 'TOP активний', 'type' => 'days'],
                                 ];
                             @endphp
                             @foreach($featureLabels as $key => $meta)
@@ -174,6 +176,10 @@ new #[Layout('layouts.app')] class extends Component
                                     @if($meta['type'] === 'bool')
                                         <span class="{{ $val ? 'text-green-600' : 'text-gray-300' }}">
                                             {{ $val ? '✓' : '—' }}
+                                        </span>
+                                    @elseif($meta['type'] === 'days')
+                                        <span class="font-medium">
+                                            {{ $val === 0 ? '∞' : $val . ' ' . trans_choice('день|дні|днів', (int)$val) }}
                                         </span>
                                     @else
                                         <span class="font-medium">{{ $val === 0 ? '∞' : $val }}</span>
