@@ -15,6 +15,13 @@ final readonly class PaymentResult
         public string $currency,
         public ?string $vacancyId,
         public ?int $days,
+        public ?int $planId = null,
+        public ?int $userId = null,
         public ?string $failureReason = null,
     ) {}
+
+    public function isPlanSubscription(): bool
+    {
+        return $this->planId !== null && $this->userId !== null;
+    }
 }

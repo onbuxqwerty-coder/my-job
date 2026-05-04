@@ -9,8 +9,6 @@ use App\Models\Vacancy;
 final readonly class CheckoutData
 {
     public function __construct(
-        public Vacancy $vacancy,
-        public int $days,
         public int $amountKopecks,
         public string $currency,
         public string $orderId,
@@ -18,6 +16,10 @@ final readonly class CheckoutData
         public string $successUrl,
         public string $cancelUrl,
         public string $webhookUrl,
+        public ?Vacancy $vacancy     = null,
+        public ?int $days            = null,
+        public ?int $planId          = null,
+        public ?int $userId          = null,
         public ?string $customerEmail = null,
         public ?string $customerName  = null,
     ) {}
@@ -30,5 +32,10 @@ final readonly class CheckoutData
     public function amountMinorUnits(): int
     {
         return $this->amountKopecks;
+    }
+
+    public function isPlanSubscription(): bool
+    {
+        return $this->planId !== null && $this->userId !== null;
     }
 }

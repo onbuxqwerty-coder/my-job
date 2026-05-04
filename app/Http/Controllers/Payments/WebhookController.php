@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Payments;
 
 use App\Events\VacancyExtended;
+use App\Models\SubscriptionPlan;
+use App\Models\User;
 use App\Models\Vacancy;
 use App\Payments\DTOs\PaymentResult;
 use App\Payments\Exceptions\DuplicatePaymentException;
 use App\Payments\Exceptions\InvalidWebhookSignatureException;
+use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +21,7 @@ class WebhookController
 {
     public function __construct(
         private readonly PaymentGatewayRegistry $registry,
+        private readonly SubscriptionService $subscriptionService,
     ) {}
 
     /**
@@ -64,12 +68,15 @@ class WebhookController
         }
 
         try {
-            $this->processExtension($result, $gateway);
+            if ($result->isPlanSubscription()) {
+                $this->processPlanSubscription($result, $gateway);
+            } else {
+                $this->processExtension($result, $gateway);
+            }
         } catch (\Throwable $e) {
-            Log::channel('payments')->error("Extension failed [{$gateway}]", [
-                'event_id'   => $result->externalEventId,
-                'vacancy_id' => $result->vacancyId,
-                'error'      => $e->getMessage(),
+            Log::channel('payments')->error("Payment processing failed [{$gateway}]", [
+                'event_id' => $result->externalEventId,
+                'error'    => $e->getMessage(),
             ]);
             report($e);
             return $gw->successResponse();
@@ -78,6 +85,33 @@ class WebhookController
         $this->markProcessed($result->externalEventId, $gateway, $result->orderId);
 
         return $gw->successResponse();
+    }
+
+    private function processPlanSubscription(PaymentResult $result, string $gateway): void
+    {
+        if (! $result->planId || ! $result->userId) {
+            throw new \UnexpectedValueException(
+                "Cannot extract plan_id or user_id from orderId={$result->orderId}"
+            );
+        }
+
+        DB::transaction(function () use ($result, $gateway): void {
+            $user = User::lockForUpdate()->find($result->userId);
+            $plan = SubscriptionPlan::find($result->planId);
+
+            if (! $user || ! $plan) {
+                throw new \DomainException("User {$result->userId} or plan {$result->planId} not found");
+            }
+
+            $this->subscriptionService->activate($user, $plan);
+
+            Log::channel('payments')->info("Plan subscription activated [{$gateway}]", [
+                'user_id'  => $user->id,
+                'plan_id'  => $plan->id,
+                'plan'     => $plan->name,
+                'event_id' => $result->externalEventId,
+            ]);
+        });
     }
 
     private function checkIdempotency(string $eventId, string $gateway): void

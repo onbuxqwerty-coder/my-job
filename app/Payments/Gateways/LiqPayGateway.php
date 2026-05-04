@@ -81,11 +81,11 @@ class LiqPayGateway implements PaymentGateway
         $status = $decoded['status'] ?? '';
         $isPaid = in_array($status, ['success', 'sandbox'], true);
 
-        $orderId = $decoded['order_id'] ?? '';
-        [$vacancyId, $days] = CheckoutService::parseOrderId($orderId);
-
-        // LiqPay повертає суму у грн (float) → копійки
+        $orderId       = $decoded['order_id'] ?? '';
         $amountKopecks = (int) round((float) ($decoded['amount'] ?? 0) * 100);
+        $eventId       = isset($decoded['payment_id'])
+            ? (string) $decoded['payment_id']
+            : uniqid('liqpay_', true);
 
         Log::channel('payments')->debug('LiqPay webhook received', [
             'status'     => $status,
@@ -93,12 +93,31 @@ class LiqPayGateway implements PaymentGateway
             'payment_id' => $decoded['payment_id'] ?? null,
         ]);
 
+        // Plan subscription order: sub_{userId}_{planId}_{suffix}
+        if (str_starts_with($orderId, 'sub_')) {
+            [$userId, $planId] = CheckoutService::parseSubscriptionOrderId($orderId);
+
+            return new PaymentResult(
+                isPaid:          $isPaid,
+                gatewayName:     $this->name(),
+                externalEventId: $eventId,
+                orderId:         $orderId,
+                amountKopecks:   $amountKopecks,
+                currency:        $decoded['currency'] ?? 'UAH',
+                vacancyId:       null,
+                days:            null,
+                planId:          $planId,
+                userId:          $userId,
+                failureReason:   $isPaid ? null : ($decoded['err_description'] ?? "status={$status}"),
+            );
+        }
+
+        [$vacancyId, $days] = CheckoutService::parseOrderId($orderId);
+
         return new PaymentResult(
             isPaid:          $isPaid,
             gatewayName:     $this->name(),
-            externalEventId: isset($decoded['payment_id'])
-                ? (string) $decoded['payment_id']
-                : uniqid('liqpay_', true),
+            externalEventId: $eventId,
             orderId:         $orderId,
             amountKopecks:   $amountKopecks,
             currency:        $decoded['currency'] ?? 'UAH',
