@@ -18,10 +18,9 @@ class CheckJobPublishingLimit
     public function handle(Request $request, Closure $next): Response
     {
         if (! $this->subscriptionService->canPublishJob(auth()->user())) {
-            return response()->json(
-                ['message' => 'Ліміт вакансій вичерпано. Оновіть тариф.'],
-                403,
-            );
+            return redirect()
+                ->route('employer.dashboard')
+                ->with('limit_exceeded', true);
         }
 
         return $next($request);
