@@ -119,6 +119,7 @@ class WayForPayGateway implements PaymentGateway
 
         $response = Http::post(self::API_URL, array_merge($params, [
             'transactionType' => 'CREATE_INVOICE',
+            'apiVersion'      => 1,
         ]));
 
         if ($response->failed()) {
