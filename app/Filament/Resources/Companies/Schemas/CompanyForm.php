@@ -18,13 +18,24 @@ class CompanyForm
             ->components([
                 Grid::make(2)
                     ->schema([
-                        TextInput::make('name')
-                            ->label('Назва')
-                            ->required()
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn (?string $state, callable $set) =>
-                                $set('slug', \Illuminate\Support\Str::slug($state ?? ''))
-                            ),
+                        Grid::make(1)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Назва')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (?string $state, callable $set) =>
+                                        $set('slug', \Illuminate\Support\Str::slug($state ?? ''))
+                                    ),
+                                Select::make('user_id')
+                                    ->label('Власник')
+                                    ->relationship('user', 'name')
+                                    ->required(),
+                                TextInput::make('slug')
+                                    ->label('Slug')
+                                    ->required()
+                                    ->unique(ignoreRecord: true),
+                            ]),
                         FileUpload::make('logo')
                             ->label('Логотип')
                             ->image()
@@ -34,16 +45,7 @@ class CompanyForm
                             ->panelAspectRatio('1:1')
                             ->panelLayout('integrated')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
-                            ->maxSize(2048)
-                            ->extraAttributes(['style' => 'grid-row: span 3']),
-                        Select::make('user_id')
-                            ->label('Власник')
-                            ->relationship('user', 'name')
-                            ->required(),
-                        TextInput::make('slug')
-                            ->label('Slug')
-                            ->required()
-                            ->unique(ignoreRecord: true),
+                            ->maxSize(2048),
                     ]),
                 Textarea::make('description')
                     ->label('Опис')
