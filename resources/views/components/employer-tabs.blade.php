@@ -6,7 +6,7 @@
         ['route' => 'employer.candidates',         'label' => 'Кандидати'],
         ['route' => 'employer.message.templates',  'label' => 'Шаблони повідомлень'],
         ['route' => 'employer.analytics',          'label' => 'Аналітика'],
-        ['route' => 'employer.billing',            'label' => 'Мої платежі'],
+        ['route' => 'employer.billing',            'label' => 'Тарифи'],
         ['route' => 'employer.profile',            'label' => 'Профіль компанії'],
         ['route' => 'employer.my-profile',         'label' => 'Мій профіль'],
     ];
