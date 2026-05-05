@@ -195,6 +195,13 @@ class WayForPayGateway implements PaymentGateway
             config('payments.gateways.wayforpay.merchant_password'),
         );
 
+        Log::channel('payments')->debug('WayForPay buildFormParams', [
+            'order_id'         => $data->orderId,
+            'signature_string' => $signatureString,
+            'signature'        => $signature,
+            'amount_float'     => $amountFloat,
+            'amount_type'      => gettype($amountFloat),
+        ]);
 
         return [
             'merchantAccount'                 => config('payments.gateways.wayforpay.merchant_account'),
