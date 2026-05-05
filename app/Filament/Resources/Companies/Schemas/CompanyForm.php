@@ -17,7 +17,7 @@ class CompanyForm
     {
         return $schema
             ->components([
-                Grid::make(4)
+                Grid::make(2)
                     ->schema([
                         Group::make([
                             TextInput::make('name')
@@ -35,7 +35,7 @@ class CompanyForm
                                 ->label('Slug')
                                 ->required()
                                 ->unique(ignoreRecord: true),
-                        ])->columns(1)->columnSpan(2),
+                        ])->columns(1)->columnSpan(1),
                         FileUpload::make('logo')
                             ->label('Логотип')
                             ->image()
@@ -46,7 +46,7 @@ class CompanyForm
                             ->panelLayout('integrated')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
                             ->maxSize(2048)
-                            ->columnSpan(2),
+                            ->columnSpan(1),
                     ]),
                 Textarea::make('description')
                     ->label('Опис')
