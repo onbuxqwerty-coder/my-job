@@ -122,6 +122,8 @@ class WayForPayGateway implements PaymentGateway
             'apiVersion'      => 1,
         ]), JSON_UNESCAPED_UNICODE);
 
+        Log::channel('payments')->debug('WFP hosted payload', ['payload' => $payload]);
+
         $response = Http::withHeaders(['Content-Type' => 'application/json; charset=UTF-8'])
             ->withBody($payload, 'application/json')
             ->post(self::API_URL);
