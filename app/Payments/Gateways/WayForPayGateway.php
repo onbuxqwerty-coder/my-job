@@ -117,7 +117,7 @@ class WayForPayGateway implements PaymentGateway
     {
         $params = $this->buildFormParams($data);
 
-        $response = Http::post(self::API_URL, array_merge($params, [
+        $response = Http::asJson()->post(self::API_URL, array_merge($params, [
             'transactionType' => 'CREATE_INVOICE',
             'apiVersion'      => 1,
         ]));
