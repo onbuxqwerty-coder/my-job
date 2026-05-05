@@ -184,6 +184,16 @@ class WayForPayGateway implements PaymentGateway
             config('payments.gateways.wayforpay.merchant_password'),
         );
 
+        Log::channel('payments')->debug('WFP buildFormParams', [
+            'signature_string' => $signatureString,
+            'signature'        => $signature,
+            'merchant_account' => config('payments.gateways.wayforpay.merchant_account'),
+            'merchant_domain'  => config('payments.gateways.wayforpay.merchant_domain'),
+            'amount'           => $amount,
+            'currency'         => $data->currency,
+            'description'      => $data->description,
+        ]);
+
         return [
             'merchantAccount'                 => config('payments.gateways.wayforpay.merchant_account'),
             'merchantDomainName'              => config('payments.gateways.wayforpay.merchant_domain'),
