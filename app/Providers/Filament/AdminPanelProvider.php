@@ -100,6 +100,11 @@ class AdminPanelProvider extends PanelProvider
                         background: transparent !important;
                         box-shadow: none !important;
                     }
+                    html:not(.dark) .fi-input,
+                    html:not(.dark) .fi-select-input,
+                    html:not(.dark) textarea.fi-fo-textarea {
+                        border: 1px solid #7A7A7A !important;
+                    }
 
                     /* Dark theme */
                     html.dark body,
