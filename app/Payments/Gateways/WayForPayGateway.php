@@ -117,10 +117,14 @@ class WayForPayGateway implements PaymentGateway
     {
         $params = $this->buildFormParams($data);
 
-        $response = Http::asJson()->post(self::API_URL, array_merge($params, [
+        $payload = json_encode(array_merge($params, [
             'transactionType' => 'CREATE_INVOICE',
             'apiVersion'      => 1,
-        ]));
+        ]), JSON_UNESCAPED_UNICODE);
+
+        $response = Http::withHeaders(['Content-Type' => 'application/json; charset=UTF-8'])
+            ->withBody($payload, 'application/json')
+            ->post(self::API_URL);
 
         if ($response->failed()) {
             throw new PaymentGatewayException('WayForPay: API error: ' . $response->body());
