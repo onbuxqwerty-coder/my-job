@@ -35,7 +35,7 @@ class CompanyForm
                                 ->label('Slug')
                                 ->required()
                                 ->unique(ignoreRecord: true),
-                        ])->columnSpan(2),
+                        ])->columns(1)->columnSpan(2),
                         FileUpload::make('logo')
                             ->label('Логотип')
                             ->image()
