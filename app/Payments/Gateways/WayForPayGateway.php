@@ -164,19 +164,19 @@ class WayForPayGateway implements PaymentGateway
      */
     private function buildFormParams(CheckoutData $data): array
     {
-        $orderDate = time();
-        $amount    = number_format($data->amountUah(), 2, '.', '');
+        $orderDate   = time();
+        $amountFloat = $data->amountUah();
 
         $signatureString = implode(';', [
             config('payments.gateways.wayforpay.merchant_account'),
             config('payments.gateways.wayforpay.merchant_domain'),
             $data->orderId,
             $orderDate,
-            $amount,
+            $amountFloat,
             $data->currency,
             $data->description,
             1,
-            $amount,
+            $amountFloat,
         ]);
 
         $signature = hash_hmac(
@@ -190,7 +190,7 @@ class WayForPayGateway implements PaymentGateway
             'signature'        => $signature,
             'merchant_account' => config('payments.gateways.wayforpay.merchant_account'),
             'merchant_domain'  => config('payments.gateways.wayforpay.merchant_domain'),
-            'amount'           => $amount,
+            'amount'           => $amountFloat,
             'currency'         => $data->currency,
             'description'      => $data->description,
         ]);
@@ -201,11 +201,11 @@ class WayForPayGateway implements PaymentGateway
             'merchantTransactionSecureType'   => 'AUTO',
             'orderReference'                  => $data->orderId,
             'orderDate'                       => $orderDate,
-            'amount'                          => $amount,
+            'amount'                          => $amountFloat,
             'currency'                        => $data->currency,
             'productName'                     => [$data->description],
             'productCount'                    => [1],
-            'productPrice'                    => [$amount],
+            'productPrice'                    => [$amountFloat],
             'clientEmail'                     => $data->customerEmail ?? '',
             'clientFirstName'                 => $data->customerName  ?? '',
             'serviceUrl'                      => $data->webhookUrl,
