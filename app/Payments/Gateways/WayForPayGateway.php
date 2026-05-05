@@ -117,7 +117,6 @@ class WayForPayGateway implements PaymentGateway
     {
         $params = $this->buildFormParams($data);
 
-        // API використовує 'merchantSignature', форма — 'signature'
         $apiParams = array_merge(
             array_diff_key($params, ['signature' => '']),
             ['merchantSignature' => $params['signature']]
@@ -128,7 +127,6 @@ class WayForPayGateway implements PaymentGateway
             'apiVersion'      => 1,
         ]), JSON_UNESCAPED_UNICODE);
 
-        Log::channel('payments')->debug('WFP hosted payload', ['payload' => $payload]);
 
         $response = Http::withHeaders(['Content-Type' => 'application/json; charset=UTF-8'])
             ->withBody($payload, 'application/json')
@@ -197,15 +195,6 @@ class WayForPayGateway implements PaymentGateway
             config('payments.gateways.wayforpay.merchant_password'),
         );
 
-        Log::channel('payments')->debug('WFP buildFormParams', [
-            'signature_string' => $signatureString,
-            'signature'        => $signature,
-            'merchant_account' => config('payments.gateways.wayforpay.merchant_account'),
-            'merchant_domain'  => config('payments.gateways.wayforpay.merchant_domain'),
-            'amount'           => $amountFloat,
-            'currency'         => $data->currency,
-            'description'      => $data->description,
-        ]);
 
         return [
             'merchantAccount'                 => config('payments.gateways.wayforpay.merchant_account'),
