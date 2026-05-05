@@ -4,11 +4,10 @@ namespace App\Filament\Resources\Companies\Schemas;
 
 use App\Models\City;
 use Filament\Forms\Components\FileUpload;
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 
 class CompanyForm
@@ -19,23 +18,13 @@ class CompanyForm
             ->components([
                 Grid::make(2)
                     ->schema([
-                        Group::make([
-                            TextInput::make('name')
-                                ->label('Назва')
-                                ->required()
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(fn (?string $state, callable $set) =>
-                                    $set('slug', \Illuminate\Support\Str::slug($state ?? ''))
-                                ),
-                            Select::make('user_id')
-                                ->label('Власник')
-                                ->relationship('user', 'name')
-                                ->required(),
-                            TextInput::make('slug')
-                                ->label('Slug')
-                                ->required()
-                                ->unique(ignoreRecord: true),
-                        ])->columns(1)->columnSpan(1),
+                        TextInput::make('name')
+                            ->label('Назва')
+                            ->required()
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (?string $state, callable $set) =>
+                                $set('slug', \Illuminate\Support\Str::slug($state ?? ''))
+                            ),
                         FileUpload::make('logo')
                             ->label('Логотип')
                             ->image()
@@ -46,7 +35,16 @@ class CompanyForm
                             ->panelLayout('integrated')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
                             ->maxSize(2048)
-                            ->columnSpan(1),
+                            ->extraAttributes(['style' => 'grid-row: span 3'])
+                            ->rowSpan(3),
+                        Select::make('user_id')
+                            ->label('Власник')
+                            ->relationship('user', 'name')
+                            ->required(),
+                        TextInput::make('slug')
+                            ->label('Slug')
+                            ->required()
+                            ->unique(ignoreRecord: true),
                     ]),
                 Textarea::make('description')
                     ->label('Опис')
