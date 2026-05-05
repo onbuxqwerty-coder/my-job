@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             '/telegram/webhook',
             '/stripe/webhook',
             'webhooks/payments/*',
+            'dashboard/employer/billing/success',
         ]);
         $middleware->alias([
             'role'                  => \App\Http\Middleware\EnsureUserRole::class,
