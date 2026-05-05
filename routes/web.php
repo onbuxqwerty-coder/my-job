@@ -140,7 +140,7 @@ Route::middleware(['auth', 'role:employer'])
         // ── Білінг ────────────────────────────────────────────────────────
         Volt::route('/billing', 'pages.employer.billing')->name('billing');
         Volt::route('/billing/checkout/{plan}', 'pages.employer.billing-checkout')->name('billing.checkout');
-        Route::get('/billing/success', function () {
+        Route::match(['GET', 'POST'], '/billing/success', function () {
             return view('employer.billing-success');
         })->name('billing.success');
         Volt::route('/my-profile', 'pages.employer.my-profile')->name('my-profile');
