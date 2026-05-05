@@ -117,7 +117,13 @@ class WayForPayGateway implements PaymentGateway
     {
         $params = $this->buildFormParams($data);
 
-        $payload = json_encode(array_merge($params, [
+        // API використовує 'merchantSignature', форма — 'signature'
+        $apiParams = array_merge(
+            array_diff_key($params, ['signature' => '']),
+            ['merchantSignature' => $params['signature']]
+        );
+
+        $payload = json_encode(array_merge($apiParams, [
             'transactionType' => 'CREATE_INVOICE',
             'apiVersion'      => 1,
         ]), JSON_UNESCAPED_UNICODE);
