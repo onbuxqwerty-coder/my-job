@@ -164,7 +164,7 @@ class WayForPayGateway implements PaymentGateway
     private function buildFormParams(CheckoutData $data): array
     {
         $orderDate = time();
-        $amount    = $data->amountUah(); // WFP приймає float грн, не копійки
+        $amount    = number_format($data->amountUah(), 2, '.', '');
 
         $signatureString = implode(';', [
             config('payments.gateways.wayforpay.merchant_account'),
