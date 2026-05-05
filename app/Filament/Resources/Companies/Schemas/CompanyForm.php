@@ -17,6 +17,7 @@ class CompanyForm
         return $schema
             ->components([
                 Grid::make(2)
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(1)
                             ->schema([
