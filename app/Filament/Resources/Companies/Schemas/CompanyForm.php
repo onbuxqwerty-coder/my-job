@@ -35,8 +35,7 @@ class CompanyForm
                             ->panelLayout('integrated')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
                             ->maxSize(2048)
-                            ->extraAttributes(['style' => 'grid-row: span 3'])
-                            ->rowSpan(3),
+                            ->extraAttributes(['style' => 'grid-row: span 3']),
                         Select::make('user_id')
                             ->label('Власник')
                             ->relationship('user', 'name')
