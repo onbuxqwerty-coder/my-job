@@ -128,11 +128,11 @@ class WayForPayGateway implements PaymentGateway
         $invoiceUrl = $response->json('invoiceUrl');
 
         if (! $invoiceUrl) {
-            $reason = $response->json('reason') ?? 'unknown';
             Log::channel('payments')->error('WayForPay createHostedCheckout: no invoiceUrl', [
-                'reason'   => $reason,
-                'order_id' => $data->orderId,
+                'order_id'     => $data->orderId,
+                'full_response' => $response->json(),
             ]);
+            $reason = $response->json('reason') ?? 'unknown';
             throw new PaymentGatewayException("WayForPay: empty invoiceUrl. Reason: {$reason}");
         }
 
