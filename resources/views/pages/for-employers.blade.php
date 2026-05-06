@@ -20,13 +20,11 @@
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
                     Для роботодавців
                 </div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
-                    Знайдіть найкращих<br>
-                    <span class="text-blue-400">спеціалістів України</span>
+                <h1 class="text-4xl sm:text-5xl lg:text-5xl font-extrabold leading-tight tracking-tight mb-6" data-ninja-font="system-ui_extrabold_normal_u3lzd">
+                    Отримуйте кандидатів<br> <span style="color:#60A5FA">за 48 годин</span><br> після публікації вакансії
                 </h1>
                 <p class="text-lg sm:text-xl text-slate-300 mb-10 leading-relaxed">
-                    MyJob — найшвидший спосіб опублікувати вакансію та отримати відгуки від кандидатів.
-                    Telegram-розсилка, аналітика, шаблони — все в одному місці.
+                    Автоматична розсилка, аналітика та інструменти найму в одному місці.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <a href="{{ route('register') }}"
