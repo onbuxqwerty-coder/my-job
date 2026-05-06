@@ -33,6 +33,8 @@ http://www.myjob.co.ua
 |21 | Button Primary   | Text Color    | --btn-pri-text       | #FFFFFF   | #FFFFFF   |
 |22 | Button Ghost     | Text Color    | --btn-gho-text       | #374151   | #E5E7EB   |
 |23 | Button Ghost     | Border        | --btn-gho-border     | #D1D5DB   | #4B5563   |
+|24 | H1 for-employers | Text Color    | --h1-text-color      | #FFFFFF   | #FFFFFF   |
+|25 | H1 for-employers | Text Color    | --h1-text-color      | #60A5FA   | #60A5FA   |
 
 
  1. Типографіка                                                                                                                                                                                                                    

@@ -3,6 +3,7 @@
 ## AI-Powered Recruitment Platform (Laravel 13 + Telegram Integration)
 
 ---
+
 ## Communication
 - Завжди відповідай українською мовою.
 - Відповідай максимально коротко — економ ресурси і токени.
@@ -42,8 +43,6 @@
 ---
 
 ## 3. КАНОНІЧНА СХЕМА ДАНИХ
-
-Використовуй ці назви таблиць та полів:
 
 ### users
 * id, email, password, **role** (enum: candidate, employer, admin), **telegram_id** (bigInteger, indexed), timestamps, softDeletes.
@@ -89,11 +88,95 @@
 
 ---
 
-## 6. ЗАБОРОНИ
+## 6. ЗАБОРОНИ (загальні)
 ❌ Не писати бізнес-логіку в контролерах або Livewire-компонентах.
 ❌ Не зберігати секрети (API keys) в коді — тільки в `.env`.
 ❌ Не використовувати магічні числа.
 ❌ Не ігнорувати обробку помилок (try-catch у сервісах).
+
+---
+
+## 7. ⚠️ ТЕМИ — ЧИТАТИ ПЕРЕД БУДЬ-ЯКОЮ ЗМІНОЮ СТИЛІВ
+
+### Реальна архітектура CSS (один файл)
+
+```
+resources/css/
+└── app.css   ← ЄДИНИЙ файл стилів. Містить базові стилі + обидві теми.
+```
+
+**Перемикання теми:** атрибут на `<html>`: `data-theme="light"` або `data-theme="dark"`
+
+### Як влаштований app.css
+
+**Світла тема** — це стилі за замовчуванням (без префікса):
+```css
+.mj-card { background: #FFFFFF; border-color: #A7A7A7; }
+```
+
+**Темна тема** — це overrides з префіксом `html[data-theme="dark"]`:
+```css
+html[data-theme="dark"] .mj-card { background: #1F2937 !important; border-color: #374151 !important; }
+```
+
+### ПЕРЕД зміною стилів завжди запитай:
+> "Яку тему змінюємо: світлу, темну, чи обидві?"
+
+### Правила (обов'язкові)
+
+| Задача | Що редагувати в `app.css` |
+|--------|--------------------------|
+| Тільки світла тема | базовий клас БЕЗ префікса |
+| Тільки темна тема | блок `html[data-theme="dark"] .клас` |
+| Обидві теми | обидва блоки ОКРЕМО, з підтвердженням після кожного |
+
+❌ Змінив світлу — НЕ чіпай `html[data-theme="dark"]` блоки.
+❌ Змінив темну — НЕ чіпай базові класи (світла тема).
+❌ Зміна на одній сторінці ≠ зміна скрізь.
+❌ Не застосовувати зміни глобально при точковому запиті.
+❌ Не додавати новий клас без обох варіантів (світлий + темний).
+
+### При додаванні НОВОГО класу — обов'язковий шаблон:
+```css
+/* Світла тема (за замовчуванням) */
+.mj-new-element {
+  background: #FFFFFF;
+  color: #111827;
+  border: 1px solid #A7A7A7;
+}
+
+/* Темна тема */
+html[data-theme="dark"] .mj-new-element {
+  background: #1F2937 !important;
+  color: #E5E7EB !important;
+  border-color: #374151 !important;
+}
+```
+
+### Кольори тем (Brandbook — довідково)
+
+| Елемент | Light | Dark |
+|---------|-------|------|
+| Page background | `bg-main.webp` (repeat, fixed) | `#111827` |
+| Form container | `#F3F4F6` | `#1F2937` |
+| Input | `#FFFFFF` | `#111827` |
+| Primary text | `#111827` | `#E5E7EB` |
+| Header | `#FFFFFF` | `#111827` |
+| Header border | `#E5E7EB` | `#374151` |
+| Card | `#FFFFFF` / border `#A7A7A7` | `#1F2937` / border `#374151` |
+| Sidebar/filter | `#D2D2D2` | `#1F2937` |
+| Brand orange | `#F36F21` | `#F36F21` |
+
+---
+
+## 8. PHPUnit / Тести
+
+* PHPUnit 12: атрибути `#[Test]` (НЕ docblock `@test`)
+* Ролі: `UserRole::Candidate` Enum (НЕ рядок `'seeker'`)
+* Статуси: `ApplicationStatus::Pending` Enum (НЕ рядок)
+* `$this->actingAs()` викликати ДО `Volt::test()` (не в ланцюжку)
+* Volt компоненти замість стандартних Livewire
+* Тести: `tests/Feature/Seeker/` і `tests/Feature/Employer/`
 
 ---
 
