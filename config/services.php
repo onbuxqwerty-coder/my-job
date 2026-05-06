@@ -35,6 +35,12 @@ return [
         ],
     ],
 
+    'monobank' => [
+        'token'          => env('MONO_TOKEN'),
+        'account_id'     => env('MONO_ACCOUNT_ID'),
+        'webhook_secret' => env('MONO_WEBHOOK_SECRET'),
+    ],
+
     'stripe' => [
         'key'            => env('STRIPE_KEY', ''),
         'secret'         => env('STRIPE_SECRET', ''),

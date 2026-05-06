@@ -7,6 +7,9 @@ use App\Http\Controllers\ResumeWizardController;
 use App\Http\Controllers\TelegramAuthController;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/mono/webhook', \App\Http\Controllers\Api\MonobankWebhookController::class)
+    ->name('mono.webhook');
+
 Route::prefix('telegram/auth')->group(function (): void {
     Route::post('/init', [TelegramAuthController::class, 'init'])->middleware('throttle:20,1');
     Route::get('/status/{token}', [TelegramAuthController::class, 'status'])->middleware('throttle:120,1');

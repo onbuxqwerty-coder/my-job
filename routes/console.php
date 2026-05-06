@@ -10,6 +10,8 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+Schedule::command('mono:check-payments')->everyThirtyMinutes();
+
 Schedule::command('app:send-vacancy-alerts')->hourly();
 Schedule::command('app:deactivate-expired-featured')->daily();
 Schedule::command('app:deactivate-expired-promos')->hourly();

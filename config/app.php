@@ -118,6 +118,9 @@ return [
     |
     */
 
+    'company_iban'   => env('COMPANY_IBAN', 'UA000000000000000000000000000'),
+    'company_edrpou' => env('COMPANY_EDRPOU', ''),
+
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
