@@ -9,40 +9,38 @@ use Illuminate\Support\Facades\Log;
 
 class MonobankService
 {
-    protected string $baseUrl = 'https://api.monobank.ua';
+    protected string $baseUrl = 'https://corp-api.monobank.ua';
     protected string $token;
-    protected string $accountId;
+    protected string $accountIban;
 
     public function __construct()
     {
-        $this->token     = config('services.monobank.token');
-        $this->accountId = config('services.monobank.account_id');
+        $this->token       = config('services.monobank.token');
+        $this->accountIban = config('services.monobank.account_iban');
     }
 
     /**
-     * Отримати виписку за діапазон часу. Monobank повертає суми в копійках.
+     * Отримати виписку за діапазон часу (Corporate API).
+     * Повертає суми в копійках, тільки статус DONE.
      */
     public function getStatements(int $fromTimestamp, int $toTimestamp): array
     {
-        $response = Http::withHeaders(['X-Token' => $this->token])
-            ->get("{$this->baseUrl}/personal/statement/{$this->accountId}/{$fromTimestamp}/{$toTimestamp}");
+        $response = Http::withHeaders([
+            'x-token' => $this->token,
+            'accept'  => 'application/json',
+        ])->get("{$this->baseUrl}/ext/v1/statement/{$this->accountIban}/{$fromTimestamp}/{$toTimestamp}");
 
         if ($response->failed()) {
-            Log::error('Monobank statement error', ['body' => $response->body()]);
+            Log::error('Monobank statement error', [
+                'status' => $response->status(),
+                'body'   => $response->body(),
+            ]);
             return [];
         }
 
-        return $response->json() ?? [];
-    }
-
-    /**
-     * Зареєструвати Webhook URL у Monobank (викликати один раз).
-     */
-    public function registerWebhook(string $url): bool
-    {
-        $response = Http::withHeaders(['X-Token' => $this->token])
-            ->post("{$this->baseUrl}/personal/webhook", ['webHookUrl' => $url]);
-
-        return $response->successful();
+        return array_filter(
+            $response->json() ?? [],
+            fn(array $item) => ($item['status'] ?? '') === 'DONE'
+        );
     }
 }

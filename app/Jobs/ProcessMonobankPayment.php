@@ -20,6 +20,11 @@ class ProcessMonobankPayment implements ShouldQueue
 
     public function handle(): void
     {
+        // Корпоративний API повертає статус DONE/PENDING/DECLINED
+        if (($this->statement['status'] ?? '') !== 'DONE') {
+            return;
+        }
+
         $statementId  = $this->statement['id']          ?? null;
         $description  = $this->statement['description'] ?? '';
         $amountKopeks = $this->statement['amount']      ?? 0;

@@ -36,9 +36,8 @@ return [
     ],
 
     'monobank' => [
-        'token'          => env('MONO_TOKEN'),
-        'account_id'     => env('MONO_ACCOUNT_ID'),
-        'webhook_secret' => env('MONO_WEBHOOK_SECRET'),
+        'token'        => env('MONO_TOKEN'),
+        'account_iban' => env('MONO_ACCOUNT_IBAN'),
     ],
 
     'stripe' => [

@@ -12,14 +12,9 @@ class RegisterMonobankWebhook extends Command
     protected $signature   = 'mono:register-webhook';
     protected $description = 'Зареєструвати Webhook URL у Monobank';
 
-    public function handle(MonobankService $mono): void
+    public function handle(): void
     {
-        $url = route('mono.webhook');
-
-        if ($mono->registerWebhook($url)) {
-            $this->info("Webhook зареєстровано: {$url}");
-        } else {
-            $this->error('Помилка реєстрації Webhook. Перевір MONO_TOKEN і доступність URL.');
-        }
+        $this->warn('Корпоративний Monobank API не підтримує реєстрацію webhook через API.');
+        $this->info('Для отримання webhook зверніться до підтримки Monobank або використовуйте cron-polling (mono:check-payments).');
     }
 }

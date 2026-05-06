@@ -27,6 +27,7 @@ class MonobankPaymentTest extends TestCase
                     'id'          => 'stmt_abc123',
                     'amount'      => 50000,
                     'description' => 'Оплата замовлення №ORDER-1',
+                    'status'      => 'DONE',
                     'time'        => now()->timestamp,
                 ],
             ],
@@ -51,6 +52,7 @@ class MonobankPaymentTest extends TestCase
         $statement = [
             'id'          => 'stmt_unique_001',
             'amount'      => 50000,
+            'status'      => 'DONE',
             'description' => 'Оплата замовлення №ORDER-' . $order->id,
             'time'        => now()->timestamp,
         ];
@@ -78,6 +80,7 @@ class MonobankPaymentTest extends TestCase
         $statement = [
             'id'          => 'stmt_dup_001',
             'amount'      => 50000,
+            'status'      => 'DONE',
             'description' => 'Оплата замовлення №ORDER-' . $order->id,
             'time'        => now()->timestamp,
         ];
@@ -101,6 +104,7 @@ class MonobankPaymentTest extends TestCase
         $statement = [
             'id'          => 'stmt_wrong_amount',
             'amount'      => 10000,
+            'status'      => 'DONE',
             'description' => 'Оплата замовлення №ORDER-' . $order->id,
             'time'        => now()->timestamp,
         ];
