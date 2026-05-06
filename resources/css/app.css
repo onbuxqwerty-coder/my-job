@@ -1032,6 +1032,18 @@ html[data-theme="dark"] .mj-alert strong {
   color: #FFFFFF !important;
 }
 
+/* ── Billing page background ─────────────────────────────────────── */
+.mj-billing-bg {
+    background-image: url('/img/bg-main.webp?v=3');
+    background-size: auto;
+    background-repeat: repeat;
+    background-attachment: fixed;
+}
+[data-theme="dark"] .mj-billing-bg {
+    background-image: none;
+    background-color: #111827;
+}
+
 /* Global border override — light theme: all Tailwind gray borders → #a7a7a7 */
 html:not([data-theme="dark"]) .border-gray-100,
 html:not([data-theme="dark"]) .border-gray-200,
