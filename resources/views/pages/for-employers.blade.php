@@ -81,27 +81,27 @@
 </section>
 
 {{-- How it works Section --}}
-<section class="bg-white py-20 lg:py-28" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="mj-billing-bg py-20 lg:py-28">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Як це працює?</h2>
-            <p class="text-lg text-slate-500 max-w-2xl mx-auto">Від реєстрації до першого відгуку — не більше 15 хвилин</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Як це працює?</h2>
+            <p class="text-lg text-gray-500 max-w-2xl mx-auto">Від реєстрації до першого відгуку — не більше 15 хвилин</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             <div class="relative text-center">
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 text-2xl font-extrabold mb-6">1</div>
-                <h3 class="text-xl font-bold text-slate-900 mb-3">Зареєструйтесь</h3>
-                <p class="text-slate-500 leading-relaxed">Створіть акаунт і заповніть профіль компанії. Без верифікацій та затримок — одразу публікуйте.</p>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Зареєструйтесь</h3>
+                <p class="text-gray-500 leading-relaxed">Створіть акаунт і заповніть профіль компанії. Без верифікацій та затримок — одразу публікуйте.</p>
             </div>
             <div class="relative text-center">
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 text-2xl font-extrabold mb-6">2</div>
-                <h3 class="text-xl font-bold text-slate-900 mb-3">Опублікуйте вакансію</h3>
-                <p class="text-slate-500 leading-relaxed">Зручна форма, категорії, зарплата, вимоги. Вакансія одразу потрапляє у Telegram-канал та на сайт.</p>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Опублікуйте вакансію</h3>
+                <p class="text-gray-500 leading-relaxed">Зручна форма, категорії, зарплата, вимоги. Вакансія одразу потрапляє у Telegram-канал та на сайт.</p>
             </div>
             <div class="relative text-center">
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 text-2xl font-extrabold mb-6">3</div>
-                <h3 class="text-xl font-bold text-slate-900 mb-3">Отримуйте кандидатів</h3>
-                <p class="text-slate-500 leading-relaxed">Переглядайте відгуки, листуйтесь з кандидатами, змінюйте статуси і призначайте інтерв'ю — все в одному кабінеті.</p>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Отримуйте кандидатів</h3>
+                <p class="text-gray-500 leading-relaxed">Переглядайте відгуки, листуйтесь з кандидатами, змінюйте статуси і призначайте інтерв'ю — все в одному кабінеті.</p>
             </div>
         </div>
     </div>
@@ -168,11 +168,11 @@
 </section>
 
 {{-- Pricing Section --}}
-<section class="bg-white py-20 lg:py-28" id="pricing" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="mj-billing-bg py-20 lg:py-28" id="pricing">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Тарифи</h2>
-            <p class="text-lg text-slate-500 max-w-2xl mx-auto">Обирайте план, який підходить вашій компанії. Починайте безкоштовно — оновіть, коли будете готові.</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Тарифи</h2>
+            <p class="text-lg text-gray-500 max-w-2xl mx-auto">Обирайте план, який підходить вашій компанії. Починайте безкоштовно — оновіть, коли будете готові.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -188,8 +188,7 @@
                     $teamMembers = $plan->feature(\App\Enums\PlanFeature::TeamMembers);
                     $hasApi = $plan->feature(\App\Enums\PlanFeature::ApiAccess);
                 @endphp
-                <div class="relative rounded-3xl p-8 flex flex-col {{ $isPopular ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/30 -mt-4 -mb-4' : 'text-white' }}"
-                     style="{{ $isPopular ? 'border:2px solid #2563eb' : 'background-color:#1F2937;border:1px solid #4B5563' }}">
+                <div class="relative rounded-3xl p-8 flex flex-col {{ $isPopular ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/30 border-2 border-blue-600 -mt-4 -mb-4' : 'bg-white border border-gray-200 text-gray-900' }}">
                     @if($isPopular)
                         <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-900 text-xs font-extrabold uppercase tracking-wider px-4 py-1.5 rounded-full shadow">
                             Найпопулярніший
@@ -200,7 +199,7 @@
                         <h3 class="text-xl font-extrabold mb-1">{{ $plan->name }}</h3>
                         <div class="flex items-end gap-1 mt-4">
                             <span class="text-4xl font-extrabold">{{ number_format($plan->price_monthly, 0, '.', ' ') }}</span>
-                            <span class="text-slate-400 text-sm mb-1.5">грн/міс</span>
+                            <span class="{{ $isPopular ? 'text-blue-200' : 'text-gray-500' }} text-sm mb-1.5">грн/міс</span>
                         </div>
                     </div>
 
@@ -279,7 +278,7 @@
 
         {{-- Free plan note --}}
         <div class="mt-10 text-center">
-            <p class="text-slate-500 text-sm">
+            <p class="text-gray-500 text-sm">
                 Хочете спочатку спробувати? Безкоштовний план включає 1 активну вакансію та до 10 відгуків.
                 <a href="{{ route('register') }}" class="text-blue-600 font-semibold hover:underline">Зареєструватись безкоштовно &rarr;</a>
             </p>
@@ -288,55 +287,55 @@
 </section>
 
 {{-- Testimonials Section --}}
-<section class="bg-slate-50 py-20 lg:py-28" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="mj-billing-bg py-20 lg:py-28">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Нам довіряють компанії</h2>
-            <p class="text-lg text-slate-500">Що кажуть роботодавці, які вже використовують MyJob</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Нам довіряють компанії</h2>
+            <p class="text-lg text-gray-500">Що кажуть роботодавці, які вже використовують MyJob</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="rounded-2xl p-7" style="background-color:#1F2937;border:1px solid #4B5563">
+            <div class="rounded-2xl p-7 bg-white border border-gray-200">
                 <div class="flex gap-1 mb-4">
                     @for($i = 0; $i < 5; $i++)
                         <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     @endfor
                 </div>
-                <p class="text-slate-300 text-sm leading-relaxed mb-5">"Закрили вакансію senior розробника за 3 тижні. Telegram-розсилка дала нам кандидатів, яких ми б не знайшли на інших платформах."</p>
+                <p class="text-gray-600 text-sm leading-relaxed mb-5">"Закрили вакансію senior розробника за 3 тижні. Telegram-розсилка дала нам кандидатів, яких ми б не знайшли на інших платформах."</p>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">ОК</div>
                     <div>
-                        <div class="font-semibold text-white text-sm">Олена Коваленко</div>
-                        <div class="text-slate-400 text-xs">HR-менеджер, TechUA</div>
+                        <div class="font-semibold text-gray-900 text-sm">Олена Коваленко</div>
+                        <div class="text-gray-500 text-xs">HR-менеджер, TechUA</div>
                     </div>
                 </div>
             </div>
-            <div class="rounded-2xl p-7" style="background-color:#1F2937;border:1px solid #4B5563">
+            <div class="rounded-2xl p-7 bg-white border border-gray-200">
                 <div class="flex gap-1 mb-4">
                     @for($i = 0; $i < 5; $i++)
                         <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     @endfor
                 </div>
-                <p class="text-slate-300 text-sm leading-relaxed mb-5">"Зручний кабінет, швидка підтримка. Шаблони повідомлень заощадили нам купу часу — тепер відповідаємо кандидатам у 2 кліки."</p>
+                <p class="text-gray-600 text-sm leading-relaxed mb-5">"Зручний кабінет, швидка підтримка. Шаблони повідомлень заощадили нам купу часу — тепер відповідаємо кандидатам у 2 кліки."</p>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-sm">МП</div>
                     <div>
-                        <div class="font-semibold text-white text-sm">Максим Петренко</div>
-                        <div class="text-slate-400 text-xs">CEO, Будівельна компанія «Форум»</div>
+                        <div class="font-semibold text-gray-900 text-sm">Максим Петренко</div>
+                        <div class="text-gray-500 text-xs">CEO, Будівельна компанія «Форум»</div>
                     </div>
                 </div>
             </div>
-            <div class="rounded-2xl p-7" style="background-color:#1F2937;border:1px solid #4B5563">
+            <div class="rounded-2xl p-7 bg-white border border-gray-200">
                 <div class="flex gap-1 mb-4">
                     @for($i = 0; $i < 5; $i++)
                         <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     @endfor
                 </div>
-                <p class="text-slate-300 text-sm leading-relaxed mb-5">"Перейшли з іншого сайту вакансій — різниця відчутна. Більше цільових відгуків, менше «сміття». Рекомендуємо всім ритейлерам."</p>
+                <p class="text-gray-600 text-sm leading-relaxed mb-5">"Перейшли з іншого сайту вакансій — різниця відчутна. Більше цільових відгуків, менше «сміття». Рекомендуємо всім ритейлерам."</p>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-sm">НС</div>
                     <div>
-                        <div class="font-semibold text-white text-sm">Наталія Савченко</div>
-                        <div class="text-slate-400 text-xs">HR-директор, Мережа «Аврора»</div>
+                        <div class="font-semibold text-gray-900 text-sm">Наталія Савченко</div>
+                        <div class="text-gray-500 text-xs">HR-директор, Мережа «Аврора»</div>
                     </div>
                 </div>
             </div>
@@ -345,10 +344,10 @@
 </section>
 
 {{-- FAQ Section --}}
-<section class="bg-white py-20 lg:py-28" style="background-image: url('{{ asset('img/bg-main.webp') }}'); background-repeat: repeat;">
+<section class="mj-billing-bg py-20 lg:py-28">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Часті запитання</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Часті запитання</h2>
         </div>
         <div class="space-y-4" x-data="{ open: null }">
             @php
@@ -362,16 +361,16 @@
             @endphp
 
             @foreach($faqs as $index => $faq)
-            <div class="rounded-2xl overflow-hidden" style="background-color:#1F2937;border:1px solid #4B5563" x-data="{ open: false }">
+            <div class="rounded-2xl overflow-hidden bg-white border border-gray-200" x-data="{ open: false }">
                 <button
                     @click="open = !open"
-                    class="w-full flex items-center justify-between px-6 py-5 text-left font-semibold text-white hover:bg-white/5 transition-colors duration-150"
+                    class="w-full flex items-center justify-between px-6 py-5 text-left font-semibold text-gray-900 hover:bg-gray-50 transition-colors duration-150"
                 >
                     <span>{{ $faq['q'] }}</span>
-                    <svg class="w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <svg class="w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-6 pb-5">
-                    <p class="text-slate-300 leading-relaxed">{{ $faq['a'] }}</p>
+                    <p class="text-gray-600 leading-relaxed">{{ $faq['a'] }}</p>
                 </div>
             </div>
             @endforeach
