@@ -116,7 +116,7 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {{-- Feature 1 --}}
-            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1e293b; border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1F2937; border: 1px solid #4B5563;">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/15 text-blue-400 mb-5">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                 </div>
@@ -124,7 +124,7 @@
                 <p class="text-slate-400 text-sm leading-relaxed">Кожна нова вакансія автоматично надходить підписникам Telegram-каналу. Миттєве охоплення аудиторії.</p>
             </div>
             {{-- Feature 2 --}}
-            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1e293b; border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1F2937; border: 1px solid #4B5563;">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-green-500/15 text-green-400 mb-5">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 </div>
@@ -132,7 +132,7 @@
                 <p class="text-slate-400 text-sm leading-relaxed">Перегляди, відгуки, конверсія по кожній вакансії. Розумійте, що працює, а що — ні.</p>
             </div>
             {{-- Feature 3 --}}
-            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1e293b; border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1F2937; border: 1px solid #4B5563;">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-purple-500/15 text-purple-400 mb-5">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                 </div>
@@ -140,7 +140,7 @@
                 <p class="text-slate-400 text-sm leading-relaxed">Готові шаблони для комунікації з кандидатами — запрошення на інтерв'ю, відмова, пропозиція. Економте час HR.</p>
             </div>
             {{-- Feature 4 --}}
-            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1e293b; border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1F2937; border: 1px solid #4B5563;">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-orange-500/15 text-orange-400 mb-5">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 </div>
@@ -148,7 +148,7 @@
                 <p class="text-slate-400 text-sm leading-relaxed">Додавайте HR-менеджерів до свого акаунту. Розподіляйте вакансії та кандидатів між членами команди.</p>
             </div>
             {{-- Feature 5 --}}
-            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1e293b; border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1F2937; border: 1px solid #4B5563;">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-red-500/15 text-red-400 mb-5">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
@@ -156,7 +156,7 @@
                 <p class="text-slate-400 text-sm leading-relaxed">Зручний календар співбесід з нагадуваннями. Кандидати отримують автоматичні сповіщення про час і місце.</p>
             </div>
             {{-- Feature 6 --}}
-            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1e293b; border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7 hover:bg-slate-700/50 transition-colors duration-200" style="background-color: #1F2937; border: 1px solid #4B5563;">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-teal-500/15 text-teal-400 mb-5">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                 </div>
@@ -188,8 +188,8 @@
                     $teamMembers = $plan->feature(\App\Enums\PlanFeature::TeamMembers);
                     $hasApi = $plan->feature(\App\Enums\PlanFeature::ApiAccess);
                 @endphp
-                <div class="relative rounded-3xl p-8 flex flex-col {{ $isPopular ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/30 -mt-4 -mb-4' : 'bg-white text-slate-900 shadow-sm' }}"
-                     style="border: {{ $isPopular ? '2px solid #2563eb' : '1px solid #7A7A7A' }};">
+                <div class="relative rounded-3xl p-8 flex flex-col {{ $isPopular ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/30 -mt-4 -mb-4' : 'text-white' }}"
+                     style="{{ $isPopular ? 'border:2px solid #2563eb' : 'background-color:#1F2937;border:1px solid #4B5563' }}">
                     @if($isPopular)
                         <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-900 text-xs font-extrabold uppercase tracking-wider px-4 py-1.5 rounded-full shadow">
                             Найпопулярніший
@@ -295,47 +295,47 @@
             <p class="text-lg text-slate-500">Що кажуть роботодавці, які вже використовують MyJob</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white rounded-2xl p-7 shadow-sm" style="border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7" style="background-color:#1F2937;border:1px solid #4B5563">
                 <div class="flex gap-1 mb-4">
                     @for($i = 0; $i < 5; $i++)
                         <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     @endfor
                 </div>
-                <p class="text-slate-600 text-sm leading-relaxed mb-5">"Закрили вакансію senior розробника за 3 тижні. Telegram-розсилка дала нам кандидатів, яких ми б не знайшли на інших платформах."</p>
+                <p class="text-slate-300 text-sm leading-relaxed mb-5">"Закрили вакансію senior розробника за 3 тижні. Telegram-розсилка дала нам кандидатів, яких ми б не знайшли на інших платформах."</p>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">ОК</div>
                     <div>
-                        <div class="font-semibold text-slate-900 text-sm">Олена Коваленко</div>
+                        <div class="font-semibold text-white text-sm">Олена Коваленко</div>
                         <div class="text-slate-400 text-xs">HR-менеджер, TechUA</div>
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-2xl p-7 shadow-sm" style="border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7" style="background-color:#1F2937;border:1px solid #4B5563">
                 <div class="flex gap-1 mb-4">
                     @for($i = 0; $i < 5; $i++)
                         <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     @endfor
                 </div>
-                <p class="text-slate-600 text-sm leading-relaxed mb-5">"Зручний кабінет, швидка підтримка. Шаблони повідомлень заощадили нам купу часу — тепер відповідаємо кандидатам у 2 кліки."</p>
+                <p class="text-slate-300 text-sm leading-relaxed mb-5">"Зручний кабінет, швидка підтримка. Шаблони повідомлень заощадили нам купу часу — тепер відповідаємо кандидатам у 2 кліки."</p>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-sm">МП</div>
                     <div>
-                        <div class="font-semibold text-slate-900 text-sm">Максим Петренко</div>
+                        <div class="font-semibold text-white text-sm">Максим Петренко</div>
                         <div class="text-slate-400 text-xs">CEO, Будівельна компанія «Форум»</div>
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-2xl p-7 shadow-sm" style="border: 1px solid #7A7A7A;">
+            <div class="rounded-2xl p-7" style="background-color:#1F2937;border:1px solid #4B5563">
                 <div class="flex gap-1 mb-4">
                     @for($i = 0; $i < 5; $i++)
                         <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     @endfor
                 </div>
-                <p class="text-slate-600 text-sm leading-relaxed mb-5">"Перейшли з іншого сайту вакансій — різниця відчутна. Більше цільових відгуків, менше «сміття». Рекомендуємо всім ритейлерам."</p>
+                <p class="text-slate-300 text-sm leading-relaxed mb-5">"Перейшли з іншого сайту вакансій — різниця відчутна. Більше цільових відгуків, менше «сміття». Рекомендуємо всім ритейлерам."</p>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-sm">НС</div>
                     <div>
-                        <div class="font-semibold text-slate-900 text-sm">Наталія Савченко</div>
+                        <div class="font-semibold text-white text-sm">Наталія Савченко</div>
                         <div class="text-slate-400 text-xs">HR-директор, Мережа «Аврора»</div>
                     </div>
                 </div>
@@ -362,16 +362,16 @@
             @endphp
 
             @foreach($faqs as $index => $faq)
-            <div class="rounded-2xl overflow-hidden bg-white" style="border: 1px solid #7A7A7A;" x-data="{ open: false }">
+            <div class="rounded-2xl overflow-hidden" style="background-color:#1F2937;border:1px solid #4B5563" x-data="{ open: false }">
                 <button
                     @click="open = !open"
-                    class="w-full flex items-center justify-between px-6 py-5 text-left font-semibold text-slate-900 hover:bg-slate-50 transition-colors duration-150"
+                    class="w-full flex items-center justify-between px-6 py-5 text-left font-semibold text-white hover:bg-white/5 transition-colors duration-150"
                 >
                     <span>{{ $faq['q'] }}</span>
                     <svg class="w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-6 pb-5">
-                    <p class="text-slate-500 leading-relaxed">{{ $faq['a'] }}</p>
+                    <p class="text-slate-300 leading-relaxed">{{ $faq['a'] }}</p>
                 </div>
             </div>
             @endforeach

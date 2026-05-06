@@ -48,68 +48,71 @@ new #[Layout('layouts.app')] class extends Component
     <div class="max-w-lg mx-auto px-4 py-12">
 
         {{-- Plan summary --}}
-        <div class="bg-white rounded-2xl border border-gray-200 p-6 mb-6 text-center">
-            <p class="text-sm text-gray-500 mb-1">Ви обрали тариф</p>
-            <h1 class="text-2xl font-extrabold text-gray-900">{{ $plan->name }}</h1>
-            <p class="text-3xl font-bold text-blue-600 mt-2">
+        <div class="rounded-2xl p-6 mb-6 text-center" style="background-color:#1F2937;border:1px solid #4B5563">
+            <p class="text-sm text-gray-400 mb-1">Ви обрали тариф</p>
+            <h1 class="text-2xl font-extrabold text-white">{{ $plan->name }}</h1>
+            <p class="text-3xl font-bold text-blue-400 mt-2">
                 {{ number_format($plan->price_monthly, 0, '.', ' ') }} ₴
                 <span class="text-base font-normal text-gray-400">/міс</span>
             </p>
         </div>
 
         {{-- Gateway selection --}}
-        <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 text-center">Оберіть спосіб оплати</p>
+        <p class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3 text-center">Оберіть спосіб оплати</p>
 
         <div class="flex flex-col gap-3">
 
             {{-- LiqPay --}}
             <button wire:click="pay('liqpay')" wire:loading.attr="disabled"
-                    class="flex items-center gap-4 w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl hover:border-blue-500 hover:shadow-md transition-all text-left">
+                    class="flex items-center gap-4 w-full px-5 py-4 rounded-2xl hover:border-blue-500 hover:shadow-md transition-all text-left"
+                    style="background-color:#1F2937;border:1px solid #4B5563">
                 <div class="w-10 h-10 rounded-xl bg-[#FF6600] flex items-center justify-center shrink-0">
                     <span class="text-white text-xs font-black">LP</span>
                 </div>
                 <div>
-                    <p class="font-bold text-gray-900">LiqPay</p>
+                    <p class="font-bold text-white">LiqPay</p>
                     <p class="text-xs text-gray-400">Картка, Apple Pay, Google Pay</p>
                 </div>
-                <svg class="ml-auto w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <svg class="ml-auto w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
 
             {{-- WayForPay --}}
             <button wire:click="pay('wayforpay')" wire:loading.attr="disabled"
-                    class="flex items-center gap-4 w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl hover:border-blue-500 hover:shadow-md transition-all text-left">
+                    class="flex items-center gap-4 w-full px-5 py-4 rounded-2xl hover:border-blue-500 hover:shadow-md transition-all text-left"
+                    style="background-color:#1F2937;border:1px solid #4B5563">
                 <div class="w-10 h-10 rounded-xl bg-[#0066CC] flex items-center justify-center shrink-0">
                     <span class="text-white text-xs font-black">WP</span>
                 </div>
                 <div>
-                    <p class="font-bold text-gray-900">WayForPay</p>
+                    <p class="font-bold text-white">WayForPay</p>
                     <p class="text-xs text-gray-400">Картка, частинами, QR</p>
                 </div>
-                <svg class="ml-auto w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <svg class="ml-auto w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
 
             {{-- MonoPay --}}
             <button wire:click="pay('mono')" wire:loading.attr="disabled"
-                    class="flex items-center gap-4 w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl hover:border-blue-500 hover:shadow-md transition-all text-left">
+                    class="flex items-center gap-4 w-full px-5 py-4 rounded-2xl hover:border-blue-500 hover:shadow-md transition-all text-left"
+                    style="background-color:#1F2937;border:1px solid #4B5563">
                 <div class="w-10 h-10 rounded-xl bg-[#1A1A1A] flex items-center justify-center shrink-0">
                     <span class="text-white text-xs font-black">M</span>
                 </div>
                 <div>
-                    <p class="font-bold text-gray-900">MonoPay</p>
+                    <p class="font-bold text-white">MonoPay</p>
                     <p class="text-xs text-gray-400">monobank, Apple Pay, Google Pay</p>
                 </div>
-                <svg class="ml-auto w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <svg class="ml-auto w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
         </div>
 
         <div class="mt-6 text-center">
-            <a href="{{ route('employer.billing') }}" class="text-sm text-gray-400 hover:text-gray-600">← Повернутись до тарифів</a>
+            <a href="{{ route('employer.billing') }}" class="text-sm text-gray-500 hover:text-gray-300">← Повернутись до тарифів</a>
         </div>
 
-        <div wire:loading class="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-            <div class="bg-white rounded-2xl px-8 py-6 text-center shadow-xl">
-                <div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-                <p class="text-sm font-medium text-gray-700">Перенаправлення на оплату...</p>
+        <div wire:loading class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="rounded-2xl px-8 py-6 text-center shadow-xl" style="background-color:#1F2937;border:1px solid #4B5563">
+                <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+                <p class="text-sm font-medium text-gray-300">Перенаправлення на оплату...</p>
             </div>
         </div>
 
