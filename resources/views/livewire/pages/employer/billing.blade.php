@@ -97,7 +97,7 @@ new #[Layout('layouts.app')] class extends Component
 <div class="min-h-screen mj-billing-bg">
     <x-employer-tabs />
 
-    <div class="max-w-5xl mx-auto px-4 py-8 space-y-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
         {{-- ── Секція 1: Поточний тариф ── --}}
         <div class="bg-white border border-gray-200 rounded-2xl p-6">
