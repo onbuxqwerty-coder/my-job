@@ -56,7 +56,7 @@ new #[Layout('layouts.app')] class extends Component
             $this->salaryFrom     = (string) ($vacancy->salary_from ?? '');
             $this->salaryTo       = (string) ($vacancy->salary_to ?? '');
             $this->currency       = $vacancy->currency;
-            $this->isActive       = $vacancy->is_active;
+            $this->isActive       = $vacancy->is_active || $vacancy->published_at === null;
             $this->isFeatured     = $vacancy->is_featured;
             $this->isTop          = $vacancy->is_top;
             $this->languages      = $vacancy->languages ?? [];
@@ -84,9 +84,20 @@ new #[Layout('layouts.app')] class extends Component
 
         $company = auth()->user()->company;
 
-        if (! $this->vacancyId && ! app(SubscriptionService::class)->canPublishJob(auth()->user())) {
-            $this->addError('title', 'Ліміт вакансій вичерпано. Оновіть тариф.');
+        $subscriptionService = app(SubscriptionService::class);
+
+        if (! $this->vacancyId && ! $subscriptionService->canPublishJob(auth()->user())) {
+            $this->redirect(route('employer.billing'), navigate: true);
             return;
+        }
+
+        if ($this->vacancyId && $this->isActive) {
+            $currentVacancy = Vacancy::where('company_id', auth()->user()->company->id)
+                ->findOrFail($this->vacancyId);
+            if (! $currentVacancy->is_active && ! $subscriptionService->canPublishJob(auth()->user())) {
+                $this->redirect(route('employer.billing'), navigate: true);
+                return;
+            }
         }
 
         $data = [

@@ -7,6 +7,7 @@ namespace App\Livewire\Employer;
 use App\Enums\UserRole;
 use App\Models\Category;
 use App\Models\Vacancy;
+use App\Services\SubscriptionService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -66,6 +67,12 @@ final class QuickPublishForm extends Component
                 session(['pending_vacancy' => $validated]);
                 $this->resetForm();
                 $this->redirect(route('employer.profile'), navigate: true);
+                return;
+            }
+
+            if (! app(SubscriptionService::class)->canPublishJob(auth()->user())) {
+                $this->resetForm();
+                $this->redirect(route('employer.billing'), navigate: true);
                 return;
             }
 
