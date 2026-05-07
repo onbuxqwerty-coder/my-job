@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\UserRole;
+use App\Enums\VacancyStatus;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Vacancy;
@@ -43,6 +44,9 @@ final class PendingVacancyService
             'currency'        => 'UAH',
             'employment_type' => ['full-time'],
             'is_active'       => true,
+            'status'          => VacancyStatus::Active,
+            'published_at'    => now(),
+            'expires_at'      => now()->addDays(30),
             'is_featured'     => false,
             'is_top'          => false,
             'languages'       => [],

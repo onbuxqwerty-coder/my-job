@@ -210,6 +210,7 @@ class Vacancy extends Model
         }
 
         $this->forceFill([
+            'is_active'                   => true,
             'status'                      => VacancyStatus::Active,
             'published_at'                => $this->published_at ?? now(),
             'expires_at'                  => now()->addDays($days),
