@@ -91,11 +91,20 @@ new #[Layout('layouts.app')] class extends Component
 
         if ($this->vacancyId) {
             $currentVacancy = Vacancy::where('company_id', $company->id)->findOrFail($this->vacancyId);
+
+            if (! $currentVacancy->is_active && ! $company->isProfileComplete()) {
+                session()->flash('info', 'Для активації вакансії необхідно спочатку заповнити профіль компанії.');
+                $this->redirect(route('employer.profile'), navigate: true);
+                return;
+            }
+
             if (! $currentVacancy->is_active && ! $subscriptionService->canPublishJob(auth()->user())) {
                 $this->redirect(route('employer.billing'), navigate: true);
                 return;
             }
         }
+
+        $vacancyService = app(VacancyService::class);
 
         $data = [
             'company_id'      => $company->id,
@@ -112,15 +121,16 @@ new #[Layout('layouts.app')] class extends Component
             'is_top'          => $this->isTop,
             'status'          => VacancyStatus::Active,
             'published_at'    => now(),
+            'expires_at'      => $vacancyService->getExpiresAt(auth()->user()),
             'languages'       => $this->languages ?: null,
             'suitability'     => $this->suitability ?: null,
         ];
 
         if ($this->vacancyId) {
             $vacancy = Vacancy::where('company_id', $company->id)->findOrFail($this->vacancyId);
-            app(VacancyService::class)->update($vacancy, $data);
+            $vacancyService->update($vacancy, $data);
         } else {
-            app(VacancyService::class)->publish(auth()->user(), $data);
+            $vacancyService->publish(auth()->user(), $data);
         }
 
         $this->redirect(route('employer.dashboard'), navigate: true);

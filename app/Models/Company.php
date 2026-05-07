@@ -63,6 +63,11 @@ class Company extends Model
         return $this->belongsTo(City::class);
     }
 
+    public function isProfileComplete(): bool
+    {
+        return filled($this->description) && $this->name !== 'Компанія';
+    }
+
     public function vacancies(): HasMany
     {
         return $this->hasMany(Vacancy::class);

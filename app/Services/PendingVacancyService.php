@@ -10,6 +10,7 @@ use App\Models\Company;
 use App\Models\User;
 use App\Models\Vacancy;
 use App\Services\SubscriptionService;
+use App\Services\VacancyService;
 use Illuminate\Support\Str;
 
 final class PendingVacancyService
@@ -47,7 +48,7 @@ final class PendingVacancyService
             'is_active'       => true,
             'status'          => VacancyStatus::Active,
             'published_at'    => now(),
-            'expires_at'      => now()->addDays(30),
+            'expires_at'      => app(VacancyService::class)->getExpiresAt($user),
             'is_featured'     => false,
             'is_top'          => false,
             'languages'       => [],

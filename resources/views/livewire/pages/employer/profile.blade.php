@@ -57,10 +57,18 @@ new #[Layout('layouts.app')] class extends Component
             $data['logo'] = $this->logo->store('logos', 'public');
         }
 
-        Company::updateOrCreate(
+        $company = Company::updateOrCreate(
             ['user_id' => auth()->id()],
             $data
         );
+
+        if ($company->isProfileComplete()) {
+            $company->vacancies()
+                ->where('status', \App\Enums\VacancyStatus::Active)
+                ->whereNotNull('expires_at')
+                ->where('expires_at', '<', now()->addDays(30))
+                ->update(['expires_at' => now()->addDays(30)]);
+        }
 
         $this->saved = true;
         $this->logo  = null;

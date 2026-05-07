@@ -66,11 +66,14 @@ final class VacancyService
 
     public function getExpiresAt(User $employer): Carbon
     {
-        $plan = $employer->currentPlan();
+        $plan    = $employer->currentPlan();
+        $company = $employer->company;
 
         return match ($plan?->type) {
             PlanType::Business, PlanType::Pro => now()->addDays(60),
-            default                           => now()->addDays(30),
+            default => ($company && $company->isProfileComplete())
+                ? now()->addDays(30)
+                : now()->addDay(),
         };
     }
 

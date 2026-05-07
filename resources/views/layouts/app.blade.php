@@ -50,7 +50,7 @@
             class="fixed inset-0 z-50 flex items-center justify-center p-4"
             style="display:none;"
         >
-            <div class="absolute inset-0 bg-black/60" @click="show = false"></div>
+            <div class="absolute inset-0 bg-black/60"></div>
             <div
                 x-show="show"
                 x-transition:enter="transition ease-out duration-200"
@@ -61,32 +61,40 @@
             >
                 <div class="text-5xl mb-4">🚀</div>
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">
-                    Вакансія вже опублікована
+                    Вакансія опублікована!
                 </h2>
-                <p class="text-gray-500 mb-1">Ми почали шукати кандидатів</p>
+                <p class="text-gray-500 mb-1">Ми вже почали шукати кандидатів</p>
 
                 <div class="my-6 h-px bg-gray-100"></div>
 
-                <p class="text-gray-700 font-medium mb-1">
-                    Хочете отримати більше кандидатів?
-                </p>
-                <p class="text-sm text-gray-400 mb-6">
-                    Додайте ще трохи інформації (це займе 1–2 хв)
-                </p>
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-left">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-amber-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                        </svg>
+                        <div>
+                            <p class="text-amber-800 font-semibold text-sm">Вакансія активна 1 добу</p>
+                            <p class="text-amber-700 text-sm mt-0.5">
+                                Щоб вакансія залишалась активною <strong>30 діб</strong> — заповніть профіль компанії. Це займе 1–2 хвилини.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="flex flex-col gap-3">
                     <a
-                        href="{{ route('employer.vacancies.edit', ['vacancyId' => session('vacancy_published_id')]) }}"
+                        href="{{ route('employer.profile') }}"
                         class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition text-center"
                     >
-                        Покращити вакансію
+                        Заповнити профіль компанії
                     </a>
-                    <a
-                        href="{{ route('employer.dashboard') }}"
-                        class="w-full py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition text-center"
+                    <button
+                        type="button"
+                        @click="show = false"
+                        class="w-full py-2 text-sm text-gray-400 hover:text-gray-600 transition"
                     >
                         Пропустити
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
