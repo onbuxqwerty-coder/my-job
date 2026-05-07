@@ -81,13 +81,6 @@ new #[Layout('layouts.app')] class extends Component
 
             <form wire:submit="save" class="p-6 space-y-5">
 
-                @if($saved)
-                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
-                         class="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-xl text-sm text-green-700 dark:text-green-400 font-medium text-center">
-                        Збережено
-                    </div>
-                @endif
-
                 {{-- Name --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Ім'я</label>
@@ -218,12 +211,18 @@ new #[Layout('layouts.app')] class extends Component
                 </div>
 
                 {{-- Submit --}}
-                <div class="pt-2">
+                <div class="pt-2 space-y-3">
                     <button type="submit"
                             class="w-full py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors">
                         <span wire:loading.remove wire:target="save">Зберегти зміни</span>
                         <span wire:loading wire:target="save">Збереження...</span>
                     </button>
+
+                    @if($saved)
+                        <p class="text-center text-sm text-green-600 dark:text-green-400 font-medium">
+                            ✅ Збережено
+                        </p>
+                    @endif
                 </div>
 
             </form>
