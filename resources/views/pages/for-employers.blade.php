@@ -289,7 +289,7 @@
         <div class="mt-10 text-center">
             <p class="text-gray-500 text-sm">
                 Хочете спочатку спробувати? Безкоштовний план включає 1 активну вакансію та до 10 відгуків.
-                <a href="{{ route('register') }}" class="text-blue-600 font-semibold hover:underline">Зареєструватись безкоштовно &rarr;</a>
+                <a href="{{ auth()->check() && auth()->user()->role === \App\Enums\UserRole::Employer ? route('employer.dashboard') : route('register') }}" class="text-blue-600 font-semibold hover:underline">Зареєструватись безкоштовно &rarr;</a>
             </p>
         </div>
     </div>
@@ -398,12 +398,12 @@
             Перша вакансія — безкоштовно.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('register') }}"
+            <a href="{{ auth()->check() && auth()->user()->role === \App\Enums\UserRole::Employer ? route('employer.dashboard') : route('register') }}"
                class="inline-flex items-center justify-center gap-2 bg-white text-blue-700 hover:bg-blue-50 font-bold px-10 py-4 rounded-2xl transition-all duration-200 text-lg shadow-xl hover:-translate-y-0.5">
                 Зареєструватись безкоштовно
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
-            <a href="{{ route('login') }}"
+            <a href="{{ auth()->check() && auth()->user()->role === \App\Enums\UserRole::Employer ? route('employer.dashboard') : route('login') }}"
                class="inline-flex items-center justify-center gap-2 bg-blue-500/30 hover:bg-blue-500/40 border border-white/30 text-white font-semibold px-10 py-4 rounded-2xl transition-all duration-200 text-lg backdrop-blur-sm">
                 Увійти
             </a>
