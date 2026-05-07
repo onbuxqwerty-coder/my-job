@@ -19,25 +19,37 @@ class UsersTable
         \DB::table('telegram_sessions')->where('user_id', $user->id)->delete();
         \DB::table('candidate_messages')->where('sender_id', $user->id)->delete();
         \DB::table('application_notes')->where('author_id', $user->id)->delete();
+        \DB::table('application_status_history')->where('changed_by', $user->id)->delete();
         \DB::table('interviews')->where('created_by', $user->id)->delete();
         $user->resumes()->delete();
+
+        $applicationIds = $user->applications()->pluck('id');
+        if ($applicationIds->isNotEmpty()) {
+            \DB::table('application_status_history')->whereIn('application_id', $applicationIds)->delete();
+            \DB::table('application_notes')->whereIn('application_id', $applicationIds)->delete();
+        }
         $user->applications()->delete();
 
+        \DB::table('employer_subscriptions')->where('user_id', $user->id)->delete();
+        \DB::table('orders')->where('user_id', $user->id)->delete();
+
         // employer-side: cascade through company → vacancies → applications/saved
-        $user->company()->withTrashed()->each(function ($company) {
+        $company = $user->company()->withTrashed()->first();
+        if ($company) {
             $vacancyIds = \DB::table('vacancies')->where('company_id', $company->id)->pluck('id');
             if ($vacancyIds->isNotEmpty()) {
+                $companyApplicationIds = \DB::table('applications')->whereIn('vacancy_id', $vacancyIds)->pluck('id');
+                if ($companyApplicationIds->isNotEmpty()) {
+                    \DB::table('application_status_history')->whereIn('application_id', $companyApplicationIds)->delete();
+                    \DB::table('application_notes')->whereIn('application_id', $companyApplicationIds)->delete();
+                }
                 \DB::table('saved_vacancies')->whereIn('vacancy_id', $vacancyIds)->delete();
-                \DB::table('application_notes')
-                    ->whereIn('application_id',
-                        \DB::table('applications')->whereIn('vacancy_id', $vacancyIds)->pluck('id')
-                    )->delete();
                 \DB::table('applications')->whereIn('vacancy_id', $vacancyIds)->delete();
                 \DB::table('vacancies')->whereIn('id', $vacancyIds)->delete();
             }
             \DB::table('message_templates')->where('company_id', $company->id)->delete();
             $company->forceDelete();
-        });
+        }
     }
 
     public static function configure(Table $table): Table

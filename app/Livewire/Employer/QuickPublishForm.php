@@ -75,6 +75,7 @@ final class QuickPublishForm extends Component
                 'city_id'         => $validated['city_id'],
                 'title'           => $validated['title'],
                 'slug'            => Str::slug($validated['title']) . '-' . Str::random(6),
+                'description'     => '',
                 'salary_from'     => $validated['salary_from'] ?? null,
                 'salary_to'       => null,
                 'currency'        => 'UAH',
