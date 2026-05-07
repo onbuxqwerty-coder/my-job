@@ -9,6 +9,7 @@ use App\Enums\VacancyStatus;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Vacancy;
+use App\Services\SubscriptionService;
 use Illuminate\Support\Str;
 
 final class PendingVacancyService
@@ -32,7 +33,7 @@ final class PendingVacancyService
         $company = $user->company ?? $this->autoCreateCompany($user);
         $data    = session()->pull('pending_vacancy');
 
-        return Vacancy::create([
+        $vacancy = Vacancy::create([
             'company_id'      => $company->id,
             'category_id'     => $data['category_id'],
             'city_id'         => $data['city_id'],
@@ -52,6 +53,10 @@ final class PendingVacancyService
             'languages'       => [],
             'suitability'     => [],
         ]);
+
+        app(SubscriptionService::class)->activateFreePlanIfNeeded($user);
+
+        return $vacancy;
     }
 
     private function autoCreateCompany(User $user): Company

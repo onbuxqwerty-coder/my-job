@@ -101,6 +101,22 @@ final class SubscriptionService
     }
 
     /**
+     * Activate the free plan for the employer if they have no active plan.
+     */
+    public function activateFreePlanIfNeeded(User $employer): void
+    {
+        if ($employer->currentPlan() !== null) {
+            return;
+        }
+
+        $freePlan = \App\Models\SubscriptionPlan::where('type', \App\Enums\PlanType::Free)->first();
+
+        if ($freePlan) {
+            $this->activate($employer, $freePlan);
+        }
+    }
+
+    /**
      * How many HOT promotions remain this month.
      */
     public function getRemainingHot(User $employer): int

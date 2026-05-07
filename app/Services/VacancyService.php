@@ -54,6 +54,13 @@ final class VacancyService
 
         $vacancy->update([...$data, 'slug' => $slug]);
 
+        if (! empty($data['is_active'])) {
+            $employer = $vacancy->company?->user;
+            if ($employer) {
+                app(SubscriptionService::class)->activateFreePlanIfNeeded($employer);
+            }
+        }
+
         return $vacancy->refresh();
     }
 
