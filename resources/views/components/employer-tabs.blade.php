@@ -143,7 +143,7 @@ document.addEventListener('keydown', function(e) {
                 @endforeach
             </nav>
             {{-- Fade indicator for horizontal scroll on mobile --}}
-            <div class="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-white to-transparent sm:hidden"></div>
+            <div class="pointer-events-none absolute right-0 top-0 h-full w-10 tab-scroll-fade sm:hidden"></div>
         </div>
     </div>
 </div>

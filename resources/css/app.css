@@ -1058,3 +1058,11 @@ html:not([data-theme="dark"]) .border-gray-300 {
 /* Scrollbar utility */
 .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* Tab scroll fade indicator (matches seeker-tabs-header bg) */
+.tab-scroll-fade {
+    background: linear-gradient(to left, #d2d2d2, transparent);
+}
+html[data-theme="dark"] .tab-scroll-fade {
+    background: linear-gradient(to left, #1F2937, transparent) !important;
+}
