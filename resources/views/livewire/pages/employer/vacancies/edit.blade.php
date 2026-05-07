@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\EmploymentType;
 use App\Enums\Language;
+use App\Enums\PlanType;
 use App\Enums\Suitability;
 use App\Enums\VacancyStatus;
 use App\Models\Category;
@@ -106,6 +107,11 @@ new #[Layout('layouts.app')] class extends Component
 
         $vacancyService = app(VacancyService::class);
 
+        if ($this->isFreePlan) {
+            $this->isFeatured = false;
+            $this->isTop      = false;
+        }
+
         $data = [
             'company_id'      => $company->id,
             'category_id'     => (int) $this->categoryId,
@@ -150,6 +156,13 @@ new #[Layout('layouts.app')] class extends Component
 
     #[Computed]
     public function suitabilityOptions(): array { return Suitability::cases(); }
+
+    #[Computed]
+    public function isFreePlan(): bool
+    {
+        $plan = auth()->user()->currentPlan();
+        return $plan === null || $plan->type === PlanType::Free;
+    }
 }; ?>
 
 <div class="min-h-screen bg-gray-50">
@@ -187,14 +200,27 @@ new #[Layout('layouts.app')] class extends Component
                 </div>
 
                 <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" wire:model="isFeatured" id="isFeatured" class="w-4 h-4 rounded" style="accent-color:#e85d04;"/>
-                        <label for="isFeatured" class="text-sm text-gray-700">🔥 Гаряча вакансія</label>
+                    <div class="flex items-center gap-3 {{ $this->isFreePlan ? 'opacity-40 cursor-not-allowed' : '' }}">
+                        <input type="checkbox" wire:model="isFeatured" id="isFeatured"
+                               class="w-4 h-4 rounded" style="accent-color:#e85d04;"
+                               {{ $this->isFreePlan ? 'disabled' : '' }}/>
+                        <label for="isFeatured" class="text-sm text-gray-700 {{ $this->isFreePlan ? 'cursor-not-allowed select-none' : '' }}">
+                            🔥 Гаряча вакансія
+                        </label>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" wire:model="isTop" id="isTop" class="w-4 h-4 rounded" style="accent-color:#7c3aed;"/>
-                        <label for="isTop" class="text-sm text-gray-700">⭐ Топ вакансія</label>
+                    <div class="flex items-center gap-3 {{ $this->isFreePlan ? 'opacity-40 cursor-not-allowed' : '' }}">
+                        <input type="checkbox" wire:model="isTop" id="isTop"
+                               class="w-4 h-4 rounded" style="accent-color:#7c3aed;"
+                               {{ $this->isFreePlan ? 'disabled' : '' }}/>
+                        <label for="isTop" class="text-sm text-gray-700 {{ $this->isFreePlan ? 'cursor-not-allowed select-none' : '' }}">
+                            ⭐ Топ вакансія
+                        </label>
                     </div>
+                    @if($this->isFreePlan)
+                        <a href="{{ route('employer.billing') }}" class="text-xs text-blue-600 hover:underline whitespace-nowrap">
+                            Доступно на платних тарифах
+                        </a>
+                    @endif
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
