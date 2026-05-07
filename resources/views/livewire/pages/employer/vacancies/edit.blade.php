@@ -28,7 +28,6 @@ new #[Layout('layouts.app')] class extends Component
     public string $salaryFrom     = '';
     public string $salaryTo       = '';
     public string $currency       = 'UAH';
-    public bool   $isActive       = true;
     public bool   $isFeatured     = false;
     public bool   $isTop          = false;
     public bool   $saved          = false;
@@ -56,7 +55,6 @@ new #[Layout('layouts.app')] class extends Component
             $this->salaryFrom     = (string) ($vacancy->salary_from ?? '');
             $this->salaryTo       = (string) ($vacancy->salary_to ?? '');
             $this->currency       = $vacancy->currency;
-            $this->isActive       = $vacancy->is_active || $vacancy->published_at === null;
             $this->isFeatured     = $vacancy->is_featured;
             $this->isTop          = $vacancy->is_top;
             $this->languages      = $vacancy->languages ?? [];
@@ -91,9 +89,8 @@ new #[Layout('layouts.app')] class extends Component
             return;
         }
 
-        if ($this->vacancyId && $this->isActive) {
-            $currentVacancy = Vacancy::where('company_id', auth()->user()->company->id)
-                ->findOrFail($this->vacancyId);
+        if ($this->vacancyId) {
+            $currentVacancy = Vacancy::where('company_id', $company->id)->findOrFail($this->vacancyId);
             if (! $currentVacancy->is_active && ! $subscriptionService->canPublishJob(auth()->user())) {
                 $this->redirect(route('employer.billing'), navigate: true);
                 return;
@@ -110,11 +107,11 @@ new #[Layout('layouts.app')] class extends Component
             'salary_from'     => $this->salaryFrom ?: null,
             'salary_to'       => $this->salaryTo ?: null,
             'currency'        => $this->currency,
-            'is_active'       => $this->isActive,
+            'is_active'       => true,
             'is_featured'     => $this->isFeatured,
             'is_top'          => $this->isTop,
-            'status'          => $this->isActive ? VacancyStatus::Active : VacancyStatus::Draft,
-            'published_at'    => $this->isActive ? now() : null,
+            'status'          => VacancyStatus::Active,
+            'published_at'    => now(),
             'languages'       => $this->languages ?: null,
             'suitability'     => $this->suitability ?: null,
         ];
@@ -300,11 +297,6 @@ new #[Layout('layouts.app')] class extends Component
                             @endforeach
                         </div>
                     </div>
-                </div>
-
-                <div class="flex items-center gap-3">
-                    <input type="checkbox" wire:model="isActive" id="isActive" class="w-4 h-4 text-blue-600 rounded"/>
-                    <label for="isActive" class="text-sm text-gray-700">Опублікувати одразу (активна)</label>
                 </div>
 
                 <button type="submit"
