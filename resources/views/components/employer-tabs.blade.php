@@ -100,7 +100,7 @@ document.addEventListener('keydown', function(e) {
             @if($company)
                 <div style="display:flex; align-items:center; gap:20px;">
                     <div style="display:flex; align-items:baseline; gap:6px;">
-                        <span style="font-size:1.5rem; font-weight:800; color:#111827;">{{ $totalVacancies }}</span>
+                        <span class="mj-stat-total" style="font-size:1.5rem; font-weight:800; color:#111827;">{{ $totalVacancies }}</span>
                         <span style="font-size:0.75rem; color:#9ca3af; white-space:nowrap;">всього вакансій</span>
                     </div>
                     <div style="width:1px; height:20px; background:#e5e7eb;"></div>

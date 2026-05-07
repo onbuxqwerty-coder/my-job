@@ -901,6 +901,10 @@ html[data-theme="dark"] .employer-heading {
   color: #F1F5F9 !important;
 }
 
+html[data-theme="dark"] .mj-stat-total {
+  color: #E5E7EB !important;
+}
+
 /* Fix: hover:bg-gray-50 (Tailwind pseudo) turns white in dark theme — override */
 html[data-theme="dark"] .hover\:bg-gray-50:hover {
   background-color: var(--color-row-hover) !important;
