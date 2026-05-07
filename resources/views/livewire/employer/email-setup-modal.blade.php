@@ -83,7 +83,7 @@
                     <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Введіть код</h2>
                     <p class="text-sm text-gray-500 dark:text-gray-400">
                         Код підтвердження надіслано на<br>
-                        <span class="font-medium text-gray-700 dark:text-gray-300">{{ $email }}</span>
+                        <span class="font-medium text-gray-700 dark:text-gray-300">{{ $verifiedEmail }}</span>
                     </p>
                 </div>
 

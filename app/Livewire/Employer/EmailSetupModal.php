@@ -10,10 +10,11 @@ use Livewire\Component;
 
 final class EmailSetupModal extends Component
 {
-    public bool   $show = false;
-    public string $step  = 'email';
-    public string $email = '';
-    public string $code  = '';
+    public bool   $show          = false;
+    public string $step          = 'email';
+    public string $email         = '';
+    public string $verifiedEmail = ''; // встановлюється тільки після валідації
+    public string $code          = '';
 
     public function mount(): void
     {
@@ -50,8 +51,10 @@ final class EmailSetupModal extends Component
 
         $code = EmailVerification::generateCode();
 
+        $this->verifiedEmail = $this->email;
+
         EmailVerification::updateOrCreate(
-            ['email' => $this->email],
+            ['email' => $this->verifiedEmail],
             [
                 'code'            => $code,
                 'code_expires_at' => now()->addMinutes(10),
@@ -62,7 +65,7 @@ final class EmailSetupModal extends Component
 
         Mail::raw(
             "Ваш код підтвердження для MyJob: {$code}\n\nКод дійсний 10 хвилин.",
-            fn ($m) => $m->to($this->email)->subject('Підтвердження email — MyJob')
+            fn ($m) => $m->to($this->verifiedEmail)->subject('Підтвердження email — MyJob')
         );
 
         $this->step = 'code';
@@ -78,15 +81,19 @@ final class EmailSetupModal extends Component
             'code.size'     => 'Код складається з 6 цифр',
         ]);
 
-        $verification = EmailVerification::where('email', $this->email)->first();
+        $verification = EmailVerification::where('email', $this->verifiedEmail)
+            ->where('code', trim($this->code))
+            ->where('code_expires_at', '>', now())
+            ->where('is_verified', false)
+            ->first();
 
-        if (! $verification || ! $verification->verifyCode($this->code)) {
+        if (! $verification || ! $verification->verifyCode(trim($this->code))) {
             $this->addError('code', 'Невірний або прострочений код');
             return;
         }
 
         auth()->user()->update([
-            'email'             => $this->email,
+            'email'             => $this->verifiedEmail,
             'email_verified_at' => now(),
         ]);
 
