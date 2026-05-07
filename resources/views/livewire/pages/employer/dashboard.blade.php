@@ -91,6 +91,7 @@ new #[Layout('layouts.app')] class extends Component
                         <p>Вакансій ще немає. <a href="{{ route('employer.vacancies.create') }}" class="text-blue-600 hover:underline">Додати першу вакансію →</a></p>
                     </div>
                 @else
+                    <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-600">
                             <tr>
@@ -203,6 +204,7 @@ new #[Layout('layouts.app')] class extends Component
                                 </tbody>
                             @endforeach
                     </table>
+                    </div>{{-- overflow-x-auto --}}
                 @endif
             </div>
         @endif
