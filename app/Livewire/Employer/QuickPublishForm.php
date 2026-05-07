@@ -17,6 +17,7 @@ use Livewire\Component;
 final class QuickPublishForm extends Component
 {
     public bool    $show        = false;
+    public bool    $showLimit   = false;
     public string  $title       = '';
     public ?int    $category_id = null;
     public string  $city_id     = '';
@@ -25,6 +26,15 @@ final class QuickPublishForm extends Component
     #[On('open-quick-publish')]
     public function open(): void
     {
+        if (
+            auth()->check() &&
+            auth()->user()->role === UserRole::Employer &&
+            ! app(SubscriptionService::class)->canPublishJob(auth()->user())
+        ) {
+            $this->showLimit = true;
+            return;
+        }
+
         $this->show = true;
     }
 
@@ -111,6 +121,7 @@ final class QuickPublishForm extends Component
         $this->city_id     = '';
         $this->salary_from = null;
         $this->show        = false;
+        $this->showLimit   = false;
     }
 
     public function getCategories(): Collection

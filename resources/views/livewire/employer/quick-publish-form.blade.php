@@ -1,4 +1,83 @@
 <div>
+    {{-- Limit Modal --}}
+    <div
+        x-show="$wire.showLimit"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @keydown.escape.window="$wire.showLimit = false"
+        style="display:none;"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4"
+        role="dialog"
+        aria-modal="true"
+    >
+        <div class="absolute inset-0 bg-black/60" @click="$wire.showLimit = false"></div>
+
+        <div
+            x-show="$wire.showLimit"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            style="display:none;"
+            class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-sm p-8 text-center"
+        >
+            <button
+                type="button"
+                @click="$wire.showLimit = false"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <div class="flex items-center justify-center w-16 h-16 rounded-full bg-orange-100 mx-auto mb-5">
+                <svg class="w-8 h-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0 0v2m0-2h2m-2 0H10m2-5V7a4 4 0 00-8 0v4H3a1 1 0 00-1 1v6a2 2 0 002 2h14a2 2 0 002-2v-6a1 1 0 00-1-1h-1V7a4 4 0 00-4-4z"/>
+                </svg>
+            </div>
+
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Ліміт вакансій вичерпано
+            </h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                Ваш поточний тариф не дозволяє публікувати більше вакансій.<br>
+                Оновіть план, щоб продовжити.
+            </p>
+
+            <div class="flex flex-col gap-3">
+                <a
+                    href="{{ route('employer.billing') }}"
+                    class="inline-flex items-center justify-center gap-2 w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition text-sm"
+                >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/>
+                    </svg>
+                    Оновити тариф
+                </a>
+                <a
+                    href="{{ route('employer.billing') }}"
+                    class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 py-2 transition"
+                >
+                    Переглянути всі тарифи
+                </a>
+                <button
+                    type="button"
+                    @click="$wire.showLimit = false"
+                    class="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 py-1 transition"
+                >
+                    Закрити
+                </button>
+            </div>
+        </div>
+    </div>
+
     {{-- Modal Overlay --}}
     <div
         x-show="$wire.show"
