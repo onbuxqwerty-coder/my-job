@@ -17,7 +17,18 @@ final class EmailSetupModal extends Component
 
     public function mount(): void
     {
-        if (session()->pull('require_email_setup')) {
+        if (! auth()->check()) {
+            return;
+        }
+
+        $user = auth()->user();
+
+        $hasFakeEmail = str_ends_with((string) $user->email, '@telegram.local')
+            || str_ends_with((string) $user->email, '@phone.local');
+
+        $dismissed = session()->has('email_setup_dismissed_' . $user->id);
+
+        if ($hasFakeEmail && ! $dismissed) {
             $this->show = true;
         }
     }
@@ -91,6 +102,7 @@ final class EmailSetupModal extends Component
 
     public function skip(): void
     {
+        session()->put('email_setup_dismissed_' . auth()->id(), true);
         $this->show = false;
     }
 

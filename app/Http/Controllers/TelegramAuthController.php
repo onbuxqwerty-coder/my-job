@@ -62,11 +62,8 @@ class TelegramAuthController extends Controller
         $vacancy = app(PendingVacancyService::class)->createFromSession($user);
 
         if ($vacancy) {
-            $needsEmail = ! $user->email || str_ends_with($user->email, '@telegram.local');
-
             return redirect()->route('employer.dashboard')
-                ->with('vacancy_published_id', $vacancy->id)
-                ->with('require_email_setup', $needsEmail);
+                ->with('vacancy_published_id', $vacancy->id);
         }
 
         // Якщо прийшли з resume wizard — прив'язуємо резюме і повертаємо на крок 3
