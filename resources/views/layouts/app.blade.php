@@ -38,6 +38,7 @@
         <x-footer />
 
         <livewire:employer.quick-publish-form />
+        <livewire:employer.email-setup-modal />
 
         @if(session('vacancy_published_id'))
         <div

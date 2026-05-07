@@ -1,0 +1,101 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Livewire\Employer;
+
+use App\Models\EmailVerification;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Component;
+
+final class EmailSetupModal extends Component
+{
+    public bool   $show = false;
+    public string $step  = 'email';
+    public string $email = '';
+    public string $code  = '';
+
+    public function mount(): void
+    {
+        if (session()->pull('require_email_setup')) {
+            $this->show = true;
+        }
+    }
+
+    public function sendCode(): void
+    {
+        $this->validate([
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email,' . auth()->id(),
+            ],
+        ], [
+            'email.required' => 'Введіть адресу електронної пошти',
+            'email.email'    => 'Невірний формат email',
+            'email.unique'   => 'Цей email вже використовується іншим акаунтом',
+        ]);
+
+        $code = EmailVerification::generateCode();
+
+        EmailVerification::updateOrCreate(
+            ['email' => $this->email],
+            [
+                'code'            => $code,
+                'code_expires_at' => now()->addMinutes(10),
+                'is_verified'     => false,
+                'verified_at'     => null,
+            ]
+        );
+
+        Mail::raw(
+            "Ваш код підтвердження для MyJob: {$code}\n\nКод дійсний 10 хвилин.",
+            fn ($m) => $m->to($this->email)->subject('Підтвердження email — MyJob')
+        );
+
+        $this->step = 'code';
+        $this->resetErrorBag();
+    }
+
+    public function verify(): void
+    {
+        $this->validate([
+            'code' => 'required|string|size:6',
+        ], [
+            'code.required' => 'Введіть код',
+            'code.size'     => 'Код складається з 6 цифр',
+        ]);
+
+        $verification = EmailVerification::where('email', $this->email)->first();
+
+        if (! $verification || ! $verification->verifyCode($this->code)) {
+            $this->addError('code', 'Невірний або прострочений код');
+            return;
+        }
+
+        auth()->user()->update([
+            'email'             => $this->email,
+            'email_verified_at' => now(),
+        ]);
+
+        $this->show = false;
+    }
+
+    public function resend(): void
+    {
+        $this->step = 'email';
+        $this->code = '';
+        $this->resetErrorBag();
+    }
+
+    public function skip(): void
+    {
+        $this->show = false;
+    }
+
+    public function render(): \Illuminate\View\View
+    {
+        return view('livewire.employer.email-setup-modal');
+    }
+}
