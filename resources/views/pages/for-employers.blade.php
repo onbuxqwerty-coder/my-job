@@ -277,7 +277,7 @@
                         @endif
                     </ul>
 
-                    <a href="{{ route('register') }}"
+                    <a href="{{ auth()->check() && auth()->user()->role === \App\Enums\UserRole::Employer ? route('employer.billing.checkout', $plan) : route('register') }}"
                        class="w-full text-center font-bold py-3.5 rounded-2xl transition-all duration-200 {{ $isPopular ? 'bg-white text-blue-600 hover:bg-blue-50' : 'bg-blue-600 hover:bg-blue-700 text-white' }}">
                         Обрати тариф
                     </a>
