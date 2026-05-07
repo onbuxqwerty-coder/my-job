@@ -91,12 +91,6 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         <div class="bg-white rounded-2xl border employer-card-border p-8">
-            @if($saved)
-                <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
-                    ✅ Профіль успішно збережено.
-                </div>
-            @endif
-
             <form wire:submit="save" class="space-y-5">
 
                 <div>
@@ -154,6 +148,12 @@ new #[Layout('layouts.app')] class extends Component
                     <span wire:loading.remove wire:target="save">Зберегти профіль</span>
                     <span wire:loading wire:target="save">Збереження...</span>
                 </button>
+
+                @if($saved)
+                    <p class="text-center text-sm text-green-600 font-medium">
+                        ✅ Профіль успішно збережено.
+                    </p>
+                @endif
             </form>
         </div>
     </div>

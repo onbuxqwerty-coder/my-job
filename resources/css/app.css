@@ -1054,3 +1054,7 @@ html:not([data-theme="dark"]) .border-gray-200,
 html:not([data-theme="dark"]) .border-gray-300 {
     border-color: #a7a7a7 !important;
 }
+
+/* Scrollbar utility */
+.scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
