@@ -128,7 +128,7 @@ document.addEventListener('keydown', function(e) {
 
         {{-- Tabs --}}
         <div class="relative">
-            <nav class="-mb-px flex gap-1 overflow-x-auto scrollbar-hide" aria-label="Employer tabs">
+            <nav class="-mb-px flex gap-1 overflow-x-auto scrollbar-hide dark:border-t dark:border-gray-300" aria-label="Employer tabs">
                 @foreach($tabs as $tab)
                     @php
                         $isActive = $activeTab === $tab['route'];
