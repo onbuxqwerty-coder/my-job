@@ -204,7 +204,7 @@ new #[Layout('layouts.app')] class extends Component
                         <input type="checkbox" wire:model="isFeatured" id="isFeatured"
                                class="w-4 h-4 rounded" style="accent-color:#e85d04;"
                                {{ $this->isFreePlan ? 'disabled' : '' }}/>
-                        <label for="isFeatured" class="text-sm text-gray-700 {{ $this->isFreePlan ? 'cursor-not-allowed select-none' : '' }}">
+                        <label for="isFeatured" class="text-sm text-gray-700 dark:text-gray-200 {{ $this->isFreePlan ? 'cursor-not-allowed select-none' : '' }}">
                             🔥 Гаряча вакансія
                         </label>
                     </div>
@@ -212,7 +212,7 @@ new #[Layout('layouts.app')] class extends Component
                         <input type="checkbox" wire:model="isTop" id="isTop"
                                class="w-4 h-4 rounded" style="accent-color:#7c3aed;"
                                {{ $this->isFreePlan ? 'disabled' : '' }}/>
-                        <label for="isTop" class="text-sm text-gray-700 {{ $this->isFreePlan ? 'cursor-not-allowed select-none' : '' }}">
+                        <label for="isTop" class="text-sm text-gray-700 dark:text-gray-200 {{ $this->isFreePlan ? 'cursor-not-allowed select-none' : '' }}">
                             ⭐ Топ вакансія
                         </label>
                     </div>
@@ -309,10 +309,10 @@ new #[Layout('layouts.app')] class extends Component
 
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
                     <div>
-                        <p class="block text-sm font-medium text-gray-700 mb-2">Знання мов</p>
+                        <p class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Знання мов</p>
                         <div style="display:flex; flex-direction:column; gap:8px;">
                             @foreach($this->languageOptions as $lang)
-                                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:#374151;">
+                                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:var(--color-input-text);">
                                     <input type="checkbox" wire:model="languages" value="{{ $lang->value }}"
                                            style="width:16px; height:16px; accent-color:#2563eb; cursor:pointer;"/>
                                     {{ $lang->label() }}
@@ -322,10 +322,10 @@ new #[Layout('layouts.app')] class extends Component
                     </div>
 
                     <div>
-                        <p class="block text-sm font-medium text-gray-700 mb-2">Підходить</p>
+                        <p class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Підходить</p>
                         <div style="display:flex; flex-direction:column; gap:8px;">
                             @foreach($this->suitabilityOptions as $item)
-                                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:#374151;">
+                                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:var(--color-input-text);">
                                     <input type="checkbox" wire:model="suitability" value="{{ $item->value }}"
                                            style="width:16px; height:16px; accent-color:#2563eb; cursor:pointer;"/>
                                     {{ $item->label() }}
