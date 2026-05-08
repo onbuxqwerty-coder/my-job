@@ -195,7 +195,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Назва посади <span class="text-red-500">*</span></label>
                     <input type="text" wire:model="title"
-                           class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                           class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"/>
                     @error('title') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -226,7 +226,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Категорія <span class="text-red-500">*</span></label>
-                        <select wire:model="categoryId" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select wire:model="categoryId" class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                             <option value="">Оберіть...</option>
                             @foreach($this->categories as $cat)
                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -250,17 +250,17 @@ new #[Layout('layouts.app')] class extends Component
                             }
                         }" @click.outside="open = false" style="position:relative;">
                             <button type="button" @click="open = !open"
-                                    style="width:100%; border:1px solid #d1d5db; border-radius:12px; padding:8px 12px; font-size:14px; background:#fff; display:flex; justify-content:space-between; align-items:center; cursor:pointer; color:#374151; text-align:left;">
+                                    style="width:100%; border:1px solid var(--color-input-border); border-radius:12px; padding:8px 12px; font-size:14px; background:var(--color-input-bg); display:flex; justify-content:space-between; align-items:center; cursor:pointer; color:var(--color-input-text); text-align:left;">
                                 <span x-text="display" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:90%;"></span>
                                 <svg style="width:16px; height:16px; flex-shrink:0; color:#6b7280;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </button>
                             <div x-show="open" x-transition
-                                 style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; background:#fff; border:1px solid #d1d5db; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,.1); overflow:hidden;">
+                                 style="position:absolute; z-index:50; top:calc(100% + 4px); left:0; right:0; background:var(--color-input-bg); border:1px solid var(--color-input-border); border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,.1); overflow:hidden;">
                                 @foreach($this->employmentTypes as $type)
-                                    <label style="display:flex; align-items:center; gap:10px; padding:9px 14px; cursor:pointer; font-size:14px; color:#374151;"
-                                           onmouseover="this.style.background='#f0f7ff'" onmouseout="this.style.background=''">
+                                    <label style="display:flex; align-items:center; gap:10px; padding:9px 14px; cursor:pointer; font-size:14px; color:var(--color-input-text);"
+                                           onmouseover="this.style.background='var(--color-dropdown-hover)'" onmouseout="this.style.background=''">
                                         <input type="checkbox" x-model="selected" value="{{ $type->value }}"
                                                style="width:16px; height:16px; accent-color:#2563eb; cursor:pointer; flex-shrink:0;"/>
                                         {{ $type->label() }}
@@ -282,16 +282,16 @@ new #[Layout('layouts.app')] class extends Component
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Зарплата від</label>
                         <input type="number" wire:model="salaryFrom" min="0"
-                               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                               class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"/>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Зарплата до</label>
                         <input type="number" wire:model="salaryTo" min="0"
-                               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                               class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"/>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Валюта</label>
-                        <select wire:model="currency" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select wire:model="currency" class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                             <option value="UAH">UAH</option>
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
@@ -303,7 +303,7 @@ new #[Layout('layouts.app')] class extends Component
                     <label class="block text-sm font-medium text-gray-700 mb-1">Опис вакансії <span class="text-red-500">*</span></label>
                     <textarea wire:model="description" rows="8"
                               placeholder="Опишіть обов'язки, вимоги та умови роботи..."
-                              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                              class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"></textarea>
                     @error('description') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
