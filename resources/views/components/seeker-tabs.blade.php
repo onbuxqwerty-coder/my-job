@@ -88,7 +88,7 @@
         </div>
 
         {{-- Tabs --}}
-        <nav class="-mb-px flex gap-1 overflow-x-auto dark:border-t dark:border-gray-300" aria-label="Seeker tabs">
+        <nav class="-mb-px flex gap-1 overflow-x-auto dark:border-t dark:border-gray-700" aria-label="Seeker tabs">
             @foreach($tabs as $tab)
                 @php $isActive = $activeTab === $tab['route']; @endphp
                 <a href="{{ route($tab['route']) }}"
