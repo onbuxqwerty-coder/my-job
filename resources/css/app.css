@@ -633,6 +633,11 @@ html[data-theme="dark"],
   color: #F1F5F9;
 }
 
+html[data-theme="dark"] input[type="checkbox"] {
+  background-color: #1F2937;
+  border-color: #374151;
+}
+
 /* Tailwind class overrides */
 html[data-theme="dark"] .bg-slate-50 {
   background-color: #111827 !important;
