@@ -18,9 +18,15 @@ new #[Layout('layouts.app')] class extends Component
 
         if ($vacancy->status === \App\Enums\VacancyStatus::Active) {
             $vacancy->forceFill(['status' => \App\Enums\VacancyStatus::Draft, 'is_active' => false])->save();
-        } else {
-            $vacancy->publish();
+            return;
         }
+
+        if (!auth()->user()->company->isProfileComplete()) {
+            $this->dispatch('show-profile-required-modal');
+            return;
+        }
+
+        $vacancy->publish();
     }
 
     public function delete(int $vacancyId): void

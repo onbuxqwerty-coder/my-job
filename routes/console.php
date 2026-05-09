@@ -14,6 +14,7 @@ Schedule::command('mono:check-payments')->everyThirtyMinutes();
 
 Schedule::command('app:send-vacancy-alerts')->hourly();
 Schedule::command('app:deactivate-expired-featured')->daily();
+Schedule::command('app:deactivate-incomplete-profile-vacancies')->hourly();
 Schedule::command('app:deactivate-expired-promos')->hourly();
 Schedule::command('app:cleanup-temp-uploads --hours=24')->daily();
 

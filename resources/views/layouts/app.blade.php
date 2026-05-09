@@ -40,9 +40,12 @@
         <livewire:employer.quick-publish-form />
         <livewire:employer.email-setup-modal />
 
-        @if(session('vacancy_published_id'))
         <div
-            x-data="{ show: true }"
+            x-data="{
+                show: {{ session()->has('vacancy_published_id') ? 'true' : 'false' }},
+                mode: '{{ session()->has('vacancy_published_id') ? 'published' : '' }}'
+            }"
+            @show-profile-required-modal.window="show = true; mode = 'profile_required'"
             x-show="show"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0"
@@ -50,7 +53,7 @@
             class="fixed inset-0 z-50 flex items-center justify-center p-4"
             style="display:none;"
         >
-            <div class="absolute inset-0 bg-black/60"></div>
+            <div class="absolute inset-0 bg-black/60" @click="show = false"></div>
             <div
                 x-show="show"
                 x-transition:enter="transition ease-out duration-200"
@@ -59,14 +62,30 @@
                 class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 text-center"
                 style="display:none;"
             >
-                <div class="text-5xl mb-4">🚀</div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">
+                {{-- Іконка: залежить від режиму --}}
+                <div x-show="mode === 'published'" class="text-5xl mb-4">🚀</div>
+                <div x-show="mode === 'profile_required'"
+                     class="flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 mx-auto mb-4">
+                    <svg class="w-8 h-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                    </svg>
+                </div>
+
+                {{-- Заголовок --}}
+                <h2 x-show="mode === 'published'" class="text-2xl font-bold text-gray-900 mb-2">
                     Вакансія опублікована!
                 </h2>
-                <p class="text-gray-500 mb-1">Ми вже почали шукати кандидатів</p>
+                <h2 x-show="mode === 'profile_required'" class="text-2xl font-bold text-gray-900 mb-2">
+                    Вакансія не активована
+                </h2>
+
+                {{-- Підзаголовок --}}
+                <p x-show="mode === 'published'" class="text-gray-500 mb-1">Ми вже почали шукати кандидатів</p>
+                <p x-show="mode === 'profile_required'" class="text-gray-500 mb-1">Спочатку заповніть профіль компанії</p>
 
                 <div class="my-6 h-px bg-gray-100"></div>
 
+                {{-- Amber-блок (однаковий для обох режимів) --}}
                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-left">
                     <div class="flex items-start gap-3">
                         <svg class="w-5 h-5 text-amber-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,7 +117,6 @@
                 </div>
             </div>
         </div>
-        @endif
 
     </body>
 </html>
