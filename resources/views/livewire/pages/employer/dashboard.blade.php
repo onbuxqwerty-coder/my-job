@@ -22,7 +22,7 @@ new #[Layout('layouts.app')] class extends Component
         }
 
         if (!auth()->user()->company->isProfileComplete()) {
-            $this->dispatch('show-profile-required-modal');
+            $this->js("window.dispatchEvent(new CustomEvent('show-profile-required-modal'))");
             return;
         }
 
