@@ -11,6 +11,7 @@ use App\Policies\VacancyPolicy;
 use App\Events\ApplicationStatusChanged;
 use App\Events\VacancyExtended;
 use App\Listeners\BroadcastToLivewire;
+use App\Listeners\NotifyApplicationStatusChanged;
 use App\Listeners\NotifyEmployerOfExtension;
 use App\Listeners\SendStatusNotification;
 use App\Notifications\Channels\TelegramChannel;
@@ -36,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(VacancyExtended::class, NotifyEmployerOfExtension::class);
         Event::listen(ApplicationStatusChanged::class, SendStatusNotification::class);
         Event::listen(ApplicationStatusChanged::class, BroadcastToLivewire::class);
+        Event::listen(ApplicationStatusChanged::class, NotifyApplicationStatusChanged::class);
         Event::listen(SocialiteWasCalled::class, AppleExtendSocialite::class);
 
         Gate::policy(Resume::class, ResumePolicy::class);

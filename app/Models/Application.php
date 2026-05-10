@@ -62,4 +62,20 @@ class Application extends Model
     {
         return $this->hasMany(ApplicationStatusHistory::class)->latest();
     }
+
+    public function statusLogs(): HasMany
+    {
+        return $this->hasMany(ApplicationStatusLog::class)->orderBy('created_at', 'desc');
+    }
+
+    public function logStatus(ApplicationStatus $status, ?User $changedBy = null, ?string $comment = null): void
+    {
+        $this->update(['status' => $status]);
+
+        $this->statusLogs()->create([
+            'status'     => $status,
+            'changed_by' => $changedBy?->id,
+            'comment'    => $comment,
+        ]);
+    }
 }

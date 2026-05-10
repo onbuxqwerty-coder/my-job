@@ -7,8 +7,11 @@ namespace App\Enums;
 enum ApplicationStatus: string
 {
     case Pending   = 'pending';
+    case Viewed    = 'viewed';
+    case Reviewing = 'reviewing';
     case Screening = 'screening';
     case Interview = 'interview';
+    case Offered   = 'offered';
     case Hired     = 'hired';
     case Rejected  = 'rejected';
     case Withdrawn = 'withdrawn';
@@ -17,7 +20,9 @@ enum ApplicationStatus: string
     public function allowedActors(): array
     {
         return match($this) {
-            self::Screening, self::Interview, self::Hired => ['employer'],
+            self::Screening, self::Interview, self::Hired,
+            self::Reviewing, self::Offered                => ['employer'],
+            self::Viewed                                  => [],
             self::Withdrawn                               => ['seeker'],
             self::Rejected                                => ['employer', 'seeker'],
             default                                       => [],
@@ -27,11 +32,14 @@ enum ApplicationStatus: string
     public function label(): string
     {
         return match($this) {
-            self::Pending   => 'Новий',
+            self::Pending   => 'Надіслано',
+            self::Viewed    => 'Переглянуто',
+            self::Reviewing => 'На розгляді',
             self::Screening => 'Розгляд',
-            self::Interview => 'Співбесіда',
+            self::Interview => 'Інтерв\'ю',
+            self::Offered   => 'Оффер',
             self::Hired     => 'Прийнятий',
-            self::Rejected  => 'Відхилений',
+            self::Rejected  => 'Відмовлено',
             self::Withdrawn => 'Відкликано',
         };
     }
@@ -45,8 +53,11 @@ enum ApplicationStatus: string
     {
         return match($this) {
             self::Pending   => 'gray',
+            self::Viewed    => 'blue',
+            self::Reviewing => 'indigo',
             self::Screening => 'blue',
             self::Interview => 'yellow',
+            self::Offered   => 'green',
             self::Hired     => 'green',
             self::Rejected  => 'red',
             self::Withdrawn => 'orange',
