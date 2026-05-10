@@ -15,17 +15,19 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class SubscriptionPlanResource extends Resource
 {
     protected static ?string $model = SubscriptionPlan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCreditCard;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $navigationLabel  = 'Тарифи';
     protected static ?string $modelLabel       = 'Тариф';
     protected static ?string $pluralModelLabel = 'Тарифи';
-    protected static ?int    $navigationSort   = 10;
+    protected static string|UnitEnum|null $navigationGroup = 'Фінанси';
+    protected static ?int    $navigationSort   = 20;
 
     public static function form(Schema $schema): Schema
     {
