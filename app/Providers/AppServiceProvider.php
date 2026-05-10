@@ -12,10 +12,14 @@ use App\Observers\VacancyObserver;
 use App\Policies\ResumePolicy;
 use App\Policies\VacancyPolicy;
 use App\Events\ApplicationStatusChanged;
+use App\Events\InterviewRequestSent;
+use App\Events\InterviewResponseSubmitted;
 use App\Events\VacancyExtended;
 use App\Listeners\BroadcastToLivewire;
 use App\Listeners\NotifyApplicationStatusChanged;
 use App\Listeners\NotifyEmployerOfExtension;
+use App\Listeners\NotifyInterviewRequestSent;
+use App\Listeners\NotifyInterviewResponseSubmitted;
 use App\Listeners\SendStatusNotification;
 use App\Notifications\Channels\TelegramChannel;
 use Carbon\Carbon;
@@ -41,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(ApplicationStatusChanged::class, SendStatusNotification::class);
         Event::listen(ApplicationStatusChanged::class, BroadcastToLivewire::class);
         Event::listen(ApplicationStatusChanged::class, NotifyApplicationStatusChanged::class);
+        Event::listen(InterviewRequestSent::class, NotifyInterviewRequestSent::class);
+        Event::listen(InterviewResponseSubmitted::class, NotifyInterviewResponseSubmitted::class);
         Event::listen(SocialiteWasCalled::class, AppleExtendSocialite::class);
 
         Gate::policy(Resume::class, ResumePolicy::class);
