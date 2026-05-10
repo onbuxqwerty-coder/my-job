@@ -187,29 +187,9 @@ new #[Layout('layouts.app')] class extends Component
     @if($isExpired)
         <meta name="robots" content="noindex, follow">
     @endif
-    <script type="application/ld+json">
-        {!! json_encode(array_filter([
-            '@context' => 'https://schema.org',
-            '@type' => 'JobPosting',
-            'title' => $vacancy->title,
-            'description' => strip_tags($vacancy->description),
-            'datePosted' => $vacancy->published_at?->toIso8601String(),
-            'validThrough' => $vacancy->expires_at?->toIso8601String(),
-            'employmentType' => $vacancy->employment_type ? (is_array($vacancy->employment_type) ? implode(',', $vacancy->employment_type) : $vacancy->employment_type) : 'FULL_TIME',
-            'hiringOrganization' => [
-                '@type' => 'Organization',
-                'name' => $vacancy->company->name ?? 'Роботодавець',
-            ],
-            'jobLocation' => $vacancy->city ? [
-                '@type' => 'Place',
-                'address' => [
-                    '@type' => 'PostalAddress',
-                    'addressLocality' => $vacancy->city->name,
-                    'addressCountry' => 'UA',
-                ],
-            ] : null,
-        ]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
-    </script>
+    @if($vacancy->status === \App\Enums\VacancyStatus::Active)
+        <x-job-posting-schema :vacancy="$vacancy" />
+    @endif
 @endpush
 
 <div>
