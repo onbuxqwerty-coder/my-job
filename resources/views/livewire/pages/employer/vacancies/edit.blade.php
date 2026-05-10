@@ -346,7 +346,12 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         @if($vacancyId)
-            <aside class="lg:col-span-1 sticky top-4">
+            <aside class="lg:col-span-1 sticky top-4 space-y-4">
+                <livewire:shared.profile-completeness
+                    type="vacancy"
+                    :model-id="$vacancyId"
+                    :wire:key="'completeness-' . $vacancyId"
+                />
                 <livewire:employer.vacancy-countdown
                     :vacancy-id="$vacancyId"
                     :wire:key="'countdown-' . $vacancyId"
