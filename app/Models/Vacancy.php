@@ -298,4 +298,15 @@ class Vacancy extends Model
     {
         return $this->belongsToMany(User::class, 'saved_vacancies')->withPivot('created_at');
     }
+
+    public function skills(): BelongsToMany
+    {
+        return $this->belongsToMany(SkillTag::class, 'vacancy_skills', 'vacancy_id', 'skill_id')
+            ->withPivot('is_required');
+    }
+
+    public function recommendations(): HasMany
+    {
+        return $this->hasMany(VacancyRecommendation::class);
+    }
 }

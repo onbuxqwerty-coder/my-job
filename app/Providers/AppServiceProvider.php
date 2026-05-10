@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\Resume;
+use App\Models\User;
 use App\Models\Vacancy;
+use App\Observers\CandidateProfileObserver;
+use App\Observers\VacancyObserver;
 use App\Policies\ResumePolicy;
 use App\Policies\VacancyPolicy;
 use App\Events\ApplicationStatusChanged;
@@ -42,5 +45,8 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(Resume::class, ResumePolicy::class);
         Gate::policy(Vacancy::class, VacancyPolicy::class);
+
+        User::observe(CandidateProfileObserver::class);
+        Vacancy::observe(VacancyObserver::class);
     }
 }

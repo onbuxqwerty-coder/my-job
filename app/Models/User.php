@@ -80,4 +80,15 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             ->withPivot('created_at')
             ->orderByPivot('created_at', 'desc');
     }
+
+    public function candidateSkills(): BelongsToMany
+    {
+        return $this->belongsToMany(SkillTag::class, 'candidate_skills', 'user_id', 'skill_id')
+            ->withPivot('level');
+    }
+
+    public function recommendations(): HasMany
+    {
+        return $this->hasMany(VacancyRecommendation::class);
+    }
 }
