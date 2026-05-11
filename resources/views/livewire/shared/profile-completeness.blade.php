@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Vacancy;
 use App\Services\ProfileCompletenessService;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
 new class extends Component
@@ -18,10 +19,16 @@ new class extends Component
         $service = app(ProfileCompletenessService::class);
 
         return match ($this->type) {
-            'employer' => $service->employerScore(auth()->user()),
+            'employer' => $service->employerScore(auth()->user()->fresh()),
             'vacancy'  => $service->vacancyScore(Vacancy::findOrFail($this->modelId)),
-            default    => $service->candidateScore(auth()->user()),
+            default    => $service->candidateScore(auth()->user()->fresh()),
         };
+    }
+
+    #[On('profile-saved')]
+    public function refresh(): void
+    {
+        unset($this->result);
     }
 }; ?>
 

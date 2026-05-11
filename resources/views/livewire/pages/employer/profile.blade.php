@@ -117,6 +117,7 @@ new #[Layout('layouts.app')] class extends Component
 
         $this->saved = true;
         $this->logo  = null;
+        $this->dispatch('profile-saved');
     }
 }; ?>
 
