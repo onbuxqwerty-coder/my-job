@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\BusinessType;
+use App\Enums\CompanyVerificationStatus;
 use Database\Factories\CompanyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,13 +32,19 @@ class Company extends Model
         'business_type',
         'edrpou',
         'ipn',
+        'verification_status',
+        'verified_name',
+        'verified_at',
+        'verified_by',
     ];
 
     protected function casts(): array
     {
         return [
-            'is_verified'   => 'boolean',
-            'business_type' => BusinessType::class,
+            'is_verified'         => 'boolean',
+            'business_type'       => BusinessType::class,
+            'verification_status' => CompanyVerificationStatus::class,
+            'verified_at'         => 'datetime',
         ];
     }
 
@@ -80,6 +87,16 @@ class Company extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->verification_status === CompanyVerificationStatus::Verified;
+    }
+
+    public function verifiedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verified_by');
     }
 
     public function isProfileComplete(): bool

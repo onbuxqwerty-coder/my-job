@@ -106,8 +106,25 @@ new #[Layout('layouts.app')] class extends Component
             </div>
         @endif
 
-        <div class="max-w-2xl mb-6">
+        <div class="max-w-2xl mb-6 flex items-center gap-4 flex-wrap">
             <h2 class="text-lg font-semibold text-gray-900">Профіль компанії</h2>
+            @php $verStatus = auth()->user()->company?->verification_status; @endphp
+            @if($verStatus === \App\Enums\CompanyVerificationStatus::Verified)
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    Верифікована компанія
+                </span>
+            @elseif($verStatus === \App\Enums\CompanyVerificationStatus::Rejected)
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                    Верифікацію відхилено — зверніться до підтримки
+                </span>
+            @else
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Очікує верифікації
+                </span>
+            @endif
         </div>
 
         <div class="bg-white rounded-2xl border employer-card-border p-8">

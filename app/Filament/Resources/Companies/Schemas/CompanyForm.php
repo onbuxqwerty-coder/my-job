@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Companies\Schemas;
 
 use App\Models\City;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -72,6 +73,22 @@ class CompanyForm
                     ->afterStateUpdated(fn (?string $state, callable $set) =>
                         $set('location', $state ? (City::find($state)?->name ?? '') : '')
                     ),
+
+                Placeholder::make('verification_status')
+                    ->label('Статус верифікації')
+                    ->content(fn($record) => $record?->verification_status?->label() ?? '—'),
+
+                Placeholder::make('verified_name')
+                    ->label('Назва в реєстрі')
+                    ->content(fn($record) => $record?->verified_name ?? '—'),
+
+                Placeholder::make('verified_at')
+                    ->label('Дата верифікації')
+                    ->content(fn($record) => $record?->verified_at?->format('d.m.Y H:i') ?? '—'),
+
+                Placeholder::make('verified_by')
+                    ->label('Перевірив')
+                    ->content(fn($record) => $record?->verifiedBy?->name ?? '—'),
             ]);
     }
 }

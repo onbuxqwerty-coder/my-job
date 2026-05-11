@@ -228,7 +228,7 @@ new #[Layout('layouts.app')] class extends Component
                         <h1 class="mj-job-title">{{ $vacancy->title }}</h1>
                         <div class="mj-job-company-row">
                             <span class="mj-job-company-name">{{ $vacancy->company->name }}</span>
-                            @if($vacancy->company->is_verified)
+                            @if($vacancy->company->isVerified())
                                 <span class="mj-verified-badge" title="Верифікована компанія">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -377,7 +377,7 @@ new #[Layout('layouts.app')] class extends Component
                     <div class="mj-company-block-info">
                         <div class="mj-company-block-name-row">
                             <h3 class="mj-company-block-name">{{ $vacancy->company->name }}</h3>
-                            @if($vacancy->company->is_verified)
+                            @if($vacancy->company->isVerified())
                                 <span class="mj-verified-badge">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
