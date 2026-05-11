@@ -92,7 +92,7 @@ final class ProfileCompletenessService
             [
                 'field'  => 'logo',
                 'label'  => 'Логотип',
-                'weight' => 15,
+                'weight' => 10,
                 'filled' => $company !== null && ! empty($company->logo),
                 'url'    => '/dashboard/employer/profile',
             ],
@@ -120,9 +120,16 @@ final class ProfileCompletenessService
             [
                 'field'  => 'phone',
                 'label'  => 'Телефон',
-                'weight' => 10,
+                'weight' => 5,
                 'filled' => ! empty($user->phone),
                 'url'    => '/dashboard/employer/profile',
+            ],
+            [
+                'field'  => 'telegram_id',
+                'label'  => 'Telegram ID',
+                'weight' => 10,
+                'filled' => ! empty($user->telegram_id),
+                'url'    => '/dashboard/employer/my-profile',
             ],
         ];
 
