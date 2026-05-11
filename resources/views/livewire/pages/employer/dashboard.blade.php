@@ -271,16 +271,12 @@ new #[Layout('layouts.app')] class extends Component
             <h2 class="text-2xl font-bold text-gray-900 mb-2">Вакансія не активована</h2>
             <p class="text-gray-500 mb-1">Спочатку заповніть профіль компанії</p>
             @php
-                $modalNextStep = app(\App\Services\ProfileCompletenessService::class)
-                    ->employerScore(auth()->user())['next_step'];
+                $modalScore = app(\App\Services\ProfileCompletenessService::class)
+                    ->employerScore(auth()->user())['score'];
             @endphp
-            @if($modalNextStep)
-                <div class="mt-3 p-3 rounded-lg text-sm text-left"
-                     style="background:#FEF3C7;border:1px solid #FCD34D;color:#92400E;">
-                    <p class="font-medium">Що залишилось заповнити:</p>
-                    <p class="mt-1">{{ $modalNextStep['label'] }}</p>
-                </div>
-            @endif
+            <p class="mt-3 text-sm font-medium text-gray-500">
+                Залишилось заповнити — <span class="font-bold text-gray-900">{{ 100 - $modalScore }}%</span>
+            </p>
             <div class="my-6 h-px bg-gray-100"></div>
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-left">
                 <div class="flex items-start gap-3">
