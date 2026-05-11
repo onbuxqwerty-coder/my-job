@@ -6,6 +6,7 @@ use App\Enums\EmploymentType;
 use App\Enums\Language;
 use App\Enums\PlanType;
 use App\Enums\Suitability;
+use App\Enums\VacancyPublicationType;
 use App\Enums\VacancyStatus;
 use App\Models\Category;
 use App\Models\Vacancy;
@@ -29,9 +30,11 @@ new #[Layout('layouts.app')] class extends Component
     public string $salaryFrom     = '';
     public string $salaryTo       = '';
     public string $currency       = 'UAH';
-    public bool   $isFeatured     = false;
-    public bool   $isTop          = false;
-    public bool   $saved          = false;
+    public bool   $isFeatured        = false;
+    public bool   $isTop             = false;
+    public bool   $saved             = false;
+    public string $publicationType   = 'standard';
+    public string $anonymousName     = '';
 
     /** @var array<string> */
     public array $languages   = [];
@@ -56,10 +59,12 @@ new #[Layout('layouts.app')] class extends Component
             $this->salaryFrom     = (string) ($vacancy->salary_from ?? '');
             $this->salaryTo       = (string) ($vacancy->salary_to ?? '');
             $this->currency       = $vacancy->currency;
-            $this->isFeatured     = $vacancy->is_featured;
-            $this->isTop          = $vacancy->is_top;
-            $this->languages      = $vacancy->languages ?? [];
-            $this->suitability    = $vacancy->suitability ?? [];
+            $this->isFeatured      = $vacancy->is_featured;
+            $this->isTop           = $vacancy->is_top;
+            $this->languages       = $vacancy->languages ?? [];
+            $this->suitability     = $vacancy->suitability ?? [];
+            $this->publicationType = $vacancy->publication_type?->value ?? 'standard';
+            $this->anonymousName   = $vacancy->anonymous_name ?? '';
         }
     }
 
@@ -113,23 +118,27 @@ new #[Layout('layouts.app')] class extends Component
         }
 
         $data = [
-            'company_id'      => $company->id,
-            'category_id'     => (int) $this->categoryId,
-            'city_id'         => $this->cityId ? (int) $this->cityId : null,
-            'title'           => $this->title,
-            'description'     => $this->description,
-            'employment_type' => $this->employmentType,
-            'salary_from'     => $this->salaryFrom ?: null,
-            'salary_to'       => $this->salaryTo ?: null,
-            'currency'        => $this->currency,
-            'is_active'       => true,
-            'is_featured'     => $this->isFeatured,
-            'is_top'          => $this->isTop,
-            'status'          => VacancyStatus::Active,
-            'published_at'    => now(),
-            'expires_at'      => $vacancyService->getExpiresAt(auth()->user()),
-            'languages'       => $this->languages ?: null,
-            'suitability'     => $this->suitability ?: null,
+            'company_id'       => $company->id,
+            'category_id'      => (int) $this->categoryId,
+            'city_id'          => $this->cityId ? (int) $this->cityId : null,
+            'title'            => $this->title,
+            'description'      => $this->description,
+            'employment_type'  => $this->employmentType,
+            'salary_from'      => $this->salaryFrom ?: null,
+            'salary_to'        => $this->salaryTo ?: null,
+            'currency'         => $this->currency,
+            'is_active'        => true,
+            'is_featured'      => $this->isFeatured,
+            'is_top'           => $this->isTop,
+            'status'           => VacancyStatus::Active,
+            'published_at'     => now(),
+            'expires_at'       => $vacancyService->getExpiresAt(auth()->user()),
+            'languages'        => $this->languages ?: null,
+            'suitability'      => $this->suitability ?: null,
+            'publication_type' => VacancyPublicationType::from($this->publicationType),
+            'anonymous_name'   => $this->publicationType === 'anonymous'
+                ? ($this->anonymousName ?: null)
+                : null,
         ];
 
         if ($this->vacancyId) {
@@ -137,6 +146,12 @@ new #[Layout('layouts.app')] class extends Component
             $vacancyService->update($vacancy, $data);
         } else {
             $vacancyService->publish(auth()->user(), $data);
+        }
+
+        if ($this->publicationType === 'anonymous') {
+            session(['anonymous_vacancy_id' => $this->vacancyId ?? $company->vacancies()->latest()->first()?->id]);
+            $this->redirect(route('employer.billing'), navigate: true);
+            return;
         }
 
         $this->redirect(route('employer.dashboard'), navigate: true);
@@ -333,6 +348,59 @@ new #[Layout('layouts.app')] class extends Component
                             @endforeach
                         </div>
                     </div>
+                </div>
+
+                <div class="rounded-xl p-4" style="border: 1px solid #E5E7EB; background: #F9FAFB;">
+                    <h3 class="font-semibold mb-3" style="color: #1F2937;">Тип публікації</h3>
+
+                    <div class="space-y-3">
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="radio" wire:model.live="publicationType" value="standard" class="mt-1" />
+                            <div>
+                                <p class="font-medium" style="color: #1F2937;">Звичайна — безкоштовно</p>
+                                <p class="text-sm" style="color: #6B7280;">
+                                    Назва та профіль компанії відображаються для кандидатів
+                                </p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="radio" wire:model.live="publicationType" value="anonymous" class="mt-1" />
+                            <div>
+                                <p class="font-medium" style="color: #1F2937;">Анонімна — платна послуга</p>
+                                <p class="text-sm" style="color: #6B7280;">
+                                    Бренд прихований. Автооновлення позиції щотижня.
+                                    Вакансія відсутня у списку вакансій компанії.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+
+                    @if($publicationType === 'anonymous')
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium mb-1" style="color: #374151;">
+                                Назва для відображення
+                            </label>
+                            <input type="text"
+                                   wire:model="anonymousName"
+                                   placeholder="Компанія"
+                                   maxlength="100"
+                                   class="w-full px-3 py-2 text-sm"
+                                   style="border: 1px solid var(--color-input-border);
+                                          border-radius: 12px;
+                                          background: var(--color-input-bg);
+                                          color: var(--color-input-text);" />
+                            <p class="mt-1 text-xs" style="color: #6B7280;">
+                                Залиш порожнім — буде відображатись «Компанія»
+                            </p>
+                        </div>
+
+                        <div class="mt-4 p-3 rounded-lg text-sm"
+                             style="background: #FFFBEB; border: 1px solid #FCD34D; color: #92400E;">
+                            ⚠ Анонімна публікація — платна послуга.
+                            Після збереження вас буде направлено до оплати.
+                        </div>
+                    @endif
                 </div>
 
                 <button type="submit"

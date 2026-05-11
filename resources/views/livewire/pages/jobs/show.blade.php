@@ -227,8 +227,8 @@ new #[Layout('layouts.app')] class extends Component
                     <div class="mj-job-header-info">
                         <h1 class="mj-job-title">{{ $vacancy->title }}</h1>
                         <div class="mj-job-company-row">
-                            <span class="mj-job-company-name">{{ $vacancy->company->name }}</span>
-                            @if($vacancy->company->isVerified())
+                            <span class="mj-job-company-name">{{ $vacancy->display_company_name }}</span>
+                            @if(!$vacancy->isAnonymous() && $vacancy->company->isVerified())
                                 <span class="mj-verified-badge" title="Верифікована компанія">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -243,7 +243,13 @@ new #[Layout('layouts.app')] class extends Component
                     </div>
 
                     <div class="mj-job-logo-wrap">
-                        @if($vacancy->company->logo_url)
+                        @if($vacancy->isAnonymous())
+                            <div class="mj-job-logo-placeholder">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
+                                </svg>
+                            </div>
+                        @elseif($vacancy->company->logo_url)
                             <img src="{{ $vacancy->company->logo_url }}"
                                  alt="{{ $vacancy->company->name }}"
                                  class="mj-job-logo-img"/>
@@ -363,58 +369,74 @@ new #[Layout('layouts.app')] class extends Component
 
                 {{-- Company Block --}}
                 <div class="mj-company-block">
-                    <div class="mj-company-block-logo">
-                        @if($vacancy->company->logo_url)
-                            <img src="{{ $vacancy->company->logo_url }}"
-                                 alt="{{ $vacancy->company->name }}"
-                                 class="mj-company-block-logo-img"/>
-                        @else
-                            <div class="mj-company-block-logo-placeholder">
-                                {{ strtoupper(substr($vacancy->company->name, 0, 2)) }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="mj-company-block-info">
-                        <div class="mj-company-block-name-row">
-                            <h3 class="mj-company-block-name">{{ $vacancy->company->name }}</h3>
-                            @if($vacancy->company->isVerified())
-                                <span class="mj-verified-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    Перевірена
-                                </span>
-                            @endif
-                        </div>
-                        @if($vacancy->company->location || $vacancy->company->city)
-                            <div class="mj-company-block-location">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    @if($vacancy->isAnonymous())
+                        <div class="mj-company-block-logo">
+                            <div class="mj-company-block-logo-placeholder" style="display:flex;align-items:center;justify-content:center;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
                                 </svg>
-                                {{ $vacancy->company->city?->name ?? $vacancy->company->location }}
                             </div>
-                        @endif
-                        @if($vacancy->company->description)
-                            <p class="mj-company-block-desc">{{ Str::limit($vacancy->company->description, 200) }}</p>
-                        @endif
-                        <div class="mj-company-block-links">
-                            <a href="{{ route('home', ['companyId' => $vacancy->company->id]) }}"
-                               class="mj-company-block-link">
-                                Всі вакансії компанії →
-                            </a>
-                            @if($vacancy->company->website)
-                                <a href="{{ $vacancy->company->website }}"
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="mj-company-block-link mj-company-block-link--ext">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                    </svg>
-                                    Вебсайт
-                                </a>
+                        </div>
+                        <div class="mj-company-block-info">
+                            <div class="mj-company-block-name-row">
+                                <h3 class="mj-company-block-name">{{ $vacancy->display_company_name }}</h3>
+                            </div>
+                            <p class="text-sm" style="color:#6B7280;">Конфіденційний роботодавець</p>
+                        </div>
+                    @else
+                        <div class="mj-company-block-logo">
+                            @if($vacancy->company->logo_url)
+                                <img src="{{ $vacancy->company->logo_url }}"
+                                     alt="{{ $vacancy->company->name }}"
+                                     class="mj-company-block-logo-img"/>
+                            @else
+                                <div class="mj-company-block-logo-placeholder">
+                                    {{ strtoupper(substr($vacancy->company->name, 0, 2)) }}
+                                </div>
                             @endif
                         </div>
-                    </div>
+                        <div class="mj-company-block-info">
+                            <div class="mj-company-block-name-row">
+                                <h3 class="mj-company-block-name">{{ $vacancy->company->name }}</h3>
+                                @if($vacancy->company->isVerified())
+                                    <span class="mj-verified-badge">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        Перевірена
+                                    </span>
+                                @endif
+                            </div>
+                            @if($vacancy->company->location || $vacancy->company->city)
+                                <div class="mj-company-block-location">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    {{ $vacancy->company->city?->name ?? $vacancy->company->location }}
+                                </div>
+                            @endif
+                            @if($vacancy->company->description)
+                                <p class="mj-company-block-desc">{{ Str::limit($vacancy->company->description, 200) }}</p>
+                            @endif
+                            <div class="mj-company-block-links">
+                                <a href="{{ route('home', ['companyId' => $vacancy->company->id]) }}"
+                                   class="mj-company-block-link">
+                                    Всі вакансії компанії →
+                                </a>
+                                @if($vacancy->company->website)
+                                    <a href="{{ $vacancy->company->website }}"
+                                       target="_blank" rel="noopener noreferrer"
+                                       class="mj-company-block-link mj-company-block-link--ext">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                        </svg>
+                                        Вебсайт
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
             </article>

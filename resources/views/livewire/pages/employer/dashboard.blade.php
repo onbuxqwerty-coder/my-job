@@ -299,8 +299,14 @@ new #[Layout('layouts.app')] class extends Component
             </div>
             <div class="flex flex-col gap-3">
                 <a href="{{ route('employer.profile') }}"
-                   class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition text-center">
+                   class="w-full py-3 px-4 text-white font-semibold rounded-xl transition text-center block"
+                   style="background: #2563EB;">
                     Заповнити профіль компанії
+                </a>
+                <a href="{{ route('employer.billing') }}"
+                   class="w-full py-3 px-4 font-semibold rounded-xl transition text-center block"
+                   style="border: 2px solid #F36F21; color: #F36F21; background: transparent;">
+                    Опублікувати анонімно
                 </a>
                 <button type="button" @click="show = false"
                         class="w-full py-2 text-sm text-gray-400 hover:text-gray-600 transition">

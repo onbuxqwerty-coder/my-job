@@ -38,11 +38,16 @@ final class JobPostingSchema extends Component
         }
 
         if ($company) {
-            $data['hiringOrganization'] = [
-                '@type'  => 'Organization',
-                'name'   => $company->name,
-                'sameAs' => url('/employers/' . $company->slug),
-            ];
+            $data['hiringOrganization'] = $vacancy->isAnonymous()
+                ? [
+                    '@type' => 'Organization',
+                    'name'  => $vacancy->display_company_name,
+                ]
+                : [
+                    '@type'  => 'Organization',
+                    'name'   => $company->name,
+                    'sameAs' => url('/employers/' . $company->slug),
+                ];
         }
 
         $isRemote = $this->isRemoteVacancy();

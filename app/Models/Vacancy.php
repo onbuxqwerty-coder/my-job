@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\PlanType;
+use App\Enums\VacancyPublicationType;
 use App\Enums\VacancyStatus;
 use App\Services\SubscriptionService;
 use Carbon\CarbonInterface;
@@ -48,6 +49,10 @@ class Vacancy extends Model
         'expires_at',
         'status',
         'expiry_notification_sent_at',
+        'publication_type',
+        'anonymous_name',
+        'auto_refresh',
+        'auto_refresh_until',
     ];
 
     protected function casts(): array
@@ -70,6 +75,9 @@ class Vacancy extends Model
             'expires_at'                  => 'datetime',
             'expiry_notification_sent_at' => 'datetime',
             'status'                      => VacancyStatus::class,
+            'publication_type'            => VacancyPublicationType::class,
+            'auto_refresh'                => 'boolean',
+            'auto_refresh_until'          => 'datetime',
         ];
     }
 
@@ -268,6 +276,31 @@ class Vacancy extends Model
     public function markExpiryNotificationSent(): void
     {
         $this->forceFill(['expiry_notification_sent_at' => now()])->save();
+    }
+
+    // -------------------------------------------------------------------------
+    // Anonymous publication helpers
+    // -------------------------------------------------------------------------
+
+    public function getDisplayCompanyNameAttribute(): string
+    {
+        if ($this->publication_type === VacancyPublicationType::Anonymous) {
+            return $this->anonymous_name ?? 'Компанія';
+        }
+
+        return $this->company?->name ?? 'Компанія';
+    }
+
+    public function isAnonymous(): bool
+    {
+        return $this->publication_type === VacancyPublicationType::Anonymous;
+    }
+
+    public function hasAutoRefresh(): bool
+    {
+        return $this->auto_refresh
+            && $this->auto_refresh_until
+            && $this->auto_refresh_until->isFuture();
     }
 
     // -------------------------------------------------------------------------

@@ -25,6 +25,11 @@ Schedule::command('vacancies:notify-expiring')
     ->onOneServer()
     ->name('vacancies.notify-expiring');
 
+Schedule::command('vacancies:refresh-anonymous')
+    ->weekly()
+    ->mondays()
+    ->at('06:00');
+
 Schedule::command('vacancies:expire')
     ->hourly()
     ->withoutOverlapping(10)

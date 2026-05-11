@@ -406,7 +406,7 @@ new #[Layout('layouts.app')] class extends Component
                                     </div>
                                 @endif
                                 <div class="job-details-row">
-                                    <span class="job-company">{{ $vacancy->company->name }}</span>
+                                    <span class="job-company">{{ $vacancy->display_company_name }}</span>
                                     @if($vacancy->city)
                                         <span class="job-location">{{ $vacancy->city->name }}</span>
                                     @elseif($vacancy->company->location)

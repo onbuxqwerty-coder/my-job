@@ -103,6 +103,15 @@
 
 ---
 
+## Типи публікації вакансії (`App\Enums\VacancyPublicationType`)
+
+| Enum | Value | Назва |
+|------|-------|-------|
+| `VacancyPublicationType::Standard`  | `standard`  | Звичайна |
+| `VacancyPublicationType::Anonymous` | `anonymous` | Анонімна |
+
+---
+
 ## Ключові терміни архітектури
 
 ### Entities (Сутності)

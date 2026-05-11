@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Vacancies\Tables;
 
+use App\Enums\VacancyPublicationType;
 use App\Enums\VacancyStatus;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
@@ -42,6 +43,29 @@ class VacanciesTable
                     ->badge()
                     ->color(fn (VacancyStatus $state) => $state->color())
                     ->formatStateUsing(fn (VacancyStatus $state) => $state->label()),
+
+                TextColumn::make('publication_type')
+                    ->label('Тип')
+                    ->badge()
+                    ->color(fn ($state) => $state === VacancyPublicationType::Anonymous ? 'warning' : 'gray')
+                    ->formatStateUsing(fn ($state) => $state instanceof VacancyPublicationType ? $state->label() : $state)
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('anonymous_name')
+                    ->label('Псевдонім')
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                IconColumn::make('auto_refresh')
+                    ->label('Авто-оновлення')
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('auto_refresh_until')
+                    ->label('Авто-оновлення до')
+                    ->dateTime('d.m.Y')
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('published_at')
                     ->label('Опубліковано')
