@@ -28,12 +28,13 @@
     $totalApplications = $company
         ? \App\Models\Application::whereHas('vacancy', fn ($q) => $q->where('company_id', $company->id))->count()
         : 0;
+
+    $canPublish = app(\App\Services\SubscriptionService::class)->canPublishJob(auth()->user());
 @endphp
 
 {{-- ── Ліміт вакансій: modal ─────────────────────────────────────────── --}}
-@if(session('limit_exceeded'))
 <div id="limit-modal-backdrop"
-     style="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:16px;"
+     style="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);display:{{ session('limit_exceeded') ? 'flex' : 'none' }};align-items:center;justify-content:center;padding:16px;"
      onclick="if(event.target===this)closeLimitModal()">
     <div style="background:#fff;border-radius:20px;padding:36px 32px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.2);position:relative;text-align:center;">
 
@@ -78,7 +79,6 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLimitModal();
 });
 </script>
-@endif
 
 <div class="seeker-tabs-header border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -120,7 +120,7 @@ document.addEventListener('keydown', function(e) {
             {{-- Col 3: Кнопка нова вакансія --}}
             <div class="flex justify-end">
                 <button
-                    onclick="Livewire.dispatch('open-quick-publish')"
+                    onclick="{{ $canPublish ? "Livewire.dispatch('open-quick-publish')" : "document.getElementById('limit-modal-backdrop').style.display='flex'" }}"
                     style="display:inline-flex; align-items:center; gap:6px; padding:9px 18px; font-size:0.875rem; font-weight:700; color:#fff; background:#2563eb; border-radius:12px; border:none; cursor:pointer; white-space:nowrap; box-shadow:0 1px 4px rgba(37,99,235,.3);">
                     <svg style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
