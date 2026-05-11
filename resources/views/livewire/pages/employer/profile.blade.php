@@ -212,7 +212,8 @@ new #[Layout('layouts.app')] class extends Component
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Вебсайт</label>
                     <input type="text" wire:model="website" placeholder="https://example.com"
-                           class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                           class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           x-on:blur="if ($el.value && !/^https?:\/\//i.test($el.value)) { $el.value = 'https://' + $el.value; $wire.set('website', $el.value); }"/>
                     @error('website') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
