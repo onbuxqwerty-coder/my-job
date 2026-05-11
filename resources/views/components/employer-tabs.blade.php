@@ -81,49 +81,55 @@ document.addEventListener('keydown', function(e) {
 @endif
 
 <div class="seeker-tabs-header border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="grid grid-cols-3 gap-6 items-center">
 
-        {{-- Row: company name | CTA --}}
-        <div class="flex items-center justify-between gap-3 pt-5 pb-2">
+            {{-- Col 1: Кабінет + назва + статистика --}}
             <div class="min-w-0">
                 <p style="font-size:11px; font-weight:700; color:#9ca3af; text-transform:uppercase; letter-spacing:.08em; margin-bottom:2px;">Кабінет роботодавця</p>
-                <h1 class="employer-heading" style="font-size:1.2rem; font-weight:800; color:#111827; line-height:1.3; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                <h1 class="employer-heading" style="font-size:1.2rem; font-weight:800; color:#111827; line-height:1.3; margin:0 0 8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                     {{ $company?->name ?? 'Моя компанія' }}
                 </h1>
+                @if($company)
+                <div class="flex items-center gap-3">
+                    <div style="display:flex; align-items:baseline; gap:4px;">
+                        <span style="font-size:1.1rem; font-weight:800; color:#111827;">{{ $totalVacancies }}</span>
+                        <span style="font-size:0.7rem; color:#9ca3af;">всього</span>
+                    </div>
+                    <div style="width:1px; height:14px; background:#e5e7eb;"></div>
+                    <div style="display:flex; align-items:baseline; gap:4px;">
+                        <span style="font-size:1.1rem; font-weight:800; color:#16a34a;">{{ $activeVacancies }}</span>
+                        <span style="font-size:0.7rem; color:#9ca3af;">активних</span>
+                    </div>
+                    <div style="width:1px; height:14px; background:#e5e7eb;"></div>
+                    <div style="display:flex; align-items:baseline; gap:4px;">
+                        <span style="font-size:1.1rem; font-weight:800; color:#2563eb;">{{ $totalApplications }}</span>
+                        <span style="font-size:0.7rem; color:#9ca3af;">відгуків</span>
+                    </div>
+                </div>
+                @endif
             </div>
 
-            <button
-                onclick="Livewire.dispatch('open-quick-publish')"
-                class="flex-shrink-0"
-                style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; font-size:0.875rem; font-weight:700; color:#fff; background:#2563eb; border-radius:12px; border:none; cursor:pointer; white-space:nowrap; box-shadow:0 1px 4px rgba(37,99,235,.3);">
-                <svg style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-                </svg>
-                <span class="hidden sm:inline">Нова вакансія</span>
-                <span class="sm:hidden">Вакансія</span>
-            </button>
+            {{-- Col 2: Заповненість профілю --}}
+            <div class="flex justify-center">
+                @if($company)
+                    <livewire:shared.profile-completeness type="employer" />
+                @endif
+            </div>
+
+            {{-- Col 3: Кнопка нова вакансія --}}
+            <div class="flex justify-end">
+                <button
+                    onclick="Livewire.dispatch('open-quick-publish')"
+                    style="display:inline-flex; align-items:center; gap:6px; padding:9px 18px; font-size:0.875rem; font-weight:700; color:#fff; background:#2563eb; border-radius:12px; border:none; cursor:pointer; white-space:nowrap; box-shadow:0 1px 4px rgba(37,99,235,.3);">
+                    <svg style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Нова вакансія
+                </button>
+            </div>
+
         </div>
-
-        {{-- Stats row (visible on sm+, compact on mobile) --}}
-        @if($company)
-            <div class="flex items-center gap-4 pb-3 overflow-x-auto">
-                <div style="display:flex; align-items:baseline; gap:5px; flex-shrink:0;">
-                    <span class="mj-stat-total" style="font-size:1.25rem; font-weight:800; color:#111827;">{{ $totalVacancies }}</span>
-                    <span style="font-size:0.7rem; color:#9ca3af; white-space:nowrap;">всього</span>
-                </div>
-                <div style="width:1px; height:16px; background:#e5e7eb; flex-shrink:0;"></div>
-                <div style="display:flex; align-items:baseline; gap:5px; flex-shrink:0;">
-                    <span style="font-size:1.25rem; font-weight:800; color:#16a34a;">{{ $activeVacancies }}</span>
-                    <span style="font-size:0.7rem; color:#9ca3af; white-space:nowrap;">активних</span>
-                </div>
-                <div style="width:1px; height:16px; background:#e5e7eb; flex-shrink:0;"></div>
-                <div style="display:flex; align-items:baseline; gap:5px; flex-shrink:0;">
-                    <span style="font-size:1.25rem; font-weight:800; color:#2563eb;">{{ $totalApplications }}</span>
-                    <span style="font-size:0.7rem; color:#9ca3af; white-space:nowrap;">відгуків</span>
-                </div>
-            </div>
-        @endif
-
     </div>
 </div>
 
