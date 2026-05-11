@@ -99,43 +99,117 @@ new #[Layout('layouts.app')] class extends Component
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-        {{-- ── Секція 1: Поточний тариф ── --}}
-        <div class="bg-white border border-gray-200 rounded-2xl p-6">
-            <div class="flex items-start justify-between gap-4">
-                <div>
-                    <h2 class="text-lg font-bold text-gray-900">Поточний тариф</h2>
-                    @if($this->currentSubscription)
-                        @php $sub = $this->currentSubscription; $plan = $sub->plan; @endphp
-                        <p class="mt-1 text-2xl font-bold text-blue-600">{{ $plan->name }}</p>
-                        <p class="text-sm text-gray-500 mt-0.5">
-                            Діє до {{ $sub->ends_at->locale('uk')->isoFormat('D MMMM YYYY') }}
-                            @if($sub->ends_at->isPast())
-                                <span class="text-red-500 font-medium">· Прострочено</span>
-                            @else
-                                <span class="text-green-500 font-medium">· Активний</span>
-                            @endif
-                        </p>
+        {{-- ── Верхня секція: Поточний тариф + Додаткові послуги ── --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
-                        {{-- Лічильники --}}
-                        <div class="flex flex-wrap gap-4 mt-4">
-                            @php $jobLimit = $plan->feature(\App\Enums\PlanFeature::ActiveJobs); @endphp
-                            <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm">
-                                <span class="font-semibold text-gray-800">{{ $this->activeJobsCount }}</span>
-                                <span class="text-gray-500"> / {{ $jobLimit === 0 ? '∞' : $jobLimit }} вакансій</span>
-                            </div>
-                            @if((int)$plan->feature(\App\Enums\PlanFeature::HotPerMonth) > 0)
-                                <div class="bg-orange-50 border border-orange-200 rounded-xl px-4 py-2 text-sm">
-                                    <span class="font-semibold text-orange-700">{{ $this->remainingHot }}</span>
-                                    <span class="text-orange-500"> HOT залишилось</span>
-                                </div>
-                            @endif
+            {{-- Поточний тариф --}}
+            <div class="bg-white border border-gray-200 rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-gray-900">Поточний тариф</h2>
+                @if($this->currentSubscription)
+                    @php $sub = $this->currentSubscription; $plan = $sub->plan; @endphp
+                    <p class="mt-1 text-2xl font-bold text-blue-600">{{ $plan->name }}</p>
+                    <p class="text-sm text-gray-500 mt-0.5">
+                        Діє до {{ $sub->ends_at->locale('uk')->isoFormat('D MMMM YYYY') }}
+                        @if($sub->ends_at->isPast())
+                            <span class="text-red-500 font-medium">· Прострочено</span>
+                        @else
+                            <span class="text-green-500 font-medium">· Активний</span>
+                        @endif
+                    </p>
+
+                    {{-- Лічильники --}}
+                    <div class="flex flex-wrap gap-4 mt-4">
+                        @php $jobLimit = $plan->feature(\App\Enums\PlanFeature::ActiveJobs); @endphp
+                        <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm">
+                            <span class="font-semibold text-gray-800">{{ $this->activeJobsCount }}</span>
+                            <span class="text-gray-500"> / {{ $jobLimit === 0 ? '∞' : $jobLimit }} вакансій</span>
                         </div>
-                    @else
-                        <p class="mt-1 text-gray-500 text-sm">Активної підписки немає. Оберіть тариф нижче.</p>
-                    @endif
-                </div>
-
+                        @if((int)$plan->feature(\App\Enums\PlanFeature::HotPerMonth) > 0)
+                            <div class="bg-orange-50 border border-orange-200 rounded-xl px-4 py-2 text-sm">
+                                <span class="font-semibold text-orange-700">{{ $this->remainingHot }}</span>
+                                <span class="text-orange-500"> HOT залишилось</span>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <p class="mt-1 text-gray-500 text-sm">Активної підписки немає. Оберіть тариф нижче.</p>
+                @endif
             </div>
+
+            {{-- Додаткові послуги --}}
+            <div class="bg-white border border-gray-200 rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-gray-900 mb-4">Додаткові послуги</h2>
+                <div class="space-y-3">
+
+                    {{-- HOT --}}
+                    <div class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:border-orange-200 hover:bg-orange-50/30 transition-colors">
+                        <span class="text-2xl shrink-0">🔥</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-gray-900 text-sm">HOT — підняття вакансії вгору</p>
+                            <p class="text-xs text-gray-500">Вакансія з'являється першою у пошуку · 7 днів</p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="text-sm font-bold text-gray-800">199 ₴</span>
+                            <a href="{{ route('employer.billing.checkout.addon', ['addon' => 'hot']) }}"
+                               class="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap">
+                                Придбати
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- TOP --}}
+                    <div class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:border-yellow-200 hover:bg-yellow-50/30 transition-colors">
+                        <span class="text-2xl shrink-0">⭐</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-gray-900 text-sm">TOP — закріплення у топових позиціях</p>
+                            <p class="text-xs text-gray-500">Завжди у верхній частині списку · 7 днів</p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="text-sm font-bold text-gray-800">299 ₴</span>
+                            <a href="{{ route('employer.billing.checkout.addon', ['addon' => 'top']) }}"
+                               class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap">
+                                Придбати
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- Анонімна публікація --}}
+                    <div class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:border-green-200 hover:bg-green-50/30 transition-colors">
+                        <span class="text-2xl shrink-0">🕵️</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-gray-900 text-sm">Анонімна публікація</p>
+                            <p class="text-xs text-gray-500">Публікація без бренду компанії</p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                Доступно
+                            </span>
+                            <a href="{{ route('employer.vacancies.create') }}"
+                               class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap">
+                                Створити
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- Доступ до бази CV --}}
+                    <div class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+                        <span class="text-2xl shrink-0">📄</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-gray-900 text-sm">Доступ до бази CV</p>
+                            <p class="text-xs text-gray-500">Перегляд резюме кандидатів · 30 днів</p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="text-sm font-bold text-gray-800">990 ₴</span>
+                            <a href="{{ route('employer.billing.checkout.addon', ['addon' => 'cv_access']) }}"
+                               class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap">
+                                Придбати
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
         {{-- ── Секція 2: Вибір тарифу ── --}}

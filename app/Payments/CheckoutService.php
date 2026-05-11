@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Payments;
 
+use App\Enums\AddonType;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
 use App\Models\Vacancy;
@@ -65,6 +66,26 @@ class CheckoutService
         return $this->gateway->createCheckout($data);
     }
 
+    public function createAddonCheckout(AddonType $addon, User $employer): string
+    {
+        $orderId = self::buildAddonOrderId($addon, $employer->id);
+
+        $data = new CheckoutData(
+            amountKopecks: $addon->price() * 100,
+            currency:      'UAH',
+            orderId:       $orderId,
+            description:   $addon->label() . " — {$addon->durationDays()} днів",
+            successUrl:    route('employer.billing.success'),
+            cancelUrl:     route('employer.billing'),
+            webhookUrl:    route('webhooks.payments', ['gateway' => $this->gateway->name()]),
+            userId:        $employer->id,
+            customerEmail: $employer->email,
+            customerName:  $employer->company?->name,
+        );
+
+        return $this->gateway->createCheckout($data);
+    }
+
     // ── Order ID helpers ──────────────────────────────────────────────────────
 
     /**
@@ -79,6 +100,14 @@ class CheckoutService
     public static function buildOrderId(int $vacancyId, int $days): string
     {
         return self::buildVacancyOrderId($vacancyId, $days);
+    }
+
+    /**
+     * Format: addon_{addonValue}_{userId}_{timestamp}
+     */
+    public static function buildAddonOrderId(AddonType $addon, int $userId): string
+    {
+        return sprintf('addon_%s_%d_%d', $addon->value, $userId, time());
     }
 
     /**
