@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Enums\VacancyStatus;
 use App\Models\Application;
 use App\Models\Vacancy;
+use App\Services\ProfileCompletenessService;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -25,12 +27,15 @@ new #[Layout('layouts.app')] class extends Component
         $vacancy = Vacancy::where('company_id', auth()->user()->company->id)
             ->findOrFail($vacancyId);
 
-        if ($vacancy->status === \App\Enums\VacancyStatus::Active) {
-            $vacancy->forceFill(['status' => \App\Enums\VacancyStatus::Draft, 'is_active' => false])->save();
+        if ($vacancy->status === VacancyStatus::Active) {
+            $vacancy->forceFill(['status' => VacancyStatus::Draft, 'is_active' => false])->save();
             return;
         }
 
-        if (!auth()->user()->company->isProfileComplete()) {
+        $score = app(ProfileCompletenessService::class)
+            ->employerScore(auth()->user())['score'];
+
+        if ($score < 100) {
             $this->showProfileModal = true;
             return;
         }
@@ -85,6 +90,18 @@ new #[Layout('layouts.app')] class extends Component
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+
+        @if(session('success'))
+            <div
+                x-data="{ show: true }"
+                x-init="setTimeout(() => show = false, 5000)"
+                x-show="show"
+                x-transition
+                class="mb-4 p-4 rounded-xl text-sm font-medium"
+                style="background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;">
+                {{ session('success') }}
+            </div>
+        @endif
 
         @if(!$this->company)
             <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
@@ -255,6 +272,17 @@ new #[Layout('layouts.app')] class extends Component
             </div>
             <h2 class="text-2xl font-bold text-gray-900 mb-2">Вакансія не активована</h2>
             <p class="text-gray-500 mb-1">Спочатку заповніть профіль компанії</p>
+            @php
+                $modalNextStep = app(\App\Services\ProfileCompletenessService::class)
+                    ->employerScore(auth()->user())['next_step'];
+            @endphp
+            @if($modalNextStep)
+                <div class="mt-3 p-3 rounded-lg text-sm text-left"
+                     style="background:#FEF3C7;border:1px solid #FCD34D;color:#92400E;">
+                    <p class="font-medium">Що залишилось заповнити:</p>
+                    <p class="mt-1">{{ $modalNextStep['label'] }}</p>
+                </div>
+            @endif
             <div class="my-6 h-px bg-gray-100"></div>
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-left">
                 <div class="flex items-start gap-3">

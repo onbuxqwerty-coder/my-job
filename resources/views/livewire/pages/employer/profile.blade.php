@@ -3,7 +3,10 @@
 declare(strict_types=1);
 
 use App\Enums\BusinessType;
+use App\Enums\VacancyStatus;
 use App\Models\Company;
+use App\Models\Vacancy;
+use App\Services\ProfileCompletenessService;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -88,6 +91,28 @@ new #[Layout('layouts.app')] class extends Component
                 ->whereNotNull('expires_at')
                 ->where('expires_at', '<', now()->addDays(30))
                 ->update(['expires_at' => now()->addDays(30)]);
+        }
+
+        $score = app(ProfileCompletenessService::class)
+            ->employerScore(auth()->user()->fresh())['score'];
+
+        if ($score === 100) {
+            $vacancy = Vacancy::where('company_id', $company->id)
+                ->whereIn('status', [VacancyStatus::Draft, VacancyStatus::Expired])
+                ->latest()
+                ->first();
+
+            if ($vacancy) {
+                $vacancy->publish();
+
+                session()->flash(
+                    'success',
+                    'Профіль збережено. Вакансію «' . $vacancy->title . '» активовано на 30 днів!'
+                );
+
+                $this->redirect(route('employer.dashboard'), navigate: true);
+                return;
+            }
         }
 
         $this->saved = true;
