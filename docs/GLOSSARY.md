@@ -343,7 +343,29 @@
 
 ---
 
-### 10. wire:confirm — нативні діалоги підтвердження
+### 10. Profile Required Modal — незаповнений профіль компанії
+
+**Змінна:** `showProfileModal` (bool, Livewire)  
+**Файл:** `resources/views/livewire/pages/employer/dashboard.blade.php` (~рядок 226)  
+**Тригер:** `toggleActive()` — якщо роботодавець намагається активувати вакансію, але профіль компанії не заповнено (`isProfileComplete() === false`)  
+**Тип:** Alpine.js `x-data="{ show: $wire.entangle('showProfileModal') }"`  
+**Розмір:** `max-w-md`, `rounded-2xl`, `p-8`, `text-center`  
+**Backdrop:** `bg-black/60`, клік → `show = false`  
+**Анімація:** `opacity-0 scale-95` → `opacity-100 scale-100` (200ms)
+
+Вміст:
+- Іконка трикутника-попередження (`bg-amber-100`, `text-amber-500`, 64×64px)
+- Заголовок «Вакансія не активована»
+- Підзаголовок «Спочатку заповніть профіль компанії»
+- Amber-блок: «Вакансія активна 1 добу» — пояснення що без профілю вакансія живе лише добу
+
+Кнопки:
+- «Заповнити профіль компанії» → `route('employer.profile')` (синій, `bg-blue-600`)
+- «Пропустити» → `show = false` (текстовий, `text-gray-400`)
+
+---
+
+### 11. wire:confirm — нативні діалоги підтвердження
 
 Не є повноцінними модальними вікнами — використовують браузерний `window.confirm()`.  
 З'являються **до** виконання Livewire-дії.
@@ -410,6 +432,23 @@
 Active  → forceFill(status: Draft, is_active: false)
 Draft / Expired / Archived → $vacancy->publish()
 ```
+
+---
+
+### CTA-кнопки продовження вакансії
+
+**Файл:** `resources/views/livewire/pages/jobs/show.blade.php` (рядки 1481–1482, інлайн `<style>`)  
+**Умова відображення:** змінна `$sidebarState` (рядок 30)
+
+| Стан `$sidebarState` | Текст кнопки | CSS-клас | Фон | Текст |
+|----------------------|-------------|----------|-----|-------|
+| `'expiring'` | «Продовжити вакансію» | `.mj-employer-cta--warning` | `#d97706` (amber-600) | `#fff` |
+| `'expired'` | «Відновити вакансію» | `.mj-employer-cta--danger` | `#dc2626` (red-600) | `#fff` |
+
+Базовий клас `.mj-employer-cta`: `display:block`, `padding: 10px 14px`, `border-radius: 8px`, `font-size: 14px`, `font-weight: 600`, `transition: opacity 0.2s`.  
+Hover: `opacity: 0.85`.  
+Підказка під кнопкою (`.mj-employer-cta-hint`): «15 / 30 / 90 днів», `font-size: 11px`, `color: #9ca3af`.  
+Маршрут: `route('employer.vacancies.extend', $vacancy)`.
 
 ---
 
