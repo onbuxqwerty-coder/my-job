@@ -529,16 +529,18 @@ new #[Layout('layouts.app')] class extends Component
 
                             {{-- CTA оплата --}}
                             @if($sidebarState === 'expiring')
-                                <a href="{{ route('employer.billing') }}"
-                                   class="mj-employer-cta mj-employer-cta--warning" style="display:block;text-align:center;text-decoration:none;">
+                                <button type="button"
+                                        onclick="document.getElementById('show-page-profile-modal').dispatchEvent(new CustomEvent('open'))"
+                                        class="mj-employer-cta mj-employer-cta--warning" style="border:none;cursor:pointer;width:100%;">
                                     💳 Продовжити вакансію
-                                </a>
+                                </button>
                                 <div class="mj-employer-cta-hint">15 / 30 / 90 днів</div>
                             @elseif($sidebarState === 'expired')
-                                <a href="{{ route('employer.billing') }}"
-                                   class="mj-employer-cta mj-employer-cta--danger" style="display:block;text-align:center;text-decoration:none;">
+                                <button type="button"
+                                        onclick="document.getElementById('show-page-profile-modal').dispatchEvent(new CustomEvent('open'))"
+                                        class="mj-employer-cta mj-employer-cta--danger" style="border:none;cursor:pointer;width:100%;">
                                     💳 Відновити вакансію
-                                </a>
+                                </button>
                                 <div class="mj-employer-cta-hint">15 / 30 / 90 днів</div>
                             @endif
 
@@ -1547,5 +1549,78 @@ html[data-theme="dark"] .mj-resume-option { border-color: rgba(99,153,34,0.35); 
 html[data-theme="dark"] .mj-resume-option__label { color: #e2e8f0; }
 html[data-theme="dark"] .mj-resume-option__label strong { color: #a3d977; }
 </style>
+
+    @auth
+        @if($isOwner)
+            {{-- Modal #10: профіль не заповнений (jobs/show) --}}
+            <div id="show-page-profile-modal"
+                 x-data="{ show: false }"
+                 @open.window="show = true"
+                 x-on:open="show = true"
+                 x-show="show"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 class="fixed inset-0 z-50 flex items-center justify-center p-4"
+                 style="display:none;">
+                <div class="absolute inset-0 bg-black/60" @click="show = false"></div>
+                <div x-show="show"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 text-center"
+                     style="display:none;">
+                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 mx-auto mb-4">
+                        <svg class="w-8 h-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Вакансія не активована</h2>
+                    <p class="text-gray-500 mb-1">Спочатку заповніть профіль компанії</p>
+                    @php
+                        $showModalNextStep = app(\App\Services\ProfileCompletenessService::class)
+                            ->employerScore(auth()->user())['next_step'];
+                    @endphp
+                    @if($showModalNextStep)
+                        <div class="mt-3 p-3 rounded-lg text-sm text-left"
+                             style="background:#FEF3C7;border:1px solid #FCD34D;color:#92400E;">
+                            <p class="font-medium">Що залишилось заповнити:</p>
+                            <p class="mt-1">{{ $showModalNextStep['label'] }}</p>
+                        </div>
+                    @endif
+                    <div class="my-6 h-px bg-gray-100"></div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-left">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-amber-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                            </svg>
+                            <div>
+                                <p class="text-amber-800 font-semibold text-sm">Вакансія активна 1 добу</p>
+                                <p class="text-amber-700 text-sm mt-0.5">
+                                    Щоб вакансія залишалась активною <strong>30 діб</strong> — заповніть профіль компанії. Це займе 1–2 хвилини.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <a href="{{ route('employer.profile') }}"
+                           class="w-full py-3 px-4 text-white font-semibold rounded-xl transition text-center block"
+                           style="background: #2563EB;">
+                            Заповнити профіль компанії
+                        </a>
+                        <a href="{{ route('employer.billing') }}"
+                           class="w-full py-3 px-4 font-semibold rounded-xl transition text-center block"
+                           style="border: 2px solid #F36F21; color: #F36F21; background: transparent;">
+                            Опублікувати анонімно
+                        </a>
+                        <button type="button" @click="show = false"
+                                class="w-full py-2 text-sm text-gray-400 hover:text-gray-600 transition">
+                            Пропустити
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endauth
 </div>
 </div>
