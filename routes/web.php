@@ -11,7 +11,6 @@ use App\Models\Interview;
 use App\Models\Resume;
 use App\Models\Vacancy;
 use App\Services\InterviewService;
-use App\Services\PaymentService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -92,9 +91,10 @@ Route::middleware(['auth', 'role:employer'])
             ->name('vacancies.create');
         Volt::route('/vacancies/{vacancyId}/edit', 'pages.employer.vacancies.edit')->name('vacancies.edit');
 
-        // Stripe Checkout redirect
-        Route::get('/vacancies/{vacancy}/promote', function (Vacancy $vacancy, PaymentService $payment) {
-            return redirect($payment->createVacancyPromoCheckout($vacancy));
+        // Stripe Checkout redirect (тимчасово відключено)
+        Route::get('/vacancies/{vacancy}/promote', function (Vacancy $vacancy) {
+            return redirect()->route('jobs.show', $vacancy->slug)
+                ->with('info', 'Платне просування вакансій буде доступне найближчим часом.');
         })->name('vacancies.promote');
 
         Volt::route('/vacancies/{vacancy}/payment/success', 'pages.employer.vacancies.payment-success')
