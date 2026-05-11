@@ -274,7 +274,7 @@ new #[Layout('layouts.app')] class extends Component
                 $modalScore = app(\App\Services\ProfileCompletenessService::class)
                     ->employerScore(auth()->user())['score'];
             @endphp
-            <p class="mt-3 text-sm font-medium text-gray-500">
+            <p class="mt-3 text-base font-medium text-gray-500">
                 Залишилось заповнити — <span class="font-bold text-gray-900">{{ 100 - $modalScore }}%</span>
             </p>
             <div class="my-6 h-px bg-gray-100"></div>
