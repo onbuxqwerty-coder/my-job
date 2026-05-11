@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\BusinessType;
 use App\Models\Company;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
@@ -17,6 +18,9 @@ new #[Layout('layouts.app')] class extends Component
     public string $website = '';
     public string $location = '';
     public string $cityId = '';
+    public string $businessType = 'legal';
+    public string $edrpou = '';
+    public string $ipn = '';
     public $logo = null;
     public bool $saved = false;
 
@@ -25,32 +29,48 @@ new #[Layout('layouts.app')] class extends Component
         $company = auth()->user()->company;
 
         if ($company) {
-            $this->name        = $company->name        ?? '';
-            $this->description = $company->description ?? '';
-            $this->website     = $company->website     ?? '';
-            $this->location    = $company->location    ?? '';
-            $this->cityId      = (string) ($company->city_id ?? '');
+            $this->name         = $company->name             ?? '';
+            $this->description  = $company->description      ?? '';
+            $this->website      = $company->website          ?? '';
+            $this->location     = $company->location         ?? '';
+            $this->cityId       = (string) ($company->city_id ?? '');
+            $this->businessType = $company->business_type?->value ?? 'legal';
+            $this->edrpou       = $company->edrpou            ?? '';
+            $this->ipn          = $company->ipn               ?? '';
         }
     }
 
     public function save(): void
     {
-        $this->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'required|string|max:5000',
-            'website'     => 'nullable|url|max:255',
-            'location'    => 'nullable|string|max:255',
-            'cityId'      => 'nullable|exists:cities,id',
-            'logo'        => 'nullable|image|max:2048',
+        $rules = [
+            'name'         => 'required|string|max:255',
+            'description'  => 'required|string|max:5000',
+            'website'      => 'nullable|url|max:255',
+            'location'     => 'nullable|string|max:255',
+            'cityId'       => 'nullable|exists:cities,id',
+            'logo'         => 'nullable|image|max:2048',
+            'businessType' => 'required|in:legal,individual',
+            'edrpou'       => $this->businessType === 'legal'       ? 'required|digits:8' : 'nullable',
+            'ipn'          => $this->businessType === 'individual'  ? 'required|digits:10' : 'nullable',
+        ];
+
+        $this->validate($rules, [
+            'edrpou.required' => 'ЄДРПОУ є обов\'язковим для юридичних осіб.',
+            'edrpou.digits'   => 'ЄДРПОУ повинен містити рівно 8 цифр.',
+            'ipn.required'    => 'ІПН є обов\'язковим для ФОП.',
+            'ipn.digits'      => 'ІПН повинен містити рівно 10 цифр.',
         ]);
 
         $data = [
-            'name'        => $this->name,
-            'slug'        => Str::slug($this->name),
-            'description' => $this->description,
-            'website'     => $this->website ?: null,
-            'location'    => $this->location ?: null,
-            'city_id'     => $this->cityId ? (int) $this->cityId : null,
+            'name'          => $this->name,
+            'slug'          => Str::slug($this->name),
+            'description'   => $this->description,
+            'website'       => $this->website   ?: null,
+            'location'      => $this->location  ?: null,
+            'city_id'       => $this->cityId    ? (int) $this->cityId : null,
+            'business_type' => BusinessType::from($this->businessType),
+            'edrpou'        => $this->businessType === 'legal'      ? $this->edrpou : null,
+            'ipn'           => $this->businessType === 'individual' ? $this->ipn    : null,
         ];
 
         if ($this->logo) {
@@ -99,6 +119,39 @@ new #[Layout('layouts.app')] class extends Component
                            class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     @error('name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
+
+                {{-- Тип підприємства --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Тип підприємства <span class="text-red-500">*</span></label>
+                    <select wire:model.live="businessType"
+                            class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="legal">Юридична особа (ЄДРПОУ)</option>
+                        <option value="individual">ФОП (ІПН)</option>
+                    </select>
+                    @error('businessType') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- ЄДРПОУ --}}
+                @if($businessType === 'legal')
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">ЄДРПОУ <span class="text-red-500">*</span></label>
+                    <input type="text" wire:model="edrpou" inputmode="numeric" maxlength="8" placeholder="12345678"
+                           class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    <p class="mt-1 text-xs text-gray-400">8 цифр без пробілів</p>
+                    @error('edrpou') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+                @endif
+
+                {{-- ІПН --}}
+                @if($businessType === 'individual')
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">ІПН <span class="text-red-500">*</span></label>
+                    <input type="text" wire:model="ipn" inputmode="numeric" maxlength="10" placeholder="1234567890"
+                           class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    <p class="mt-1 text-xs text-gray-400">10 цифр без пробілів</p>
+                    @error('ipn') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+                @endif
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Місто</label>

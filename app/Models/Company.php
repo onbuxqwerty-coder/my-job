@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\BusinessType;
 use Database\Factories\CompanyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,13 +28,31 @@ class Company extends Model
         'location',
         'city_id',
         'is_verified',
+        'business_type',
+        'edrpou',
+        'ipn',
     ];
 
     protected function casts(): array
     {
         return [
-            'is_verified' => 'boolean',
+            'is_verified'   => 'boolean',
+            'business_type' => BusinessType::class,
         ];
+    }
+
+    public function getTaxIdAttribute(): ?string
+    {
+        return match($this->business_type) {
+            BusinessType::Legal      => $this->edrpou,
+            BusinessType::Individual => $this->ipn,
+            default                  => null,
+        };
+    }
+
+    public function getTaxIdLabelAttribute(): string
+    {
+        return $this->business_type?->taxIdLabel() ?? 'Код';
     }
 
     /**
