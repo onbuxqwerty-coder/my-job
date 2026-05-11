@@ -124,24 +124,25 @@ document.addEventListener('keydown', function(e) {
             </div>
         @endif
 
-        {{-- Tabs --}}
-        <div class="relative">
-            <nav class="-mb-px flex gap-1 overflow-x-auto scrollbar-hide dark:border-t dark:border-gray-700" aria-label="Employer tabs">
-                @foreach($tabs as $tab)
-                    @php
-                        $isActive = $activeTab === $tab['route'];
-                    @endphp
-                    <a href="{{ route($tab['route']) }}"
-                       class="shrink-0 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors
-                              {{ $isActive
-                                  ? 'border-blue-600 text-blue-600'
-                                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                        {{ $tab['label'] }}
-                    </a>
-                @endforeach
-            </nav>
-            {{-- Fade indicator for horizontal scroll on mobile --}}
-            <div class="pointer-events-none absolute right-0 top-0 h-full w-10 tab-scroll-fade sm:hidden"></div>
-        </div>
     </div>
+</div>
+
+{{-- Tabs --}}
+<div class="relative">
+    <nav class="-mb-px flex gap-1 overflow-x-auto scrollbar-hide dark:border-t dark:border-gray-700" aria-label="Employer tabs">
+        @foreach($tabs as $tab)
+            @php
+                $isActive = $activeTab === $tab['route'];
+            @endphp
+            <a href="{{ route($tab['route']) }}"
+               class="shrink-0 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors
+                      {{ $isActive
+                          ? 'border-blue-600 text-blue-600'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                {{ $tab['label'] }}
+            </a>
+        @endforeach
+    </nav>
+    {{-- Fade indicator for horizontal scroll on mobile --}}
+    <div class="pointer-events-none absolute right-0 top-0 h-full w-10 tab-scroll-fade sm:hidden"></div>
 </div>
