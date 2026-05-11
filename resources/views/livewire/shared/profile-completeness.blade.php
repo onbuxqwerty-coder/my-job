@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Vacancy;
 use App\Services\ProfileCompletenessService;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
 new class extends Component
@@ -13,7 +11,6 @@ new class extends Component
     public string $type    = 'candidate';
     public ?int   $modelId = null;
 
-    #[Computed]
     public function result(): array
     {
         $service = app(ProfileCompletenessService::class);
@@ -23,12 +20,6 @@ new class extends Component
             'vacancy'  => $service->vacancyScore(Vacancy::findOrFail($this->modelId)),
             default    => $service->candidateScore(auth()->user()->fresh()),
         };
-    }
-
-    #[On('profile-saved')]
-    public function refresh(): void
-    {
-        unset($this->result);
     }
 }; ?>
 
@@ -45,7 +36,8 @@ new class extends Component
     };
 @endphp
 
-<div class="w-full min-w-0 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2">
+<div class="w-full min-w-0 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2"
+     x-on:profile-saved.window="$wire.$refresh()">
 
     {{-- Рядок 1: назва + прогрес-бар + % --}}
     <div class="flex items-center gap-2">
