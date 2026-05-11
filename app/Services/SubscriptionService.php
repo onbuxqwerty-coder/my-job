@@ -67,7 +67,8 @@ final class SubscriptionService
     }
 
     /**
-     * Count current active vacancies for the employer.
+     * Count all non-deleted vacancies for the employer (used for plan limit check).
+     * Includes inactive/draft — a used slot stays used regardless of status.
      */
     public function activeJobsCount(User $employer): int
     {
@@ -77,9 +78,7 @@ final class SubscriptionService
             return 0;
         }
 
-        return Vacancy::where('company_id', $companyId)
-            ->where('is_active', true)
-            ->count();
+        return Vacancy::where('company_id', $companyId)->count();
     }
 
     /**
