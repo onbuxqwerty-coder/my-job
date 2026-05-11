@@ -507,16 +507,16 @@ new #[Layout('layouts.app')] class extends Component
 
                             {{-- CTA оплата --}}
                             @if($sidebarState === 'expiring')
-                                <a href="{{ route('employer.vacancies.extend', $vacancy) }}"
-                                   class="mj-employer-cta mj-employer-cta--warning">
+                                <button onclick="Livewire.dispatch('open-profile-modal')"
+                                        class="mj-employer-cta mj-employer-cta--warning" style="border:none;cursor:pointer;width:100%;">
                                     💳 Продовжити вакансію
-                                </a>
+                                </button>
                                 <div class="mj-employer-cta-hint">15 / 30 / 90 днів</div>
                             @elseif($sidebarState === 'expired')
-                                <a href="{{ route('employer.vacancies.extend', $vacancy) }}"
-                                   class="mj-employer-cta mj-employer-cta--danger">
+                                <button onclick="Livewire.dispatch('open-profile-modal')"
+                                        class="mj-employer-cta mj-employer-cta--danger" style="border:none;cursor:pointer;width:100%;">
                                     💳 Відновити вакансію
-                                </a>
+                                </button>
                                 <div class="mj-employer-cta-hint">15 / 30 / 90 днів</div>
                             @endif
 

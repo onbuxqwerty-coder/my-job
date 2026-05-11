@@ -14,8 +14,6 @@
     $activeMap = [
         'employer.vacancies.create'          => 'employer.dashboard',
         'employer.vacancies.edit'            => 'employer.dashboard',
-        'employer.vacancies.extend'          => 'employer.billing',
-        'employer.vacancies.extend.initiate' => 'employer.billing',
         'employer.vacancies.payment.success' => 'employer.billing',
         'employer.applicants'                => 'employer.dashboard',
         'employer.candidate.detail'          => 'employer.candidates',

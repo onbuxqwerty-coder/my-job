@@ -7,11 +7,18 @@ use App\Models\Vacancy;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
 new #[Layout('layouts.app')] class extends Component
 {
     public bool $showProfileModal = false;
+
+    #[On('open-profile-modal')]
+    public function openProfileModal(): void
+    {
+        $this->showProfileModal = true;
+    }
 
     public function toggleActive(int $vacancyId): void
     {
