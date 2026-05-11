@@ -201,6 +201,22 @@
 
 ## Модальні вікна
 
+| # | Назва | Тригер | Файл |
+|---|-------|--------|------|
+| **#1** | Email Setup Modal | автоматично для роботодавців без email | `livewire/employer/email-setup-modal.blade.php` |
+| **#2** | Quick Publish Modal | `Livewire.dispatch('open-quick-publish')` | `livewire/employer/quick-publish-form.blade.php` |
+| **#3** | Limit Modal (Livewire) | `$wire.showLimit = true` при перевищенні ліміту | `livewire/employer/quick-publish-form.blade.php` |
+| **#4** | Limit Modal (session) | `session('limit_exceeded')` | `components/employer-tabs.blade.php` |
+| **#5** | Mobile Filters Modal | кнопка «☰» на сторінці вакансій | `livewire/pages/jobs/index.blade.php` |
+| **#6** | Telegram Auth Modal (логін) | «Увійти через Telegram» | `livewire/pages/auth/login.blade.php` |
+| **#7** | Telegram Auth Modal (резюме) | «Увійти через Telegram» у майстрі резюме | `livewire/resume-steps/auth-step.blade.php` |
+| **#8** | Delete Account Modal | кнопка «Delete Account» | `livewire/profile/delete-user-form.blade.php` |
+| **#9** | Vacancy Published Modal | `session('vacancy_published_id')` | `layouts/app.blade.php` |
+| **#10** | Profile Required Modal | `toggleActive()` при неповному профілі | `livewire/pages/employer/dashboard.blade.php` |
+| **#11** | wire:confirm | `wire:confirm="..."` на кнопках дій | різні файли |
+
+---
+
 ### 1. Email Setup Modal — налаштування пошти роботодавця
 
 **Файл:** `resources/views/livewire/employer/email-setup-modal.blade.php`  
