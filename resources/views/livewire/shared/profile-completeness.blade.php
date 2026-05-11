@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Vacancy;
 use App\Services\ProfileCompletenessService;
+use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
 
 new class extends Component
@@ -11,6 +12,7 @@ new class extends Component
     public string $type    = 'candidate';
     public ?int   $modelId = null;
 
+    #[Computed]
     public function result(): array
     {
         $service = app(ProfileCompletenessService::class);
