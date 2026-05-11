@@ -128,7 +128,7 @@ document.addEventListener('keydown', function(e) {
 </div>
 
 {{-- Tabs --}}
-<div class="relative">
+<div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <nav class="-mb-px flex gap-1 overflow-x-auto scrollbar-hide dark:border-t dark:border-gray-700" aria-label="Employer tabs">
         @foreach($tabs as $tab)
             @php
