@@ -85,7 +85,7 @@ final class ProfileCompletenessService
             [
                 'field'  => 'name',
                 'label'  => 'Назва компанії',
-                'weight' => 20,
+                'weight' => 15,
                 'filled' => $company !== null && ! empty($company->name),
                 'url'    => '/dashboard/employer/profile',
             ],
@@ -99,8 +99,15 @@ final class ProfileCompletenessService
             [
                 'field'  => 'description',
                 'label'  => 'Опис компанії',
-                'weight' => 25,
+                'weight' => 20,
                 'filled' => $company !== null && ! empty($company->description),
+                'url'    => '/dashboard/employer/profile',
+            ],
+            [
+                'field'  => 'tax_id',
+                'label'  => 'ЄДРПОУ / ІПН',
+                'weight' => 10,
+                'filled' => $company !== null && ! empty($company->tax_id),
                 'url'    => '/dashboard/employer/profile',
             ],
             [
