@@ -18,6 +18,12 @@ use Illuminate\Support\Str;
 
 final class VacancyService
 {
+    private const PROFILE_ACTIVATION_THRESHOLD = 90;
+
+    public function __construct(
+        private readonly ProfileCompletenessService $completeness,
+    ) {}
+
     public function publish(User $employer, array $data): Vacancy
     {
         $slug      = $this->generateSlug($data['title']);
@@ -69,9 +75,11 @@ final class VacancyService
         $plan    = $employer->currentPlan();
         $company = $employer->company;
 
+        $score = $company ? $this->completeness->employerScore($employer)['score'] : 0;
+
         return match ($plan?->type) {
             PlanType::Business, PlanType::Pro => now()->addDays(60),
-            default => ($company && $company->isProfileComplete())
+            default => $score >= self::PROFILE_ACTIVATION_THRESHOLD
                 ? now()->addDays(30)
                 : now()->addDay(),
         };

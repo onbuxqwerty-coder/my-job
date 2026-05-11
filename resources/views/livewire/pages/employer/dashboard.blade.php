@@ -35,7 +35,7 @@ new #[Layout('layouts.app')] class extends Component
         $score = app(ProfileCompletenessService::class)
             ->employerScore(auth()->user())['score'];
 
-        if ($score < 100) {
+        if ($score < 90) {
             $this->showProfileModal = true;
             return;
         }
