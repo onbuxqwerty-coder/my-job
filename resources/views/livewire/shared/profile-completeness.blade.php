@@ -38,6 +38,11 @@ new class extends Component
     };
 @endphp
 
+@if($score >= 100)
+    <img src="{{ asset('img/profile.webp') }}" alt="Профіль заповнений"
+         class="h-10 w-auto object-contain"
+         x-on:profile-saved.window="$wire.$refresh()">
+@else
 <div class="w-full min-w-0 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2"
      x-on:profile-saved.window="$wire.$refresh()">
 
@@ -51,7 +56,7 @@ new class extends Component
     </div>
 
     {{-- Рядок 2: наступний крок + кнопка --}}
-    @if($score < 100 && $nextStep)
+    @if($nextStep)
         <div class="flex items-center justify-between gap-2">
             <span class="text-xs text-gray-500 dark:text-gray-400 truncate min-w-0">
                 <span class="font-medium text-gray-700 dark:text-gray-300">Наступний крок:</span>
@@ -63,8 +68,7 @@ new class extends Component
                 Заповнити
             </a>
         </div>
-    @elseif($score >= 100)
-        <p class="text-xs font-medium text-green-600 dark:text-green-400">Профіль заповнений ✓</p>
     @endif
 
 </div>
+@endif
