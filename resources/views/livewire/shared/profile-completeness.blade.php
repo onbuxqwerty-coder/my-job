@@ -38,37 +38,39 @@ new class extends Component
     };
 @endphp
 
-@if($score >= 100)
-    <img src="{{ asset('img/profile.webp') }}" alt="Профіль заповнений"
-         class="h-10 w-auto object-contain"
-         x-on:profile-saved.window="$wire.$refresh()">
-@else
-<div class="w-full min-w-0 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2"
-     x-on:profile-saved.window="$wire.$refresh()">
+<div x-on:profile-saved.window="$wire.$refresh()">
 
-    {{-- Рядок 1: назва + прогрес-бар + % --}}
-    <div class="flex items-center gap-2">
-        <span class="text-xs font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">Заповненість профілю</span>
-        <div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
-            <div class="h-1.5 rounded-full transition-all duration-500" style="width:{{ $score }}%; background-color:{{ $barColor }};"></div>
-        </div>
-        <span class="text-xs font-semibold shrink-0" style="color:{{ $barColor }};">{{ $score }}%</span>
-    </div>
+    @if($score >= 100)
+        <img src="{{ asset('img/profile.webp') }}" alt="Профіль заповнений"
+             class="h-10 w-auto object-contain">
+    @else
+        <div class="w-full min-w-0 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2">
 
-    {{-- Рядок 2: наступний крок + кнопка --}}
-    @if($nextStep)
-        <div class="flex items-center justify-between gap-2">
-            <span class="text-xs text-gray-500 dark:text-gray-400 truncate min-w-0">
-                <span class="font-medium text-gray-700 dark:text-gray-300">Наступний крок:</span>
-                {{ $nextStep['label'] }}
-            </span>
-            <a href="{{ $nextStep['url'] }}"
-               class="shrink-0 text-xs font-semibold text-white px-3 py-1 rounded-lg"
-               style="background-color:#F36F21;">
-                Заповнити
-            </a>
+            {{-- Рядок 1: назва + прогрес-бар + % --}}
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">Заповненість профілю</span>
+                <div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                    <div class="h-1.5 rounded-full transition-all duration-500" style="width:{{ $score }}%; background-color:{{ $barColor }};"></div>
+                </div>
+                <span class="text-xs font-semibold shrink-0" style="color:{{ $barColor }};">{{ $score }}%</span>
+            </div>
+
+            {{-- Рядок 2: наступний крок + кнопка --}}
+            @if($nextStep)
+                <div class="flex items-center justify-between gap-2">
+                    <span class="text-xs text-gray-500 dark:text-gray-400 truncate min-w-0">
+                        <span class="font-medium text-gray-700 dark:text-gray-300">Наступний крок:</span>
+                        {{ $nextStep['label'] }}
+                    </span>
+                    <a href="{{ $nextStep['url'] }}"
+                       class="shrink-0 text-xs font-semibold text-white px-3 py-1 rounded-lg"
+                       style="background-color:#F36F21;">
+                        Заповнити
+                    </a>
+                </div>
+            @endif
+
         </div>
     @endif
 
 </div>
-@endif
