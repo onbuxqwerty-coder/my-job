@@ -48,10 +48,8 @@ new class extends Component
     }
 }; ?>
 
-<div>
-@if($show)
 <div
-    x-data="{ open: true }"
+    x-data="{ open: @entangle('show') }"
     x-show="open"
     x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="opacity-0"
@@ -59,17 +57,18 @@ new class extends Component
     x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
+    class="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center"
+    style="display: none;"
 >
     {{-- Sheet --}}
     <div
         x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 scale-95"
-        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:enter-start="translate-y-full md:translate-y-0 md:opacity-0 md:scale-95"
+        x-transition:enter-end="translate-y-0 md:opacity-100 md:scale-100"
         x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 scale-100"
-        x-transition:leave-end="opacity-0 scale-95"
-        class="w-full max-w-md mx-4 bg-white dark:bg-gray-800 rounded-2xl p-6 space-y-5"
+        x-transition:leave-start="translate-y-0 md:opacity-100 md:scale-100"
+        x-transition:leave-end="translate-y-full md:opacity-0 md:scale-95"
+        class="w-full bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl md:max-w-md p-6 space-y-5"
         @click.stop
     >
         {{-- Заголовок + прогрес --}}
@@ -126,6 +125,4 @@ new class extends Component
             </button>
         </div>
     </div>
-</div>
-@endif
 </div>
