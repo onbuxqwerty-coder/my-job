@@ -48,8 +48,10 @@ new class extends Component
     }
 }; ?>
 
+<div>
+@if($show)
 <div
-    x-data="{ open: @entangle('show') }"
+    x-data="{ open: true }"
     x-show="open"
     x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="opacity-0"
@@ -58,7 +60,6 @@ new class extends Component
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
     class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
-    style="display: none;"
 >
     {{-- Sheet --}}
     <div
@@ -125,4 +126,6 @@ new class extends Component
             </button>
         </div>
     </div>
+</div>
+@endif
 </div>
