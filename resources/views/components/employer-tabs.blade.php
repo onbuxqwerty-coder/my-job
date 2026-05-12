@@ -125,7 +125,7 @@ document.addEventListener('keydown', function(e) {
                     <svg style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
                     </svg>
-                    Нова вакансія
+                    <span class="hidden sm:inline">Нова вакансія</span>
                 </button>
             </div>
 

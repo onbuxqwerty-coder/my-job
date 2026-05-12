@@ -477,6 +477,41 @@ Hover: `opacity: 0.85`.
 
 ---
 
+### Кнопка «+ Нова вакансія»
+
+**Файл:** `resources/views/components/employer-tabs.blade.php` (~рядок 122)  
+**Місце:** правий край хедера панелі роботодавця (`employer-tabs`), Col 3 з 3  
+**Тригер:** `onclick="Livewire.dispatch('open-quick-publish')"` → відкриває Quick Publish Modal (#2)
+
+#### Стилі (inline)
+
+| Параметр | Значення |
+|---------|---------|
+| Фон | `#2563eb` (blue-600) |
+| Колір тексту | `#fff` |
+| Padding | `9px 18px` |
+| Font-size | `0.875rem` (14px) |
+| Font-weight | `700` |
+| Border-radius | `12px` |
+| Shadow | `0 1px 4px rgba(37,99,235,.3)` |
+| Gap (іконка + текст) | `6px` |
+| **Висота (розрахована)** | `38px` (9 + line-height 20 + 9) |
+| **Ширина (розрахована)** | `≈142px` (18 + icon 16 + gap 6 + текст ≈84 + 18) |
+| **Ширина mobile (`< sm`)** | `≈52px` (18 + icon 16 + 18) |
+
+#### Адаптивність
+
+| Breakpoint | Контент | Реалізація |
+|-----------|---------|-----------|
+| `< 640px` (mobile) | тільки SVG «+» | `<span class="hidden sm:inline">Нова вакансія</span>` |
+| `≥ 640px` (sm+) | SVG «+» + «Нова вакансія» | span видимий |
+
+#### Іконка
+
+SVG «плюс» (`M12 4v16m8-8H4`), `16×16px`, `stroke-width: 2.5`, колір успадковується (`stroke="currentColor"`).
+
+---
+
 ### CSS-змінні (Design Tokens)
 
 | CSS-змінна | Елемент | Light | Dark |
