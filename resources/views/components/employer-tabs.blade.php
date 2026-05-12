@@ -110,8 +110,8 @@ document.addEventListener('keydown', function(e) {
                 @endif
             </div>
 
-            {{-- Col 2: Заповненість профілю --}}
-            <div class="flex justify-center">
+            {{-- Col 2: Заповненість профілю — тільки desktop (mobile: Modal #12) --}}
+            <div class="hidden sm:flex justify-center">
                 @if($company)
                     <livewire:shared.profile-completeness type="employer" />
                 @endif
