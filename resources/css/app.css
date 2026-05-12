@@ -1060,6 +1060,17 @@ html:not([data-theme="dark"]) .border-gray-300 {
     border-color: #a7a7a7 !important;
 }
 
+/* Кнопка «+ Нова вакансія» — мобільний розмір 50×50px */
+@media (max-width: 639px) {
+    .btn-new-vacancy {
+        width: 50px !important;
+        height: 50px !important;
+        padding: 0 !important;
+        justify-content: center !important;
+        gap: 0 !important;
+    }
+}
+
 /* Scrollbar utility */
 .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }

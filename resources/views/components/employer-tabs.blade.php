@@ -121,6 +121,7 @@ document.addEventListener('keydown', function(e) {
             <div class="flex justify-end">
                 <button
                     onclick="Livewire.dispatch('open-quick-publish')"
+                    class="btn-new-vacancy"
                     style="display:inline-flex; align-items:center; gap:6px; padding:9px 18px; font-size:0.875rem; font-weight:700; color:#fff; background:#2563eb; border-radius:12px; border:none; cursor:pointer; white-space:nowrap; box-shadow:0 1px 4px rgba(37,99,235,.3);">
                     <svg style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
