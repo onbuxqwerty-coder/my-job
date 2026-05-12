@@ -477,6 +477,60 @@ Hover: `opacity: 0.85`.
 
 ---
 
+### Модуль заповненості профілю (Profile Completeness)
+
+**Компонент:** `<livewire:shared.profile-completeness type="employer|vacancy|candidate" />`  
+**Файл:** `resources/views/livewire/shared/profile-completeness.blade.php`  
+**Сервіс:** `App\Services\ProfileCompletenessService`  
+**Місце в хедері:** `employer-tabs.blade.php` — Col 2 з 3, `<div class="flex justify-center">`  
+**Умова рендеру:** тільки якщо `$company` існує (`@if($company)`)  
+**Реактивність:** `x-on:profile-saved.window="$wire.$refresh()"` — автоматично перераховує після збереження профілю
+
+#### Типи (`$type`)
+
+| Тип | Метод сервісу | Що рахує |
+|-----|--------------|---------|
+| `employer` | `employerScore(User)` | Поля компанії + user |
+| `vacancy` | `vacancyScore(Vacancy)` | Поля вакансії |
+| `candidate` | `candidateScore(User)` | Поля резюме |
+
+#### Поля роботодавця (`employerScore`) з вагами
+
+| Поле | Вага | Джерело |
+|------|------|---------|
+| Назва компанії | 15% | `company->name` |
+| Опис компанії | 20% | `company->description` |
+| Веб-сайт | 15% | `company->website` |
+| Місто | 15% | `company->city_id` або `location` |
+| Логотип | 10% | `company->logo` |
+| ЄДРПОУ / ІПН | 10% | `company->tax_id` |
+| Telegram ID | 10% | `user->telegram_id` |
+| Телефон | 5% | `user->phone` |
+| **Разом** | **100%** | |
+
+#### Кольори прогрес-бару
+
+| Діапазон | Колір | Значення |
+|---------|-------|---------|
+| `≥ 75%` | Зелений | `#16a34a` |
+| `40–74%` | Amber | `#d97706` |
+| `< 40%` | Червоний | `#dc2626` |
+
+#### Структура UI (2 рядки)
+
+**Рядок 1:** підпис «Заповненість профілю» + прогрес-бар (`h-1.5`, `rounded-full`, `transition 500ms`) + `score%`  
+**Рядок 2 (якщо `score < 100`):** «Наступний крок: {label}» + кнопка «Заповнити» (`bg #F36F21`, `px-3 py-1 rounded-lg`)  
+**Рядок 2 (якщо `score = 100`):** «Профіль заповнений ✓» (`text-green-600`)
+
+Наступний крок — поле з **найбільшою вагою** серед незаповнених (`sortByDesc('weight')`).
+
+#### Розміри контейнера
+
+`w-full`, `min-w-0`, `rounded-xl`, `border`, `px-4 py-3`, `space-y-2`  
+Теми: `bg-white dark:bg-gray-800`, `border-gray-200 dark:border-gray-700`
+
+---
+
 ### Кнопка «+ Нова вакансія»
 
 **Файл:** `resources/views/components/employer-tabs.blade.php` (~рядок 122)  
