@@ -55,6 +55,11 @@
 
         <livewire:employer.quick-publish-form />
         <livewire:employer.email-setup-modal />
+        @auth
+            @if(auth()->user()->role === \App\Enums\UserRole::Employer)
+                <livewire:employer.profile-completeness-modal />
+            @endif
+        @endauth
 
         <div
             x-data="{

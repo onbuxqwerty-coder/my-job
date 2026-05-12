@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'phone', 'password', 'role', 'telegram_id', 'telegram_link_token', 'provider', 'provider_id'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'role', 'telegram_id', 'telegram_link_token', 'provider', 'provider_id', 'profile_completeness_modal_shown_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
@@ -32,7 +32,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
             'role'              => UserRole::class,
-            'telegram_id'       => 'integer',
+            'telegram_id'                        => 'integer',
+            'profile_completeness_modal_shown_at' => 'datetime',
         ];
     }
 
