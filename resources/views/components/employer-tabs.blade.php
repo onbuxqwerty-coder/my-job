@@ -82,7 +82,7 @@ document.addEventListener('keydown', function(e) {
 
 <div class="seeker-tabs-header border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div class="grid grid-cols-3 gap-6 items-center">
+        <div class="flex justify-between items-center sm:grid sm:grid-cols-3 sm:gap-6">
 
             {{-- Col 1: Кабінет + назва + статистика --}}
             <div class="min-w-0">
