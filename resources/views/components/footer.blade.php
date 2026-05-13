@@ -87,7 +87,7 @@
         <div class="site-footer__bottom">
             <p style="margin:0;">&copy; {{ date('Y') }} MyJob. Всі права захищено.</p>
             <span class="site-footer__dot">•</span>
-            <a href="#">Умови використання</a>
+            <a href="{{ route('offer') }}">Публічна оферта</a>
             <span class="site-footer__dot">•</span>
             <a href="#">Конфіденційність</a>
         </div>
