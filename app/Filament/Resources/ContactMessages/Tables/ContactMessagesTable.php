@@ -6,10 +6,10 @@ namespace App\Filament\Resources\ContactMessages\Tables;
 
 use App\Enums\ContactRole;
 use App\Models\ContactMessage;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ViewAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
