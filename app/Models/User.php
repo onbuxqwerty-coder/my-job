@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'phone', 'password', 'role', 'telegram_id', 'telegram_link_token', 'provider', 'provider_id', 'profile_completeness_modal_shown_at'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'role', 'telegram_id', 'telegram_link_token', 'provider', 'provider_id', 'profile_completeness_modal_shown_at', 'notification_channel'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
@@ -34,6 +34,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'role'              => UserRole::class,
             'telegram_id'                        => 'integer',
             'profile_completeness_modal_shown_at' => 'datetime',
+            'notification_channel'               => \App\Enums\NotificationChannel::class,
         ];
     }
 
@@ -91,5 +92,16 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function recommendations(): HasMany
     {
         return $this->hasMany(VacancyRecommendation::class);
+    }
+
+    public function prefersEmail(): bool
+    {
+        return $this->notification_channel === \App\Enums\NotificationChannel::Email;
+    }
+
+    public function prefersTelegram(): bool
+    {
+        return $this->notification_channel === \App\Enums\NotificationChannel::Telegram
+            && ! empty($this->telegram_id);
     }
 }

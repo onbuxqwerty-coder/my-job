@@ -64,4 +64,8 @@ return [
         'redirect'    => env('APP_URL') . '/auth/apple/callback',
     ],
 
+    'telegram_bot' => [
+        'api_url' => env('TELEGRAM_BOT_API_URL', 'http://localhost:8080'),
+    ],
+
 ];
