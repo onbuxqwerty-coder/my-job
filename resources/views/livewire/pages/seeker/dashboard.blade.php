@@ -31,6 +31,10 @@ new #[Layout('layouts.app')] class extends Component
              ->count(),
             'hired'     => (clone $apps)->where('status', ApplicationStatus::Hired->value)->count(),
             'rejected'  => (clone $apps)->where('status', ApplicationStatus::Rejected->value)->count(),
+            'unread_messages' => \App\Models\SupportThread::where('user_id', auth()->id())
+                ->whereHas('messages', fn($q) => $q->where('is_read', false)
+                    ->where('sender_id', '!=', auth()->id()))
+                ->count(),
         ];
     }
 
@@ -78,21 +82,30 @@ new #[Layout('layouts.app')] class extends Component
         <livewire:shared.profile-completeness type="candidate" />
 
         {{-- Stats --}}
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             @php
                 $statCards = [
-                    ['label' => 'Всього заявок',  'value' => $this->stats['total'],     'color' => '#2563eb'],
-                    ['label' => 'На розгляді',    'value' => $this->stats['active'],    'color' => '#f59e0b'],
-                    ['label' => 'Співбесід',      'value' => $this->stats['interviews'],'color' => '#7c3aed'],
-                    ['label' => 'Прийнятий',      'value' => $this->stats['hired'],     'color' => '#16a34a'],
-                    ['label' => 'Відмов',         'value' => $this->stats['rejected'],  'color' => '#dc2626'],
+                    ['label' => 'Всього заявок',  'value' => $this->stats['total'],     'color' => '#2563eb', 'route' => null],
+                    ['label' => 'На розгляді',    'value' => $this->stats['active'],    'color' => '#f59e0b', 'route' => null],
+                    ['label' => 'Співбесід',      'value' => $this->stats['interviews'],'color' => '#7c3aed', 'route' => null],
+                    ['label' => 'Прийнятий',      'value' => $this->stats['hired'],     'color' => '#16a34a', 'route' => null],
+                    ['label' => 'Відмов',         'value' => $this->stats['rejected'],  'color' => '#dc2626', 'route' => null],
+                    ['label' => 'Нових повідомлень', 'value' => $this->stats['unread_messages'], 'color' => '#0891b2', 'route' => 'seeker.messages'],
                 ];
             @endphp
             @foreach($statCards as $card)
-                <div class="bg-white rounded-2xl border employer-card-border p-5 text-center shadow-sm">
-                    <p style="font-size:2rem; font-weight:800; color:{{ $card['color'] }}; line-height:1;">{{ $card['value'] }}</p>
-                    <p class="text-xs text-gray-500 mt-1">{{ $card['label'] }}</p>
-                </div>
+                @if($card['route'])
+                    <a href="{{ route($card['route']) }}"
+                       class="bg-white rounded-2xl border employer-card-border p-5 text-center shadow-sm hover:border-cyan-300 transition block">
+                        <p style="font-size:2rem; font-weight:800; color:{{ $card['color'] }}; line-height:1;">{{ $card['value'] }}</p>
+                        <p class="text-xs text-gray-500 mt-1">{{ $card['label'] }}</p>
+                    </a>
+                @else
+                    <div class="bg-white rounded-2xl border employer-card-border p-5 text-center shadow-sm">
+                        <p style="font-size:2rem; font-weight:800; color:{{ $card['color'] }}; line-height:1;">{{ $card['value'] }}</p>
+                        <p class="text-xs text-gray-500 mt-1">{{ $card['label'] }}</p>
+                    </div>
+                @endif
             @endforeach
         </div>
 

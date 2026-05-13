@@ -9,16 +9,22 @@
         ['route' => 'seeker.offers',       'label' => 'Пропозиції'],
         ['route' => 'seeker.saved',        'label' => 'Збережені'],
         ['route' => 'seeker.recommended',  'label' => 'Рекомендовані'],
+        ['route' => 'seeker.messages',     'label' => 'Повідомлення', 'badge' => true],
         ['route' => 'seeker.profile',      'label' => 'Мій профіль'],
     ];
 
     $activeMap = [
         'seeker.application.detail' => 'seeker.applications',
+        'seeker.message.detail'     => 'seeker.messages',
     ];
 
     $activeTab = $activeMap[$currentRoute] ?? $currentRoute;
 
     $user            = auth()->user();
+    $unreadMessages  = \App\Models\SupportThread::where('user_id', $user->id)
+                        ->whereHas('messages', fn($q) => $q->where('is_read', false)
+                            ->where('sender_id', '!=', $user->id))
+                        ->count();
     $totalApps       = $user->applications()->count();
     $activeApps      = $user->applications()->whereIn('status', ['pending', 'screening', 'interview'])->count();
     $upcomingIntvs   = \App\Models\Interview::whereHas('application', fn($q) => $q->where('user_id', $user->id))
@@ -92,11 +98,16 @@
             @foreach($tabs as $tab)
                 @php $isActive = $activeTab === $tab['route']; @endphp
                 <a href="{{ route($tab['route']) }}"
-                   class="shrink-0 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors
+                   class="shrink-0 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors inline-flex items-center gap-1.5
                           {{ $isActive
                               ? 'border-blue-600 text-blue-600'
                               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                     {{ $tab['label'] }}
+                    @if(!empty($tab['badge']) && $unreadMessages > 0)
+                        <span class="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold leading-none">
+                            {{ $unreadMessages }}
+                        </span>
+                    @endif
                 </a>
             @endforeach
         </nav>
