@@ -79,6 +79,8 @@
             </button>
             <span>•</span>
             <a href="{{ route('login') }}">Увійти</a>
+            <span>•</span>
+            <a href="{{ route('about') }}">Про нас</a>
         </nav>
 
         {{-- Bottom --}}

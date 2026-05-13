@@ -18,6 +18,7 @@ use Livewire\Volt\Volt;
 // ── Public ─────────────────────────────────────────────────────────────────
 Volt::route('/', 'pages.jobs.index')->name('home');
 Route::view('/for-employers', 'pages.for-employers')->name('for-employers');
+Route::view('/about', 'pages.about')->name('about');
 
 // ── Interview confirmation (public, token-based) ────────────────────────────
 Route::get('/interview/{token}/confirm', function (string $token, InterviewService $service) {
