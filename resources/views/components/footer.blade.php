@@ -81,6 +81,8 @@
             <a href="{{ route('login') }}">Увійти</a>
             <span>•</span>
             <a href="{{ route('about') }}">Про нас</a>
+            <span>•</span>
+            <a href="{{ route('contacts') }}">Контакти</a>
         </nav>
 
         {{-- Bottom --}}
