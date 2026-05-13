@@ -32,6 +32,7 @@
         <x-header />
 
         <main class="min-h-screen" style="padding-top: 120px;" id="main-content">
+            <img src="{{ asset('img/under-construction.webp') }}" alt="Under Construction" class="w-full block">
             {{ $slot }}
         </main>
 
