@@ -207,58 +207,58 @@
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-8">
+            <div class="about-feature-card border rounded-2xl p-8">
                 <h3 class="text-xl font-extrabold text-blue-700 mb-3">Для кандидатів</h3>
-                <p class="text-sm text-gray-500 leading-relaxed mb-6">
+                <p class="about-card-desc text-sm leading-relaxed mb-6">
                     Знаходьте роботу, яка вам підходить. Будуйте резюме, відгукуйтесь в один клік, отримуйте запрошення від роботодавців.
                 </p>
                 <ul class="space-y-3">
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         Пошук по всій Україні та remote
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         Конструктор резюме
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                         Сповіщення про нові вакансії
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                         Асинхронні інтерв'ю з роботодавцями
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                         Telegram-бот для зручності
                     </li>
                 </ul>
             </div>
 
-            <div class="bg-green-50 border border-green-100 rounded-2xl p-8">
+            <div class="about-feature-card border rounded-2xl p-8">
                 <h3 class="text-xl font-extrabold text-green-700 mb-3">Для роботодавців</h3>
-                <p class="text-sm text-gray-500 leading-relaxed mb-6">
+                <p class="about-card-desc text-sm leading-relaxed mb-6">
                     Швидко знаходьте потрібних спеціалістів. Управляйте вакансіями та кандидатами з єдиного кабінету.
                 </p>
                 <ul class="space-y-3">
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         Публікація вакансій за 2 хвилини
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         База верифікованих кандидатів
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                         Аналітика та статистика
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
                         Анонімні вакансії
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-gray-700">
+                    <li class="about-card-item flex items-center gap-3 text-sm">
                         <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                         Бренд роботодавця
                     </li>

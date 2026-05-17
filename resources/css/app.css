@@ -1092,3 +1092,25 @@ html[data-theme="dark"] .about-info-block {
     background-color: #1F2937 !important;
     border-color: #335091 !important;
 }
+
+/* About page — feature cards (candidates / employers) */
+.about-feature-card {
+    background-color: #FFFFFF;
+    border-color: #A7A7A7;
+}
+.about-feature-card .about-card-desc {
+    color: #6B7280;
+}
+.about-feature-card .about-card-item {
+    color: #111827;
+}
+html[data-theme="dark"] .about-feature-card {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+}
+html[data-theme="dark"] .about-feature-card .about-card-desc {
+    color: #9CA3AF !important;
+}
+html[data-theme="dark"] .about-feature-card .about-card-item {
+    color: #E5E7EB !important;
+}
