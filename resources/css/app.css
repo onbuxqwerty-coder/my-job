@@ -1082,3 +1082,13 @@ html:not([data-theme="dark"]) .border-gray-300 {
 html[data-theme="dark"] .tab-scroll-fade {
     background: linear-gradient(to left, #1F2937, transparent) !important;
 }
+
+/* About page — info block */
+.about-info-block {
+    background-color: #FFFFFF;
+    border-color: #335091;
+}
+html[data-theme="dark"] .about-info-block {
+    background-color: #1F2937 !important;
+    border-color: #335091 !important;
+}

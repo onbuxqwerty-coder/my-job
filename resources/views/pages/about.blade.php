@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div class="rounded-2xl p-8 flex flex-col gap-4 border" style="background-color:#1F2937; border-color:#335091;">
+        <div class="about-info-block rounded-2xl p-8 flex flex-col gap-4 border">
             <div class="bg-white rounded-xl px-5 py-4 flex items-center gap-4 border border-gray-100 shadow-sm">
                 <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-xl flex-shrink-0">💻</div>
                 <div class="flex-1 min-w-0">
