@@ -338,7 +338,7 @@
 </section>
 
 {{-- КОМАНДА --}}
-<section class="py-20 px-6 lg:px-16 bg-white border-t border-gray-100">
+{{-- <section class="py-20 px-6 lg:px-16 bg-white border-t border-gray-100">
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12">
             <p class="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-3">Команда</p>
@@ -372,7 +372,7 @@
 
         </div>
     </div>
-</section>
+</section> --}}
 
 {{-- CTA --}}
 <section class="py-24 px-6 lg:px-16 bg-gray-50 border-t border-gray-100">
