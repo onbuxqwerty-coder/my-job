@@ -5,7 +5,17 @@
     $isOpen   = $record->status === \App\Enums\SupportThreadStatus::Open;
 @endphp
 
-<div style="max-width:680px; display:flex; flex-direction:column; gap:16px;">
+{{-- Світла тема: повертаємо бордер і фон секціям на цій сторінці --}}
+<style>
+    html:not(.dark) .support-thread-view .fi-section {
+        background: #FFFFFF !important;
+        border: 1px solid #A7A7A7 !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+    }
+</style>
+
+<div class="support-thread-view" style="max-width:680px; display:flex; flex-direction:column; gap:16px;">
 
     {{-- ── Відправник ──────────────────────────────────────────────────────── --}}
     <x-filament::section heading="Відправник">
