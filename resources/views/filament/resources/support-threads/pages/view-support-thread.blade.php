@@ -13,9 +13,13 @@
         border-radius: 12px !important;
         box-shadow: none !important;
     }
+    .fi-page-content .support-thread-view {
+        justify-self: center;
+        align-self: start;
+    }
 </style>
 
-<div class="support-thread-view" style="max-width:900px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+<div class="support-thread-view" style="width:900px; max-width:100%; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
 
     {{-- ── Відправник ──────────────────────────────────────────────────────── --}}
     <x-filament::section heading="Відправник">
