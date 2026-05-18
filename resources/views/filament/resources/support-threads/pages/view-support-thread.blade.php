@@ -23,35 +23,29 @@
 
     {{-- ── Відправник ──────────────────────────────────────────────────────── --}}
     <x-filament::section heading="Відправник">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px 40px; font-size:13px;">
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:4px 16px; font-size:13px;">
             <div>
-                <div style="font-size:11px; color:#9ca3af; margin-bottom:2px;">Ім'я</div>
+                <div style="font-size:10px; color:#9ca3af; margin-bottom:1px;">Ім'я</div>
                 <div style="font-weight:600;">{{ $thread->user?->name ?? '—' }}</div>
             </div>
             <div>
-                <div style="font-size:11px; color:#9ca3af; margin-bottom:2px;">Email</div>
+                <div style="font-size:10px; color:#9ca3af; margin-bottom:1px;">Email</div>
                 <div>{{ $thread->user?->email ?? '—' }}</div>
             </div>
             <div>
-                <div style="font-size:11px; color:#9ca3af; margin-bottom:2px;">Роль</div>
-                <div>
-                    <x-filament::badge color="info" size="sm">{{ $record->role->label() }}</x-filament::badge>
-                </div>
+                <div style="font-size:10px; color:#9ca3af; margin-bottom:1px;">Роль</div>
+                <div><x-filament::badge color="info" size="sm">{{ $record->role->label() }}</x-filament::badge></div>
             </div>
             <div>
-                <div style="font-size:11px; color:#9ca3af; margin-bottom:2px;">Статус</div>
-                <div>
-                    <x-filament::badge color="{{ $isOpen ? 'success' : 'gray' }}" size="sm">
-                        {{ $record->status->label() }}
-                    </x-filament::badge>
-                </div>
+                <div style="font-size:10px; color:#9ca3af; margin-bottom:1px;">Статус</div>
+                <div><x-filament::badge color="{{ $isOpen ? 'success' : 'gray' }}" size="sm">{{ $record->status->label() }}</x-filament::badge></div>
             </div>
             <div>
-                <div style="font-size:11px; color:#9ca3af; margin-bottom:2px;">Створено</div>
+                <div style="font-size:10px; color:#9ca3af; margin-bottom:1px;">Створено</div>
                 <div>{{ $record->created_at->format('d.m.Y H:i') }}</div>
             </div>
             <div>
-                <div style="font-size:11px; color:#9ca3af; margin-bottom:2px;">Остання активність</div>
+                <div style="font-size:10px; color:#9ca3af; margin-bottom:1px;">Остання активність</div>
                 <div>{{ $record->last_message_at?->format('d.m.Y H:i') ?? '—' }}</div>
             </div>
         </div>
