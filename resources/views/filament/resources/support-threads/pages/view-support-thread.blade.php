@@ -15,7 +15,7 @@
     }
 </style>
 
-<div class="support-thread-view" style="max-width:680px; display:flex; flex-direction:column; gap:16px;">
+<div class="support-thread-view" style="max-width:680px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
 
     {{-- ── Відправник ──────────────────────────────────────────────────────── --}}
     <x-filament::section heading="Відправник">
