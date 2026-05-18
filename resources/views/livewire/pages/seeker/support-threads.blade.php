@@ -41,7 +41,7 @@ new #[Layout('layouts.app')] class extends Component
 
 <div class="min-h-screen seeker-dashboard-bg dark:bg-gray-900">
 <x-seeker-tabs />
-<div class="max-w-3xl mx-auto px-4 py-8">
+<div class="max-w-[900px] mx-auto px-4 py-8">
 
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Підтримка</h1>
