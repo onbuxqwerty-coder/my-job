@@ -92,6 +92,11 @@ class ViewSupportThread extends ViewRecord
 
     // ── Header actions ────────────────────────────────────────────────────────
 
+    public function getHeading(): string|\Illuminate\Contracts\Support\Htmlable
+    {
+        return '';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
