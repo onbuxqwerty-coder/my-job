@@ -118,6 +118,7 @@ Route::middleware(['auth', 'role:employer'])
             return view('employer.billing-success');
         })->name('billing.success');
         Volt::route('/my-profile', 'pages.employer.my-profile')->name('my-profile');
+        Volt::route('/support', 'pages.employer.support')->name('support');
     });
 
 // ── Resume Wizard ───────────────────────────────────────────────────────────

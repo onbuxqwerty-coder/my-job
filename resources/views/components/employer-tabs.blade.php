@@ -9,6 +9,7 @@
         ['route' => 'employer.billing',            'label' => 'Тарифи'],
         ['route' => 'employer.profile',            'label' => 'Профіль компанії'],
         ['route' => 'employer.my-profile',         'label' => 'Мій профіль'],
+        ['route' => 'employer.support',            'label' => 'Підтримка', 'badge' => true],
     ];
 
     $activeMap = [
@@ -30,6 +31,11 @@
         : 0;
 
     $canPublish = app(\App\Services\SubscriptionService::class)->canPublishJob(auth()->user());
+
+    $unreadSupport = \App\Models\SupportThread::where('user_id', auth()->id())
+        ->whereHas('messages', fn ($q) => $q->where('is_read', false)
+            ->where('sender_id', '!=', auth()->id()))
+        ->count();
 @endphp
 
 {{-- ── Ліміт вакансій: modal ─────────────────────────────────────────── --}}
@@ -142,11 +148,16 @@ document.addEventListener('keydown', function(e) {
                 $isActive = $activeTab === $tab['route'];
             @endphp
             <a href="{{ route($tab['route']) }}"
-               class="shrink-0 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors
+               class="shrink-0 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors inline-flex items-center gap-1.5
                       {{ $isActive
                           ? 'border-blue-600 text-blue-600'
                           : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                 {{ $tab['label'] }}
+                @if(!empty($tab['badge']) && $unreadSupport > 0)
+                    <span class="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold leading-none">
+                        {{ $unreadSupport }}
+                    </span>
+                @endif
             </a>
         @endforeach
     </nav>

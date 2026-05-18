@@ -19,6 +19,31 @@ class SupportService
         private readonly TelegramNotifier $telegram,
     ) {}
 
+    public function getOrCreateThread(User $user): SupportThread
+    {
+        $role = match($user->role) {
+            UserRole::Employer => ContactRole::Employer,
+            default            => ContactRole::Seeker,
+        };
+
+        return SupportThread::firstOrCreate(
+            ['user_id' => $user->id],
+            [
+                'subject'         => 'Підтримка',
+                'role'            => $role,
+                'status'          => SupportThreadStatus::Open,
+                'last_message_at' => now(),
+            ]
+        );
+    }
+
+    public function sendMessage(User $user, string $body): SupportMessage
+    {
+        $thread = $this->getOrCreateThread($user);
+
+        return $this->reply($thread, $user, $body);
+    }
+
     public function createThread(
         User $user,
         string $subject,

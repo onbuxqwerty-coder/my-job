@@ -60,6 +60,15 @@ class SupportThreadsTable
                         'gray'    => SupportThreadStatus::Closed->value,
                     ]),
 
+                TextColumn::make('last_message_body')
+                    ->label('Останнє повідомлення')
+                    ->state(fn (SupportThread $record): string =>
+                        $record->messages()->latest()->value('body') ?? '—'
+                    )
+                    ->limit(60)
+                    ->wrap()
+                    ->searchable(false),
+
                 TextColumn::make('messages_count')
                     ->label('Повідомлень')
                     ->counts('messages')

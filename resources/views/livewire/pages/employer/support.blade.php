@@ -39,8 +39,8 @@ new #[Layout('layouts.app')] class extends Component
 };
 ?>
 
-<div class="min-h-screen seeker-dashboard-bg dark:bg-gray-900">
-<x-seeker-tabs />
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+<x-employer-tabs />
 <div class="max-w-3xl mx-auto px-4 py-8">
 
     <div class="flex items-center justify-between mb-6">
